@@ -35,6 +35,12 @@ if ([string]::IsNullOrEmpty($ReleaseDir)) {
 $portableZip = Join-Path $ReleaseDir 'BetterNCM-v3-Portable-x64.zip'
 $setupExe    = Join-Path $ReleaseDir 'BetterNCM-v3-Setup-x64.exe'
 
+# The four plugins both packages ship, plus the four slugs the bundled market must list.  Declared
+# once so the portable tree, the seeded user plugin directory and the installer cannot drift apart.
+$distPlugins = @('LyricBar.plugin', 'MaterialYouTheme.plugin', 'RefinedNowPlaying.plugin',
+                 'NCM-Font-Manager.plugin')
+$distSlugs   = @('LyricBar', 'MaterialYouTheme', 'RefinedNowPlaying', 'NCM-Font-Manager')
+
 if (-not (Test-Path -LiteralPath $portableZip)) { throw "missing $portableZip" }
 
 $temp = Join-Path $env:TEMP ('bncm-verify-' + $PID)
@@ -63,8 +69,35 @@ try {
     Check 'bundled node.exe is present' (Test-Path -LiteralPath $node)
     Check 'launcher Start.cmd is present' (Test-Path -LiteralPath (Join-Path $portableDir 'Start.cmd'))
     Check 'agent is present' (Test-Path -LiteralPath (Join-Path $app 'tools\bncm_agent.mjs'))
-    foreach ($f in @('LyricBar.plugin', 'MaterialYouTheme.plugin', 'RefinedNowPlaying.plugin')) {
+    foreach ($f in $distPlugins) {
         Check "shipped plugin $f" (Test-Path -LiteralPath (Join-Path $app "plugins\$f"))
+    }
+
+    # The bundled market is the reason a fresh install can add a plugin with no network at all, so
+    # its index and every package it names must be inside the package.
+    $mkIndexPath = Join-Path $app 'market\plugins.json'
+    Check 'bundled market index is present' (Test-Path -LiteralPath $mkIndexPath)
+    if (Test-Path -LiteralPath $mkIndexPath) {
+        # NOTE: do NOT wrap ConvertFrom-Json in @(...) -- PowerShell 5.1 writes the parsed array as
+        # a SINGLE object onto the pipeline, so @(...) produces a one-element array whose element is
+        # the real array (count=1, and every per-entry check then compares paths for all four at
+        # once).  Assign the parsed value directly and wrap only where a scalar is possible.
+        $mkIndex = Get-Content -LiteralPath $mkIndexPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        Check 'bundled market lists four plugins' (@($mkIndex).Count -eq 4) "count=$(@($mkIndex).Count)"
+        $mkSlugs = @($mkIndex | ForEach-Object { $_.slug })
+        foreach ($s in $distSlugs) { Check "bundled market lists $s" ($mkSlugs -contains $s) }
+        $missingPkg = @($mkIndex | Where-Object {
+            -not (Test-Path -LiteralPath (Join-Path $app ("market\" + ($_.'file-url' -replace '/', '\'))))
+        })
+        Check 'every listed market package is inside the build' ($missingPkg.Count -eq 0) `
+              (($missingPkg | ForEach-Object { $_.slug }) -join ', ')
+        $missingPrev = @($mkIndex | Where-Object {
+            -not (Test-Path -LiteralPath (Join-Path $app ("market\" + ($_.preview -replace '/', '\'))))
+        })
+        Check 'every listed preview image is inside the build' ($missingPrev.Count -eq 0) `
+              (($missingPrev | ForEach-Object { $_.slug }) -join ', ')
+        Check 'the market backend module is shipped' `
+              (Test-Path -LiteralPath (Join-Path $app 'tools\market_host.mjs'))
     }
 
     $nodeVersion = & $node --version 2>&1
@@ -77,7 +110,7 @@ try {
     $dataDir = Join-Path $portableDir 'data'
     $seed = & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $app 'loader\startup.ps1') `
                 -Start -NoStart -NcmData $dataDir 2>&1 | Out-String
-    foreach ($f in @('LyricBar.plugin', 'MaterialYouTheme.plugin', 'RefinedNowPlaying.plugin')) {
+    foreach ($f in $distPlugins) {
         Check "seeded into data\plugins: $f" (Test-Path -LiteralPath (Join-Path $dataDir "plugins\$f"))
     }
 
@@ -107,6 +140,26 @@ try {
                   ($rnp.manifest.loadAfter -contains 'MaterialYouTheme')
             $sel = Invoke-RestMethod -Headers $hdr -Uri "$($d.api)/api/selectors"
             Check 'selector registry is served' ($sel.builds.'3.1.41' -ne $null)
+
+            # The market must work from the PACKAGED tree, with the packaged data directory, and
+            # with its bundled source resolved from disk (no mirror, no network).
+            $mk = Invoke-RestMethod -Headers $hdr -Uri "$($d.api)/api/market/plugins"
+            $builtin = @($mk.sources | Where-Object { $_.id -eq 'builtin' })
+            Check 'the packaged market serves the built-in source' `
+                  ($builtin.Count -eq 1 -and $builtin[0].ok)
+            Check 'the built-in source lists four plugins' ($builtin.Count -eq 1 -and $builtin[0].count -eq 4)
+            $bundled = @($mk.plugins | Where-Object { $_.bundled })
+            Check 'the market marks four plugins as bundled' ($bundled.Count -eq 4) "count=$($bundled.Count)"
+            foreach ($s in $distSlugs) {
+                Check "the market knows about $s" (@($mk.plugins | Where-Object { $_.slug -eq $s }).Count -eq 1)
+            }
+            Check 'the market sees the seeded plugins as installed' `
+                  (@($bundled | Where-Object { $_.installed }).Count -eq 4)
+            $font = $mk.plugins | Where-Object { $_.slug -eq 'NCM-Font-Manager' }
+            Check 'the Font Manager listing carries a verified digest' `
+                  ($font.sha256 -match '^[0-9a-f]{64}$')
+            $sources = Invoke-RestMethod -Headers $hdr -Uri "$($d.api)/api/market/sources"
+            Check 'the market source list is served' (@($sources.sources).Count -ge 1)
         }
     } finally {
         if ($hostProc -and -not $hostProc.HasExited) { Stop-Process -Id $hostProc.Id -Force -ErrorAction SilentlyContinue }
@@ -137,9 +190,11 @@ try {
         Check 'installed runtime is present' (Test-Path -LiteralPath (Join-Path $installDir 'app\loader\framework.js'))
         Check 'installed node is present' (Test-Path -LiteralPath (Join-Path $installDir 'app\bin\node.exe'))
         Check 'uninstaller was copied' (Test-Path -LiteralPath (Join-Path $installDir 'Uninstall.ps1'))
-        foreach ($f in @('LyricBar.plugin', 'MaterialYouTheme.plugin', 'RefinedNowPlaying.plugin')) {
+        foreach ($f in $distPlugins) {
             Check "installed plugins: $f" (Test-Path -LiteralPath (Join-Path $installData "plugins\$f"))
         }
+        Check 'installed market index is present' `
+              (Test-Path -LiteralPath (Join-Path $installDir 'app\market\plugins.json'))
         $unkey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\BetterNCM'
         Check 'Add/Remove Programs entry was written' (Test-Path -LiteralPath $unkey)
         Remove-Item -LiteralPath $unkey -Recurse -Force -ErrorAction SilentlyContinue

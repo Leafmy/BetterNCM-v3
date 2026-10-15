@@ -71,7 +71,20 @@ UI 只是把这个事实显示出来。
   `legacyNativeCmder` 是否存在、选择器注册表命中情况）、hijack 的 applied/missed/pending/errors、
   本次会话的选择器缺失记录、目录路径。
 
-## 5. 选择器注册表
+## 5. 插件市场（3.0 新增）
+
+面板顶部现在有三个标签：**插件 / 插件市场 / 诊断**。市场页与本文描述的插件页共用同一个面板与
+同一份 `/api/state`，但数据来自 `/api/market/*`（见 [`docs/21-plugin-market.md`](21-plugin-market.md)）：
+
+- 市场是**宿主功能**，不是插件——这样它在插件坏掉时也能用，并且内置源可以离线；
+- 默认启用「内置源」（`market/`，随包分发，四个自带插件）+ 本仓库的 GitHub 源；
+  上游镜像保留在源列表里但默认关闭（`bncm-plugin.microblock.cc` 本机实测 522）；
+- 安装是校验式的（zip / manifest / slug / sha256），失败时插件目录不变；
+  卸载仍走本文 §2 的 `POST /api/plugins/uninstall`（移动到 `_uninstalled\`，可逆）。
+
+---
+
+## 6. 选择器注册表
 
 前端包（`web.pack`）会独立于客户端更新，类名是 CSS Modules 哈希，因此**任何硬编码选择器都会过期**。
 `loader/selectors.json` 按客户端版本给出选择器；framework 按
@@ -82,7 +95,7 @@ UI 只是把这个事实显示出来。
 `MiniModeIconBar_`、`LyricWrapper_`、`ScrollableLyricDisplayContainer`、`LyricDisplayInnerContainer`。
 **已失效**：`.cmd-icon-setting`、`section.g-mn`、`CommentWrapper_`、`u-cover`。
 
-## 6. 验收
+## 7. 验收
 
 ```powershell
 loader\startup.cmd -Status

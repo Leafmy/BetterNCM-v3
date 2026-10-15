@@ -20,17 +20,20 @@ $ErrorActionPreference = 'Stop'
 
 # --- the release plugin set ---------------------------------------------------------------
 #
-# These three are the ones the project ships: the three third-party plugins (LyricBar,
-# MaterialYouTheme, RefinedNowPlaying) adapted to this compatibility layer.  They are installed
-# by the SAME code path into the SAME user-plugin directory and are managed identically by the
-# manager -- none of them is a built-in `plugins/core` plugin any more.
+# These four are the ones the project ships: three third-party plugins (LyricBar,
+# MaterialYouTheme, RefinedNowPlaying) adapted to this compatibility layer, plus this project's
+# own NCM Font Manager.  They are installed by the SAME code path into the SAME user-plugin
+# directory and are managed identically by the manager -- none of them is a built-in
+# `plugins/core` plugin any more.  The same four are listed by the bundled plugin market
+# (market/plugins.json), so a user can reinstall any of them from the manager as well.
 #
 # The list is explicit on purpose: `plugins/` in a checkout also carries three test fixtures
 # (bncm-selftest, broken-plugin, incompatible-plugin) that must never be installed for a user.
 $script:BncmDistPlugins = @(
     'LyricBar.plugin',
     'MaterialYouTheme.plugin',
-    'RefinedNowPlaying.plugin'
+    'RefinedNowPlaying.plugin',
+    'NCM-Font-Manager.plugin'
 )
 
 function Get-BncmDistPlugins { return $script:BncmDistPlugins }

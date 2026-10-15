@@ -13,6 +13,10 @@
 | Material You Theme (NCMv3) | v1.0.4 | [long45343](https://github.com/long45343) | **GPL-3.0** | `plugins/MaterialYouTheme.plugin`、`plugins/src/MaterialYouTheme` |
 | RefinedNowPlaying（= 上游 `RefinedNowPlayingNext` 3.0.2） | 3.0.2 | SUlTlUS / MiHN / solstice23 谱系 | **MIT** | `plugins/RefinedNowPlaying.plugin`、`plugins/src/RefinedNowPlaying` |
 
+> 第四个随包分发的插件 `NCM-Font-Manager`（0.1.3）是**本项目自研**，不在本表内：
+> 它没有第三方上游，因此不需要再分发别人的许可证。它的来源、哈希与改动记录见
+> `plugins/src/NCM-Font-Manager/NOTICE.md`，随仓库整体以 GPL-3.0-or-later 分发。
+
 出处链接：
 
 * LyricBar — <https://github.com/solstice23/lyric-bar-netease>
@@ -30,8 +34,9 @@
 
 ### 仓库内保留的原始归档与溯源素材（**不随发行包分发**）
 
-`build_release.ps1` 只把上表列出的四个 `.plugin` 放进发行包；下列目录仅存在于仓库中，
-用于对照与溯源：
+`build_release.ps1` 只把上表列出的三个第三方 `.plugin`（外加本项目自研的
+`NCM-Font-Manager.plugin`）与它们的市场副本 `market/plugins/*.plugin` 放进发行包；
+下列目录仅存在于仓库中，用于对照与溯源：
 
 | 目录 | 内容 | 出处 | 许可证 |
 |---|---|---|---|
@@ -57,6 +62,8 @@
 * `out/orpheus/`、`out/repacked.ntpk` — 从网易云音乐客户端 `web.pack` / `orpheus.ntpk`
   抽取或重打包的**版权资源**，仅在本地做逆向分析用；
 * `out/agent.log`、`out/host.json`、`out/agent.lock` — 本机运行态数据（`host.json` 含后端 API key）；
+* `out/market-recon/` — 逆向上游插件市场、解包本地插件归档时的临时素材（含上游打包产物副本），
+  只作分析用，不提交也不分发；
 * `upstream/` 下的克隆 — 上游参考副本，按 `upstream/README.md` 的地址自行获取。
 
 本项目不分发客户端本体、音源、皮肤或任何账号凭证，也不修改客户端带 RSA-512/SHA1

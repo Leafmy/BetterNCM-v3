@@ -24,7 +24,7 @@
   'use strict';
 
   if (window.__BNCM_MANAGER__) return;
-  var BUILD = 'bncm-v3-manager/0.2.0';
+  var BUILD = 'bncm-v3-manager/0.3.0';
 
   var api = null;          // betterncm
   var helpers = null;      // { loadedPlugins, reload }
@@ -32,8 +32,29 @@
   var entry = null;
   var state = null;        // last /api/state payload
   var selected = null;     // slug being configured
-  var tab = 'plugins';     // plugins | diagnostics
+  var tab = 'plugins';     // plugins | market | diagnostics
   var notes = [];          // in-panel messages
+
+  /* Plugin market state.  Upstream keeps all of this inside a React component; here it is one
+   * plain object because the panel re-renders wholesale.  The FIELDS mirror upstream's contract
+   * (category / search / sort_by / sort_order + the reload notice) so the two behave alike. */
+  var market = {
+    data: null,            // /api/market/plugins payload
+    sources: null,         // /api/market/sources payload
+    error: null,
+    loading: false,
+    q: '',
+    category: 'all',
+    sort: 'composite',
+    order: 'desc',
+    busy: null,            // slug currently installing/removing
+    note: null,            // {kind, text}
+    showSources: false,
+    showLibs: false,
+    devOptions: false,
+    reload: false,         // "changes need a reload" notice
+    previews: {},          // slug -> object URL
+  };
 
   function h(tag, attrs, children) {
     var el = document.createElement(tag);
@@ -112,6 +133,48 @@
     '.bncm-mgr-kv dd{margin:0;word-break:break-all}',
     '.bncm-mgr-empty{color:#8b8b96;padding:20px 0}',
     '.bncm-mgr svg{display:block}',
+    /* ---- plugin market ---------------------------------------------------- */
+    '.bncm-mk-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 10px}',
+    '.bncm-mk-search{flex:1;min-width:150px;padding:6px 10px;border-radius:8px;border:1px solid #ffffff26;',
+    'background:#ffffff0f;color:#e9e9ee;font-size:12px;outline:none}',
+    '.bncm-mk-search::placeholder{color:#7c7c88}',
+    '.bncm-mk-seg{display:flex;border:1px solid #ffffff26;border-radius:8px;overflow:hidden}',
+    '.bncm-mk-seg>span{padding:5px 10px;font-size:12px;color:#b9b9c4;cursor:pointer;white-space:nowrap}',
+    '.bncm-mk-seg>span.active{background:#ffffff1f;color:#fff}',
+    '.bncm-mk-select{padding:5px 8px;border-radius:8px;border:1px solid #ffffff26;background:#1e1e24;',
+    'color:#e9e9ee;font-size:12px}',
+    '.bncm-mk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}',
+    '.bncm-mk-card{display:flex;gap:10px;padding:10px;border:1px solid #ffffff1f;border-radius:12px;',
+    'background:#ffffff08}',
+    '.bncm-mk-card.busy{opacity:.55;pointer-events:none}',
+    '.bncm-mk-card.installed{border-color:#7fd6a033}',
+    '.bncm-mk-thumb{width:104px;height:60px;flex:0 0 104px;border-radius:8px;overflow:hidden;background:#0e0e12;',
+    'display:flex;align-items:center;justify-content:center;color:#5c5c68;font-size:20px}',
+    '.bncm-mk-thumb img{width:100%;height:100%;object-fit:cover;display:block}',
+    '.bncm-mk-body{min-width:0;flex:1;display:flex;flex-direction:column;gap:4px}',
+    '.bncm-mk-title{display:flex;align-items:baseline;gap:6px;font-weight:600;font-size:13px;min-width:0}',
+    '.bncm-mk-title>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+    '.bncm-mk-ver{color:#8b8b96;font-size:11px;font-weight:400;flex:0 0 auto}',
+    '.bncm-mk-sub{color:#8b8b96;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
+    '.bncm-mk-desc{color:#c8c8d2;font-size:11.5px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;',
+    '-webkit-box-orient:vertical;overflow:hidden}',
+    '.bncm-mk-tags{display:flex;gap:4px;flex-wrap:wrap}',
+    '.bncm-mk-tag{font-size:10px;padding:1px 6px;border-radius:10px;background:#2a2a33;color:#a5a5b3;white-space:nowrap}',
+    '.bncm-mk-tag.ok{background:#16321f;color:#7fd6a0}',
+    '.bncm-mk-tag.warn{background:#3a2f16;color:#e8c274}',
+    '.bncm-mk-tag.err{background:#3a1a1a;color:#ff9f9f}',
+    '.bncm-mk-tag.info{background:#152a3a;color:#7fc4e8}',
+    '.bncm-mk-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}',
+    '.bncm-mk-actions .bncm-mgr-btn{padding:3px 9px;font-size:11px}',
+    '.bncm-mk-sources{border:1px solid #ffffff1f;border-radius:10px;padding:10px;margin:0 0 12px;',
+    'background:#ffffff08;font-size:12px}',
+    '.bncm-mk-src-row{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid #ffffff12}',
+    '.bncm-mk-src-row:last-child{border-bottom:0}',
+    '.bncm-mk-src-name{flex:1;min-width:0}',
+    '.bncm-mk-src-base{color:#7c7c88;font-size:10.5px;word-break:break-all}',
+    '.bncm-mk-input{flex:1;min-width:140px;padding:5px 8px;border-radius:8px;border:1px solid #ffffff26;',
+    'background:#ffffff0f;color:#e9e9ee;font-size:11.5px}',
+    '.bncm-mk-check{display:flex;align-items:center;gap:6px;color:#b9b9c4;cursor:pointer}',
   ].join('');
 
   function ensureStyles() {
@@ -173,6 +236,8 @@
   function renderList() {
     if (!panel) return;
     var list = panel.querySelector('.bncm-mgr-list');
+    // The market is a full-width view: the plugin list has nothing to say about it.
+    list.style.display = tab === 'market' ? 'none' : '';
     list.textContent = '';
     if (!state) { list.appendChild(h('div', { class: 'bncm-mgr-empty', text: '加载中…' })); return; }
 
@@ -218,6 +283,7 @@
     var main = panel.querySelector('.bncm-mgr-main');
     main.textContent = '';
     if (tab === 'diagnostics') return renderDiagnostics(main);
+    if (tab === 'market') return renderMarket(main);
 
     if (!selected) {
       main.appendChild(h('div', { class: 'bncm-mgr-empty', text: '从左侧选择一个插件查看设置。' }));
@@ -315,6 +381,552 @@
       log('plugins reloaded');
       return refresh();
     });
+  }
+
+  /* --------------------------------------------------------- plugin market ---- */
+  /* Upstream ships its market as a PLUGIN: a React app that fetches `plugins.json` from one of a
+   * few mirrors and writes the chosen archive through `betterncm.fs`.  Here the market is part of
+   * the host, which is what makes three things possible that upstream cannot do:
+   *
+   *   * the bundled source is a directory, so the four plugins this build ships are installable
+   *     with no network and no mirror;
+   *   * an install is verified (zip parses, slug matches, sha256 matches) BEFORE it lands, so a
+   *     bad mirror cannot destroy the working copy of a plugin;
+   *   * a failure is shown.  Upstream's install has no try/catch, so a 404 leaves the card
+   *     spinning forever.
+   *
+   * Preserved on purpose: the index contract, the merge order, the dependency semantics, the
+   * search grammar (`author:x` plus space-separated AND), the five sort keys, the composite bonus
+   * curve, and the rule that an install never reloads the page by itself. */
+
+  var LIB_TYPES = ['lib', 'library', 'dependency', 'framework'];
+  var NEW_WINDOW_S = 5 * 24 * 60 * 60;
+
+  function marketPlugins() { return (market.data && market.data.plugins) || []; }
+  function findMarket(slug) {
+    var all = marketPlugins();
+    for (var i = 0; i < all.length; i++) if (all[i].slug === slug) return all[i];
+    return null;
+  }
+  function isLib(p) { return LIB_TYPES.indexOf(String(p.type || 'extension')) >= 0; }
+  function isNew(p) {
+    return !!p.publish_time && (Date.now() / 1000 - Number(p.publish_time)) < NEW_WINDOW_S;
+  }
+
+  /** How many plugins the user actually has, per source: the number that says "this mirror is
+   *  doing something".  Installed state comes from the host, so the two lists never disagree. */
+  function marketSourceReport(id) {
+    if (!market.data || !market.data.sources) return null;
+    for (var i = 0; i < market.data.sources.length; i++) {
+      if (market.data.sources[i].id === id) return market.data.sources[i];
+    }
+    return null;
+  }
+
+  function marketMaxDownloads() {
+    var max = 0;
+    marketPlugins().forEach(function (p) {
+      var d = Number(p.downloads || 0);
+      if (d > max) max = d;
+    });
+    return max;
+  }
+
+  /** Upstream's "bonus downloads" curve, kept verbatim: a fresh release is weighted like the most
+   *  downloaded plugin on the site, decaying to 85% at 90 days and then 1% per hour.  It is what
+   *  makes the composite sort surface new work instead of a frozen popularity ranking. */
+  function bonusDownloads(p, max) {
+    if (!p.publish_time || !max) return 0;
+    var turningPoint = 24 * 30 * 3;      // 90 days, in hours
+    var turningValue = 0.85;
+    var hours = Math.max(0, (Date.now() - Number(p.publish_time) * 1000) / 1000 / 60 / 60);
+    var factor = hours < turningPoint
+      ? Math.pow((turningPoint - hours) / turningPoint, 6) * (1 - turningValue) + turningValue
+      : turningValue * Math.pow(0.99, hours - turningPoint);
+    return parseInt(factor * max, 10);
+  }
+
+  function marketVisible() {
+    var all = marketPlugins();
+    var max = marketMaxDownloads();
+    var stats = max > 0;
+    var q = market.q.trim().toLowerCase();
+    var tokens = q ? q.split(/\s+/) : [];
+
+    var list = all.filter(function (p) {
+      if (p.deprecated || p.hide) return false;
+      var type = String(p.type || 'extension');
+      if (market.category === 'installed') { if (!p.installed) return false; }
+      else if (market.category === 'update') { if (!p.update_available) return false; }
+      else if (market.category === 'lib') { if (!isLib(p)) return false; }
+      else if (market.category === 'extension' || market.category === 'theme') {
+        if (type !== market.category) return false;
+      } else if (!market.showLibs && isLib(p)) return false;
+
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i];
+        if (t.indexOf('author:') === 0) {
+          if (String(p.author || '').toLowerCase().indexOf(t.slice(7)) < 0) return false;
+        } else if ([p.name || '', p.slug || '', p.author || ''].join(' ').toLowerCase().indexOf(t) < 0) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    list.sort(function (a, b) {
+      var la = isLib(a) ? 1 : 0, lb = isLib(b) ? 1 : 0;
+      if (la !== lb) return la - lb;                       // libraries always last
+      var va, vb;
+      if (market.sort === 'downloads') {
+        va = stats ? Number(a.downloads || 0) : Number(a.stars || 0);
+        vb = stats ? Number(b.downloads || 0) : Number(b.stars || 0);
+      } else if (market.sort === 'stars') {
+        va = Number(a.stars || 0); vb = Number(b.stars || 0);
+      } else if (market.sort === 'update') {
+        va = Number(a.update_time || 0); vb = Number(b.update_time || 0);
+      } else if (market.sort === 'name') {
+        va = String(a.name || ''); vb = String(b.name || '');
+      } else if (stats) {
+        va = Number(a.downloads || 0) + bonusDownloads(a, max);
+        vb = Number(b.downloads || 0) + bonusDownloads(b, max);
+      } else {
+        va = Number(a.stars || 0); vb = Number(b.stars || 0);
+      }
+      var cmp = va < vb ? -1 : (va > vb ? 1 : 0);
+      return market.order === 'asc' ? cmp : -cmp;
+    });
+    return { list: list, stats: stats, total: all.length };
+  }
+
+  function beingDependedBy(slug) {
+    return marketPlugins().filter(function (p) {
+      return p.installed && (p.requirements || []).indexOf(slug) >= 0;
+    }).map(function (p) { return p.name || p.slug; });
+  }
+
+  function marketPreviewUrl(slug) {
+    if (market.previews[slug] !== undefined) return Promise.resolve(market.previews[slug]);
+    market.previews[slug] = null;
+    var key = window.BETTERNCM_API_KEY || '';
+    return fetch(api.backend + '/api/market/preview?slug=' + encodeURIComponent(slug),
+                 { headers: { 'X-BNCM-Key': key } })
+      .then(function (r) { if (!r.ok) throw new Error('no preview'); return r.blob(); })
+      .then(function (blob) {
+        var url = URL.createObjectURL(blob);
+        market.previews[slug] = url;
+        return url;
+      })
+      .catch(function () { market.previews[slug] = ''; return ''; });
+  }
+
+  var marketRetry = null;
+
+  function loadMarket(refresh) {
+    market.loading = true;
+    if (panel && tab === 'market') renderMain();
+    return host('/api/market/plugins' + (refresh ? '?refresh=1' : ''))
+      .then(function (r) {
+        market.data = r;
+        market.error = null;
+        market.loading = false;
+        return host('/api/market/sources').then(function (s) { market.sources = s; }, function () {});
+      }, function (e) {
+        market.loading = false;
+        market.error = e.message;
+      })
+      .then(function () {
+        if (panel && tab === 'market') renderMain();
+        // A remote source that had no cache yet is being fetched in the background; one delayed
+        // re-read is enough to fold its plugins in, and a single retry cannot become a poll loop.
+        var pending = ((market.data && market.data.sources) || []).some(function (s) { return s.pending; });
+        if (pending && !marketRetry) {
+          marketRetry = setTimeout(function () {
+            marketRetry = null;
+            if (panel && tab === 'market' && !market.loading) loadMarket(false);
+          }, 3000);
+        }
+      });
+  }
+
+  /** Reload the plugin list AND the market's installed/update annotations. */
+  function refreshThenMarket() {
+    return refresh().then(function () { return loadMarket(false); });
+  }
+
+  function marketSaveSettings(patch) {
+    return host('/api/market/settings', { method: 'POST', body: JSON.stringify(patch) })
+      .then(function (r) {
+        market.sources = { sources: r.sources, selected: r.selected, custom_unlocked: r.custom_unlocked };
+        return loadMarket(true);
+      }, function (e) {
+        market.note = { kind: 'err', text: '设置未保存：' + e.message };
+        renderMain();
+      });
+  }
+
+  function marketInstall(slug, opts) {
+    market.busy = slug;
+    market.note = null;
+    renderMarketGrid();
+    host('/api/market/install', {
+      method: 'POST',
+      body: JSON.stringify({ slug: slug, include_recommended: !!(opts && opts.recommended) }),
+    }).then(function (r) {
+      market.busy = null;
+      var parts = (r.installed || []).map(function (x) { return x.slug + ' ' + x.version; });
+      var text = parts.length ? '已安装：' + parts.join('、') : '没有需要写入的版本（已是同版本）';
+      if ((r.skipped || []).length) {
+        text += '　跳过：' + r.skipped.map(function (s) { return s.slug + '（' + s.reason + '）'; }).join('、');
+      }
+      if ((r.recommended || []).length) {
+        text += '　建议一并安装：' + r.recommended.map(function (x) {
+          return x.slug + '（' + x.reason + '）';
+        }).join('、');
+      }
+      if (r.restart_required) market.reload = true;
+      market.note = { kind: '', text: text };
+      return refreshThenMarket();
+    }, function (e) {
+      market.busy = null;
+      market.note = { kind: 'err', text: '安装失败：' + e.message };
+      renderMarketGrid();
+      renderMarketNotes();
+    });
+  }
+
+  function marketUninstall(p) {
+    var deps = beingDependedBy(p.slug);
+    if (deps.length) {
+      market.note = { kind: 'warn', text: p.slug + ' 被 ' + deps.join('、') + ' 依赖，先卸载它们。' };
+      renderMarketNotes();
+      return;
+    }
+    if (!window.confirm('卸载 ' + (p.name || p.slug) + '？插件文件会被移动到 <数据目录>\\_uninstalled\\ 而不是删除。')) return;
+    market.busy = p.slug;
+    renderMarketGrid();
+    host('/api/plugins/uninstall', { method: 'POST', body: JSON.stringify({ slug: p.slug }) })
+      .then(function (r) {
+        market.busy = null;
+        market.note = { kind: '', text: '已卸载，文件移动到 ' + r.moved_to };
+        market.reload = true;
+        return refreshThenMarket();
+      }, function (e) {
+        market.busy = null;
+        market.note = { kind: 'err', text: '卸载失败：' + e.message };
+        renderMarketGrid();
+        renderMarketNotes();
+      });
+  }
+
+  function marketSegment(options, current, onPick) {
+    var wrap = h('div', { class: 'bncm-mk-seg' });
+    options.forEach(function (opt) {
+      wrap.appendChild(h('span', {
+        class: opt[0] === current ? 'active' : '',
+        text: opt[1],
+        title: opt[2] || '',
+        onclick: function () { onPick(opt[0]); },
+      }));
+    });
+    return wrap;
+  }
+
+  function marketCard(p, stats, max) {
+    var el = h('div', { class: 'bncm-mk-card' + (p.installed ? ' installed' : '')
+                             + (market.busy === p.slug ? ' busy' : '') });
+    var thumb = h('div', { class: 'bncm-mk-thumb' }, [(p.name || '?').slice(0, 2)]);
+    el.appendChild(thumb);
+    if (p.preview && !p.unlisted) {
+      var load = function () {
+        if (market.previews[p.slug]) return;
+        marketPreviewUrl(p.slug).then(function (url) {
+          if (!url || !thumb.isConnected) return;
+          thumb.textContent = '';
+          thumb.appendChild(h('img', { src: url, alt: p.name || p.slug }));
+        });
+      };
+      if (typeof IntersectionObserver === 'function') {
+        var io = new IntersectionObserver(function (entries) {
+          if (entries[0] && entries[0].isIntersecting) { io.disconnect(); load(); }
+        });
+        io.observe(thumb);
+      } else load();
+    }
+
+    var body = h('div', { class: 'bncm-mk-body' });
+    var title = h('div', { class: 'bncm-mk-title' }, [
+      h('span', { text: p.name || p.slug }),
+      h('span', { class: 'bncm-mk-ver', text: p.version ? 'v' + p.version : '' }),
+    ]);
+    body.appendChild(title);
+    body.appendChild(h('div', { class: 'bncm-mk-sub', text: [
+      p.author || '?',
+      p.source_name || '',
+      p.stars ? '★ ' + p.stars : '',
+    ].filter(Boolean).join(' · ') }));
+    if (p.description) body.appendChild(h('div', { class: 'bncm-mk-desc', text: p.description }));
+
+    var tags = h('div', { class: 'bncm-mk-tags' });
+    if (p.installed) {
+      tags.appendChild(h('span', { class: 'bncm-mk-tag ok', text: '已安装 ' + (p.installed_version || '') }));
+    }
+    if (p.update_available) {
+      tags.appendChild(h('span', { class: 'bncm-mk-tag info',
+        text: '可更新 ' + (p.installed_version || '?') + ' → ' + p.version }));
+    }
+    if (p.bundled) tags.appendChild(h('span', { class: 'bncm-mk-tag', text: '随包分发' }));
+    if (p.unlisted) tags.appendChild(h('span', { class: 'bncm-mk-tag warn', text: '来源已不在任何已启用源' }));
+    if (isNew(p)) tags.appendChild(h('span', { class: 'bncm-mk-tag ok', text: 'NEW' }));
+    if ((p.requirements || []).length) {
+      tags.appendChild(h('span', { class: 'bncm-mk-tag',
+        text: '依赖 ' + p.requirements.map(function (s) {
+          var t = findMarket(s); return (t && t.name) || s;
+        }).join('、') }));
+    }
+    if ((p.blocked_by || []).length) {
+      tags.appendChild(h('span', { class: 'bncm-mk-tag err', text: '与 ' + p.blocked_by.join('、') + ' 不兼容' }));
+    }
+    var depBy = p.installed ? beingDependedBy(p.slug) : [];
+    if (depBy.length) tags.appendChild(h('span', { class: 'bncm-mk-tag warn', text: '被 ' + depBy.join('、') + ' 依赖' }));
+    if ((stats && Number(p.downloads || 0)) || market.sort === 'downloads') {
+      tags.appendChild(h('span', { class: 'bncm-mk-tag',
+        text: '下载 ' + Number(p.downloads || 0) + (stats ? '' : '（无统计）') }));
+    }
+    body.appendChild(tags);
+
+    var actions = h('div', { class: 'bncm-mk-actions' });
+    if (!p.installed) {
+      var install = h('button', { class: 'bncm-mgr-btn', text: '安装', onclick: function () { marketInstall(p.slug); } });
+      if ((p.blocked_by || []).length) {
+        install.disabled = true;
+        install.title = '与已安装的 ' + p.blocked_by.join('、') + ' 不兼容';
+      }
+      actions.appendChild(install);
+    } else {
+      if (p.update_available) {
+        actions.appendChild(h('button', { class: 'bncm-mgr-btn', text: '更新到 ' + p.version,
+          onclick: function () { marketInstall(p.slug); } }));
+      }
+      var del = h('button', { class: 'bncm-mgr-btn danger', text: '卸载', onclick: function () { marketUninstall(p); } });
+      if (depBy.length) { del.disabled = true; del.title = '被 ' + depBy.join('、') + ' 依赖'; }
+      actions.appendChild(del);
+      actions.appendChild(h('button', { class: 'bncm-mgr-btn', text: '设置', onclick: function () {
+        selected = p.slug; switchTab('plugins');
+      } }));
+    }
+    if (p.repo) {
+      actions.appendChild(h('button', { class: 'bncm-mgr-btn', text: '仓库', onclick: function () {
+        var url = /^https?:/i.test(p.repo) ? p.repo : 'https://github.com/' + p.repo;
+        try { api.ncm.openUrl(url); } catch (e) { log('openUrl failed: ' + e.message); }
+      } }));
+    }
+    if (p.unlisted && p.installed && p.file) {
+      actions.appendChild(h('button', { class: 'bncm-mgr-btn', text: '文件', title: p.installed_dir || '',
+        onclick: function () {
+          if (p.installed_dir) {
+            // app.exec only accepts URLs, mailto: and bare drive-letter paths: pass the path itself.
+            try { api.app.exec(String(p.installed_dir).replace(/\//g, '\\')); } catch (e) { /* ignore */ }
+          }
+        } }));
+    }
+    body.appendChild(actions);
+    el.appendChild(body);
+    return el;
+  }
+
+  function renderMarketGrid() {
+    if (!panel) return;
+    var grid = panel.querySelector('.bncm-mk-grid');
+    if (!grid) { renderMain(); return; }
+    grid.textContent = '';
+    if (!market.data) {
+      // The toolbar stays usable while the first read is in flight: the built-in source is on
+      // disk, so this should be a sub-100 ms state, never a "the panel is thinking" state.
+      grid.appendChild(h('div', { class: 'bncm-mgr-empty',
+        text: market.loading ? '正在读取插件市场…' : '还没有市场数据。' }));
+      return;
+    }
+    var view = marketVisible();
+    if (!view.list.length) {
+      grid.appendChild(h('div', { class: 'bncm-mgr-empty',
+        text: market.category === 'update' ? '没有可更新的插件。'
+            : (market.category === 'installed' ? '没有从这个市场安装的插件。' : '没有匹配的插件。') }));
+      return;
+    }
+    var max = marketMaxDownloads();
+    view.list.forEach(function (p) { grid.appendChild(marketCard(p, view.stats, max)); });
+  }
+
+  function renderMarketNotes() {
+    if (!panel) return;
+    var box = panel.querySelector('.bncm-mk-notes');
+    if (!box) return;
+    box.textContent = '';
+    if (market.reload) {
+      var notice = h('div', { class: 'bncm-mgr-note warn' }, [
+        '插件的更改需要重载页面后生效。',
+        h('button', { class: 'bncm-mgr-btn', style: { marginLeft: '8px' }, text: '立即重载',
+          onclick: function () { market.reload = false; doReload(); } }),
+      ]);
+      box.appendChild(notice);
+    }
+    if (market.note) box.appendChild(h('div', { class: 'bncm-mgr-note ' + (market.note.kind || ''),
+                                                text: market.note.text }));
+    if (market.loading && market.data) {
+      box.appendChild(h('div', { class: 'bncm-mgr-note', text: '正在读取索引…' }));
+    }
+    var pend = (market.data && market.data.sources ? market.data.sources : []).filter(function (s) {
+      return s.pending;
+    });
+    if (pend.length) {
+      box.appendChild(h('div', { class: 'bncm-mgr-note', text:
+        '正在后台读取：' + pend.map(function (s) { return s.name; }).join('、')
+        + '（读完后会自动出现在列表里，也可以用「刷新索引」立刻等它）' }));
+    }
+    (market.data && market.data.sources ? market.data.sources : []).forEach(function (src) {
+      if (src.pending) return;
+      if (src.ok === false) {
+        box.appendChild(h('div', { class: 'bncm-mgr-note warn',
+          text: '源「' + src.name + '」读取失败：' + src.error
+              + (src.count ? '（仍在用 ' + src.count + ' 条缓存）' : '，本次没有插件来自它') }));
+      }
+    });
+  }
+
+  function renderSourcePanel(container) {
+    var box = h('div', { class: 'bncm-mk-sources' });
+    var payload = market.sources || {};
+    var list = payload.sources || (market.data && market.data.sources) || [];
+
+    box.appendChild(h('div', { class: 'bncm-mgr-meta', text:
+      '源决定市场里能看到哪些插件。内置源随程序分发、离线可用；其它源需要网络。' }));
+
+    list.forEach(function (src) {
+      var row = h('div', { class: 'bncm-mk-src-row' });
+      var cb = h('input', { type: 'checkbox' });
+      cb.checked = src.enabled !== false;
+      if (src.builtin) cb.disabled = true;
+      cb.addEventListener('change', function () {
+        var patch = { enabled: {} };
+        patch.enabled[src.id] = cb.checked;
+        marketSaveSettings(patch);
+      });
+      row.appendChild(h('label', { class: 'bncm-mk-check' }, [cb]));
+      var report = marketSourceReport(src.id);
+      var info = h('div', { class: 'bncm-mk-src-name' }, [
+        h('div', {}, [
+          h('span', { text: src.name }),
+          src.builtin ? h('span', { class: 'bncm-mk-tag', style: { marginLeft: '6px' }, text: '内置' }) : null,
+          src.custom ? h('span', { class: 'bncm-mk-tag warn', style: { marginLeft: '6px' }, text: '自定义' }) : null,
+          src.trustable === false ? h('span', { class: 'bncm-mk-tag err', style: { marginLeft: '6px' }, text: '未解锁' }) : null,
+        ].filter(Boolean)),
+        h('div', { class: 'bncm-mk-src-base', text: src.base || '（随包目录）' }),
+        report ? h('div', { class: 'bncm-mk-src-base', text:
+          (report.ok ? '✓ ' + report.count + ' 个插件'
+                     : '✗ ' + (report.error || '读取失败') + (report.count ? '（缓存 ' + report.count + ' 条）' : ''))
+          + (report.cached ? ' · 来自缓存' : '') }) : null,
+      ].filter(Boolean));
+      row.appendChild(info);
+      if (src.custom) {
+        row.appendChild(h('button', { class: 'bncm-mgr-btn danger', text: '删除', onclick: function () {
+          marketSaveSettings({ remove_source: src.id });
+        } }));
+      }
+      box.appendChild(row);
+    });
+
+    var addInput = h('input', { class: 'bncm-mk-input', placeholder: 'https://example.com/plugins-source/' });
+    box.appendChild(h('div', { class: 'bncm-mk-src-row' }, [
+      addInput,
+      h('button', { class: 'bncm-mgr-btn', text: '添加自定义源', onclick: function () {
+        var base = addInput.value.trim();
+        if (!base) return;
+        marketSaveSettings({ add_source: { base: base } });
+      } }),
+    ]));
+
+    var unlock = h('input', { type: 'checkbox' });
+    unlock.checked = payload.custom_unlocked === true;
+    unlock.addEventListener('change', function () { marketSaveSettings({ custom_unlocked: unlock.checked }); });
+    box.appendChild(h('div', { class: 'bncm-mk-src-row' }, [
+      h('label', { class: 'bncm-mk-check' }, [unlock, '信任自定义源（允许从上面添加的源安装插件）']),
+    ]));
+
+    var dev = h('input', { type: 'checkbox' });
+    dev.checked = market.showLibs === true;
+    dev.addEventListener('change', function () {
+      market.showLibs = dev.checked;
+      renderMain();
+    });
+    box.appendChild(h('div', { class: 'bncm-mk-src-row' }, [
+      h('label', { class: 'bncm-mk-check' }, [dev, '显示“依赖库”分类']),
+      h('button', { class: 'bncm-mgr-btn', text: '清除索引缓存', onclick: function () {
+        host('/api/market/cache/clear', { method: 'POST', body: '{}' }).then(function () {
+          market.previews = {};
+          return loadMarket(true);
+        });
+      } }),
+    ]));
+    container.appendChild(box);
+  }
+
+  function renderMarket(main) {
+    main.appendChild(h('h1', { class: 'bncm-mgr-h1', text: '插件市场' }));
+    main.appendChild(h('div', { class: 'bncm-mgr-meta', text:
+      '索引格式与上游 BetterNCM 插件市场一致；内置源随程序分发，安装前会校验包与索引是否对得上。' }));
+
+    if (market.error && !market.data) {
+      main.appendChild(h('div', { class: 'bncm-mgr-note err', text: '读取市场失败：' + market.error }));
+    }
+
+    var view = marketVisible();
+    var bar = h('div', { class: 'bncm-mk-bar' });
+    var search = h('input', { class: 'bncm-mk-search', value: market.q,
+      placeholder: '搜索名称 / slug / 作者（空格为 AND，可用 author:xxx）' });
+    search.addEventListener('input', function () { market.q = search.value; renderMarketGrid(); });
+    bar.appendChild(search);
+    bar.appendChild(h('button', { class: 'bncm-mgr-btn', text: '源设置',
+      onclick: function () { market.showSources = !market.showSources; renderMain(); } }));
+    bar.appendChild(h('button', { class: 'bncm-mgr-btn', text: '刷新索引',
+      onclick: function () { market.previews = {}; loadMarket(true); } }));
+    main.appendChild(bar);
+
+    var cats = [['all', '全部'], ['extension', '扩展'], ['theme', '主题'],
+                ['installed', '已安装'], ['update', '有更新']];
+    if (market.showLibs) cats.push(['lib', '依赖库']);
+    var filters = h('div', { class: 'bncm-mk-bar' });
+    filters.appendChild(marketSegment(cats, market.category, function (key) {
+      market.category = market.category === key && key !== 'all' ? 'all' : key;
+      renderMain();
+    }));
+    var sortKeys = [['composite', '综合', '真实下载量 + 新插件加成；没有统计时按 star'],
+                    ['downloads', '下载量', '来自索引的 downloads 字段'],
+                    ['stars', 'Star', ''], ['update', '更新时间', ''], ['name', '名称', '']];
+    if (!view.stats) sortKeys = sortKeys.filter(function (k) { return k[0] !== 'downloads'; });
+    filters.appendChild(marketSegment(sortKeys.map(function (k) { return [k[0], k[1], k[2]]; }), market.sort,
+      function (key) {
+        if (market.sort === key) market.order = market.order === 'asc' ? 'desc' : 'asc';
+        else { market.sort = key; market.order = key === 'name' ? 'asc' : 'desc'; }
+        renderMain();
+      }));
+    filters.appendChild(h('span', { class: 'bncm-mgr-meta', text:
+      market.order === 'asc' ? '↑ 升序' : '↓ 降序' }));
+    main.appendChild(filters);
+
+    if (market.showSources) renderSourcePanel(main);
+
+    main.appendChild(h('div', { class: 'bncm-mgr-meta', text:
+      '共 ' + view.total + ' 个插件，当前显示 ' + view.list.length + ' 个'
+      + (view.stats ? '' : '　（索引没有下载量统计，综合排序按 star）') }));
+
+    var notes = h('div', { class: 'bncm-mk-notes' });
+    main.appendChild(notes);
+
+    var grid = h('div', { class: 'bncm-mk-grid' });
+    main.appendChild(grid);
+    renderMarketGrid();
+    renderMarketNotes();
   }
 
   function renderDiagnostics(main) {
@@ -495,10 +1107,12 @@
   function buildPanel() {
     panel = h('div', { class: 'bncm-mgr', id: 'bncm-manager' });
     var tabs = h('div', { class: 'bncm-mgr-tabs' }, [
-      h('div', { class: 'bncm-mgr-tab' + (tab === 'plugins' ? ' active' : ''), text: '插件',
-        onclick: function () { tab = 'plugins'; renderTabs(); renderMain(); } }),
-      h('div', { class: 'bncm-mgr-tab' + (tab === 'diagnostics' ? ' active' : ''), text: '诊断',
-        onclick: function () { tab = 'diagnostics'; renderTabs(); renderMain(); } }),
+      h('div', { class: 'bncm-mgr-tab', 'data-tab': 'plugins', text: '插件',
+        onclick: function () { switchTab('plugins'); } }),
+      h('div', { class: 'bncm-mgr-tab', 'data-tab': 'market', text: '插件市场',
+        onclick: function () { switchTab('market'); } }),
+      h('div', { class: 'bncm-mgr-tab', 'data-tab': 'diagnostics', text: '诊断',
+        onclick: function () { switchTab('diagnostics'); } }),
     ]);
     var head = h('div', { class: 'bncm-mgr-head' }, [
       h('div', {}, [
@@ -517,11 +1131,20 @@
     (document.body || document.documentElement).appendChild(panel);
     renderTabs = function () {
       var els = panel.querySelectorAll('.bncm-mgr-tab');
-      if (els[0]) els[0].classList.toggle('active', tab === 'plugins');
-      if (els[1]) els[1].classList.toggle('active', tab === 'diagnostics');
+      for (var i = 0; i < els.length; i++) {
+        els[i].classList.toggle('active', els[i].getAttribute('data-tab') === tab);
+      }
     };
   }
   var renderTabs = function () {};
+
+  function switchTab(next) {
+    tab = next;
+    renderTabs();
+    renderList();
+    renderMain();
+    if (tab === 'market' && !market.data && !market.loading) loadMarket(false);
+  }
 
   function open() {
     ensureStyles();
@@ -597,5 +1220,35 @@
     close: close,
     toggle: toggle,
     refresh: refresh,
+    /** Structured snapshot for the diagnostics tab, the test harness and `cdp_inject` one-liners.
+     *  Returning the market's own view (not a re-render) is what makes a "the panel says X but the
+     *  API says Y" report answerable without guessing. */
+    debug: function () {
+      return {
+        build: BUILD,
+        tab: tab,
+        selected: selected,
+        market: {
+          loading: market.loading,
+          error: market.error,
+          q: market.q,
+          category: market.category,
+          sort: market.sort + '/' + market.order,
+          plugins: market.data ? market.data.plugins.length : null,
+          sources: market.data
+            ? (market.data.sources || []).map(function (s) {
+                return { id: s.id, ok: s.ok, pending: s.pending, from: s.from, count: s.count,
+                         error: s.error };
+              })
+            : null,
+        },
+        installed: state
+          ? {
+              core: (state.core || []).map(function (p) { return p.slug; }),
+              user: (state.plugins || []).map(function (p) { return p.slug; }),
+            }
+          : null,
+      };
+    },
   };
 })();

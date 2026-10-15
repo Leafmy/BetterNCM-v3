@@ -10,6 +10,7 @@ client.
 Usage:
     py tools/pack_plugin.py plugins/src/BNCM-SelfTest -o plugins
     py tools/pack_plugin.py plugins/src/* -o plugins
+    py tools/pack_plugin.py plugins/src/NCM-Font-Manager -o plugins --runtime-only
 """
 
 from __future__ import annotations
@@ -21,6 +22,26 @@ import sys
 import zipfile
 
 REQUIRED = ("manifest_version", "name", "version", "author")
+
+
+def runtime_file_set(manifest: dict) -> set:
+    """The files an INSTALLED copy actually needs: the manifest plus everything `injects` names.
+
+    A plugin source directory also holds material that must not ship inside the archive -- a
+    README, a NOTICE, a licence copy, screenshots.  Upstream's listing rules say the same thing
+    ("只保留需要的文件"), and the three redistributed plugins already follow it.  `--runtime-only`
+    makes that mechanical instead of a matter of remembering to prune by hand.
+    """
+    keep = {"manifest.json"}
+    injects = manifest.get("injects") or {}
+    if isinstance(injects, dict):
+        for bucket in injects.values():
+            if not isinstance(bucket, list):
+                continue
+            for entry in bucket:
+                if isinstance(entry, dict) and entry.get("file"):
+                    keep.add(str(entry["file"]).lstrip("./").replace("\\", "/"))
+    return keep
 
 
 def slugify(name: str) -> str:
@@ -49,7 +70,7 @@ def validate(manifest: dict, where: str) -> list:
     return problems
 
 
-def pack(src: str, out_dir: str) -> int:
+def pack(src: str, out_dir: str, runtime_only: bool = False) -> int:
     manifest_path = os.path.join(src, "manifest.json")
     if not os.path.exists(manifest_path):
         print(f"error: {manifest_path} not found", file=sys.stderr)
@@ -66,6 +87,7 @@ def pack(src: str, out_dir: str) -> int:
     if os.path.exists(target):
         os.remove(target)
 
+    keep = runtime_file_set(manifest) if runtime_only else None
     files = []
     for base, dirs, names in os.walk(src):
         dirs[:] = [d for d in dirs if d not in ("__pycache__", ".git")]
@@ -74,7 +96,15 @@ def pack(src: str, out_dir: str) -> int:
                 continue
             full = os.path.join(base, n)
             rel = os.path.relpath(full, src).replace(os.sep, "/")
+            if keep is not None and rel not in keep:
+                continue
             files.append((rel, full))
+    missing = sorted((keep or set()) - {rel for rel, _ in files})
+    if missing:
+        for rel in missing:
+            print(f"  ! {src}: manifest names '{rel}' but the source directory has no such file",
+                  file=sys.stderr)
+        return 1
     # manifest.json first, as upstream packages it.
     files.sort(key=lambda p: (p[0] != "manifest.json", p[0]))
 
@@ -83,7 +113,8 @@ def pack(src: str, out_dir: str) -> int:
             zf.write(full, rel)
 
     size = os.path.getsize(target)
-    print(f"packed {slug}.plugin  ({len(files)} files, {size:,} bytes)")
+    print(f"packed {slug}.plugin  ({len(files)} files, {size:,} bytes)"
+          + ("  [runtime-only]" if runtime_only else ""))
     print(f"  name        : {manifest.get('name')}")
     print(f"  version     : {manifest.get('version')}")
     print(f"  ncm3-compat : {manifest.get('ncm3-compatible')}")
@@ -97,6 +128,8 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("src", nargs="+", help="plugin source directory/directories")
     ap.add_argument("--out", "-o", default="plugins", help="output directory (default: plugins)")
+    ap.add_argument("--runtime-only", action="store_true",
+                    help="archive only manifest.json plus the files manifests' injects name")
     args = ap.parse_args(argv)
 
     rc = 0
@@ -105,7 +138,7 @@ def main(argv=None) -> int:
             print(f"error: {src} is not a directory", file=sys.stderr)
             rc = 1
             continue
-        rc |= pack(src, args.out)
+        rc |= pack(src, args.out, runtime_only=args.runtime_only)
     return rc
 
 

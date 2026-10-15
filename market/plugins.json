@@ -1,0 +1,125 @@
+[
+  {
+    "name": "LyricBar",
+    "author": "solstice23",
+    "version": "0.3.6",
+    "description": "重新设计的软件内词栏",
+    "slug": "LyricBar",
+    "type": "extension",
+    "ncm3-compatible": true,
+    "betterncm_version": ">=1.0.0",
+    "ncm-version-req": "",
+    "preview": "previews/LyricBar.svg",
+    "repo": "https://github.com/solstice23/lyric-bar-netease",
+    "author_links": [
+      "https://github.com/solstice23"
+    ],
+    "license": "MIT",
+    "publish_time": 1677908555,
+    "update_time": 1682772346,
+    "stars": 21,
+    "file": "LyricBar-0.3.6.plugin",
+    "file-url": "plugins/LyricBar-0.3.6.plugin",
+    "sha256": "18d2b8578e822b6c0d89ff17b5d755b0546ff13325474fcee381aa5c71d246f2",
+    "size": 94583,
+    "requirements": [
+      "RefinedNowPlaying"
+    ],
+    "loadAfter": [
+      "RefinedNowPlaying"
+    ],
+    "incompatible": [],
+    "bundled": true,
+    "notes": "与仓库 plugins/LyricBar.plugin 同一份字节；manifest 只补了 ncm3-compatible 与 source 块。"
+  },
+  {
+    "name": "Material You",
+    "author": "long45343",
+    "version": "v1.0.4",
+    "description": "Material You 主题 | 动态取色 | 支持切换配色 | 仅在上游 3.1.39 测试过，本仓库按 3.1.41 复核",
+    "slug": "MaterialYouTheme",
+    "type": "theme",
+    "ncm3-compatible": true,
+    "betterncm_version": ">=1.3.4",
+    "ncm-version-req": "",
+    "preview": "previews/MaterialYouTheme.svg",
+    "repo": "https://github.com/long45343/material-you-theme-NCMv3",
+    "author_links": [
+      "https://github.com/long45343"
+    ],
+    "license": "GPL-3.0",
+    "publish_time": 1788716608,
+    "update_time": 1791990601,
+    "stars": 6,
+    "file": "MaterialYouTheme-v1.0.4.plugin",
+    "file-url": "plugins/MaterialYouTheme-v1.0.4.plugin",
+    "sha256": "2a7e9b8fbdbf00369cbca4d24475a9ba39d48bce6fdb19bb082275dbba8f540b",
+    "size": 46653,
+    "requirements": [],
+    "loadAfter": [],
+    "incompatible": [],
+    "bundled": true,
+    "notes": "slug 有意保持 MaterialYouTheme：LyricBar 与 RefinedNowPlaying 靠 loadedPlugins.MaterialYouTheme 做跨插件探测。"
+  },
+  {
+    "name": "RefinedNowPlaying",
+    "author": "MiHN, solstice23, long45343 lineage (see source)",
+    "version": "3.0.2",
+    "description": "重新设计的正在播放页面和歌词（3.x 续作 RefinedNowPlayingNext 3.0.2）",
+    "slug": "RefinedNowPlaying",
+    "type": "extension",
+    "ncm3-compatible": true,
+    "betterncm_version": ">=1.0.0",
+    "ncm-version-req": "> 3.1.11",
+    "preview": "previews/RefinedNowPlaying.svg",
+    "repo": "https://github.com/SUlTlUS/refined-now-playing-netease-next",
+    "author_links": [
+      "https://github.com/SUlTlUS",
+      "https://github.com/solstice23"
+    ],
+    "license": "MIT",
+    "publish_time": 1777066562,
+    "update_time": 1783985469,
+    "stars": 44,
+    "file": "RefinedNowPlaying-3.0.2.plugin",
+    "file-url": "plugins/RefinedNowPlaying-3.0.2.plugin",
+    "sha256": "a0340ccdd4aa450741adac87fb399e57efa1d39156577ff9310b73d0e2203a96",
+    "size": 227675,
+    "requirements": [],
+    "loadAfter": [
+      "MaterialYouTheme"
+    ],
+    "incompatible": [
+      "Apple-Musiclike-lyrics"
+    ],
+    "bundled": true,
+    "notes": "上游发布 slug 为 RefinedNowPlayingNext，本仓库固定为 RefinedNowPlaying（依赖链与用户可见名稳定）。"
+  },
+  {
+    "name": "NCM Font Manager",
+    "author": "BetterNCM-v3",
+    "version": "0.1.3",
+    "description": "网易云音乐字体管理器：字体族/字号/字重、英文数字专用字体（@font-face local + unicode-range）、字体回退链、桌面歌词原生字体、一键恢复默认与实时预览。",
+    "slug": "NCM-Font-Manager",
+    "type": "extension",
+    "ncm3-compatible": true,
+    "betterncm_version": ">=1.0.0",
+    "ncm-version-req": "> 3.0.0",
+    "preview": "previews/NCM-Font-Manager.svg",
+    "repo": "https://github.com/Leafmy/BetterNCM-v3",
+    "author_links": [],
+    "license": "GPL-3.0-or-later",
+    "publish_time": 0,
+    "update_time": 0,
+    "stars": 0,
+    "file": "NCM-Font-Manager-0.1.3.plugin",
+    "file-url": "plugins/NCM-Font-Manager-0.1.3.plugin",
+    "sha256": "de71a3ccffa8e7e73409beae71ba0a92a0e387e8e84748d8c51224ececcce55d",
+    "size": 21582,
+    "requirements": [],
+    "loadAfter": [],
+    "incompatible": [],
+    "bundled": true,
+    "notes": "本项目自研插件（非上游再分发）；源码 plugins/src/NCM-Font-Manager/index.js 未压缩。publish_time 留 0 = 未知（无独立远端仓库的发布时间）。"
+  }
+]

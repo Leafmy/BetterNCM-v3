@@ -302,7 +302,14 @@ function notSupported(name, why, empty) {
 ```powershell
 py tools\pack_plugin.py plugins\src\MyPlugin -o plugins
 # packed my-plugin.plugin  (N files, N bytes)
+
+# 只收运行必需的文件（manifest.json + injects 指到的文件），适合发布/上架：
+py tools\pack_plugin.py plugins\src\MyPlugin -o plugins --runtime-only
 ```
+
+`--runtime-only` 是给"源码目录里还有 README / NOTICE / LICENSE 副本"的情形准备的：
+上架准则要求包里只留运行需要的文件，靠记忆手工剪枝早晚会漏。它同时会检查 `injects` 点名的文件
+是否真的存在（缺失直接失败，而不是打一个运行期 404 的包）。
 
 `pack_plugin.py` 的校验与加载器一致：必需 `manifest_version` / `name` / `version` / `author`；`manifest_version` 必须为 `1`；`injects` 若存在必须是对象；slug 取 `manifest.slug`，缺失则由 `name` 生成（非字母数字→`-`、转小写、合并重复连字符）；输出 `<out>/<slug>.plugin`，`manifest.json` 排第一条；跳过 `__pycache__` / `.git` / `*.pyc`。
 
@@ -311,6 +318,23 @@ py tools\pack_plugin.py plugins\src\MyPlugin -o plugins
 ```powershell
 loader\launch.cmd -PluginsDir C:\betterncm\plugins   # 指向真实插件目录
 ```
+
+### 8.1 通过插件市场安装（3.0 起）
+
+插件不再只能靠"手动放文件"分发。管理面板的**插件市场**是一个宿主功能（`docs/21-plugin-market.md`），
+它消费上游格式的 `plugins.json` 索引：把包放在 `<baseURL>plugins/<slug>-<version>.plugin`，
+索引里的 `file-url` 写 `plugins/<slug>-<version>.plugin`，`preview` 指向预览图即可。
+
+自己写一个源并被市场读取：源只需要 `plugins.json` + `plugins/` + `previews/` 三样，
+索引可以完全手写（本仓库的 `market/` 是用 `py tools\market\build_market.py` 从
+`market/catalog.json` 与插件包生成并校验的，见 `market/README.md`）。
+
+两个对你有利的实现细节：
+
+* 市场在写盘前会校验 **zip 可解析 / 根目录有 manifest.json / 包内 slug 与索引一致 /
+  sha256 匹配（索引给了就查）**，失败时插件目录一个字节都不变——所以索引里的 `sha256` 值得填。
+* `requirements` 会被前序递归安装（依赖先落地），`loadAfter` 只会作为**建议**列在安装结果里，
+  不会被静默安装。依赖成环会被直接拒绝，不会挂住。
 
 ---
 
@@ -437,4 +461,7 @@ plugin.onAllPluginsLoaded(function () {
 - [ ] 不依赖 `native_plugin` / `fs.mountFile` / 完整 `betterncm.react` / `app.exec` 启动进程 / `startup_script` / `incompatible` 互斥检查。
 - [ ] 若用 `hijacks`：规则非 `pending`、`from` 片段在当前 `web.pack` 中唯一命中，并已在真机确认客户端**不白屏**（查 `window.__BNCM_HIJACK__.pageErrors`）。
 - [ ] 本地跑过 `node test\framework-api.test.mjs` 与 `node test\preload-engine.test.mjs`，均 0 failed。
+- [ ] 真要上架/分发时：用 `--runtime-only` 打包，仓库链接、作者、支持的 BetterNCM 版本齐全，
+      预览图在 `previews/` 下，索引里的 `slug`/`version`/`sha256` 与包**逐项**一致
+      （市场安装前会比对 slug，`sha256` 给了就必须匹配）。
 - [ ] 真机确认：本插件 `state:"loaded"`、`window.__BNCM_INCOMPAT_RAN__` 未被误置真、功能可用、控制台无 `UNIMPLEMENTED API:` 告警（有则说明你依赖了未实现的接口）。

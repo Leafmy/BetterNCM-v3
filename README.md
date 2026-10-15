@@ -12,28 +12,38 @@
 | **我要写插件**    | 见 [`PLUGIN-COMPAT.md`](PLUGIN-COMPAT.md)——manifest 字段、生命周期、API 已/未实现、常见坑        |
 | **面向的客户端**   | 网易云音乐 `3.1.41.205529`（`orpheus://orpheus/pub/app.html`）                             |
 | **我要安装**     | Releases 页的一键安装包 / 免安装包；两个包的内容与验收见 [`docs/19-release.md`](docs/19-release.md)   |
+| **我要装插件**    | 启动后打开管理面板 →「插件市场」：内置源自带四个插件、离线可用；自建/上架一个源见 [`market/README.md`](market/README.md) |
 | **第三方组件与出处** | 见 [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md)                                  |
 
 ---
 
-## 三个插件
+## 四个插件 + 插件市场
 
-三个适配过的插件**随本仓库与两个发行包一起分发**（源码在 [`plugins/src/`](plugins/src)，
-归档是 [`plugins/*.plugin`](plugins)）：
+**插件市场**（`docs/21-plugin-market.md`）是 3.0 新增的主要功能：管理面板里的第三个标签
+（外部入口 → 插件市场），带分类 / 搜索 / 五种排序 / 预览图 / 一键安装更新卸载 / 依赖处理 /
+源管理。它复刻上游 `Plugin-Market`（`PluginMarket` 0.8.4）的功能与**索引契约**，但实现为宿主功能，
+因此多出三件事：内置源离线可用、安装前逐项校验（zip / manifest / slug / sha256）、失败会被说出来
+而不是永久转圈。默认只启用**内置源**（随包分发、离线），其它镜像与自建源在「源设置」里一键启用。
+
+四个插件**随本仓库与两个发行包一起分发**，同时也在市场的内置源里（源码在
+[`plugins/src/`](plugins/src)，归档是 [`plugins/*.plugin`](plugins)，市场拷贝在 [`market/`](market)）：
 
 | 插件                        | 上游作者                        | 许可证     | 本目录相对上游改了什么                                                                                         |
 | ------------------------- | --------------------------- | ------- | --------------------------------------------------------------------------------------------------- |
 | `LyricBar` 0.3.6          | solstice23                  | MIT     | 仅 `manifest.json`（补 `ncm3-compatible` 与来源声明）                                                        |
 | `MaterialYouTheme` v1.0.4 | long45343                   | GPL-3.0 | 仅 `manifest.json`（slug 由 `material-u-theme-ncmv3` 改为 `MaterialYouTheme`）                            |
 | `RefinedNowPlaying` 3.0.2 | SUlTlUS 续作（MiHN / solstice23 谱系） | MIT     | 仅 `manifest.json`（slug 由 `RefinedNowPlayingNext` 改为 `RefinedNowPlaying`，hijack 改为加载器 `builtin:` 规则） |
+| `NCM-Font-Manager` 0.1.3  | **本项目自研**（BetterNCM-v3）     | GPL-3.0-or-later | 自研，非再分发：字体族/字号/字重、英数专用字体、桌面歌词原生字体、实时预览 |
 
-> 三者的 `main.js` 与上游发布包**逐字节一致**（已核对 SHA-256），改的只有清单。
-> 每个插件目录内都有 `NOTICE.md` 说明来源、许可证与具体改动，`LICENSE` 逐字节取自上游仓库；
-> **请连同它们一起阅读**。
+> 前三个的 `main.js` 与上游发布包**逐字节一致**（已核对 SHA-256），改的只有清单；
+> `NCM-Font-Manager` 是本项目自己的插件，`index.js` 是未压缩源码。
+> 每个插件目录内都有 `NOTICE.md` 说明来源、许可证与具体改动，再分发的三个另带逐字节取自上游的
+> `LICENSE`；**请连同它们一起阅读**。
 
-三个插件都是普通**用户插件**：没有内置锁定，管理器里可启用 / 禁用 / 卸载，全部经过同一个
+四个插件都是普通**用户插件**：没有内置锁定，管理器里可启用 / 禁用 / 卸载，全部经过同一个
 3.x 门禁与同一套加载顺序。依赖链 `MaterialYouTheme ← RefinedNowPlaying ← LyricBar`
-在 `manifest` 的 `loadAfter` / `requirements` 里声明，并由加载器真正执行（`docs/20`）。
+在 `manifest` 的 `loadAfter` / `requirements` 里声明，并由加载器真正执行（`docs/20`），
+市场安装 `LyricBar` 时会先装 `RefinedNowPlaying`，并把 `MaterialYouTheme` 列为建议。
 
 `MaterialYouTheme` 的 slug 保持为 `MaterialYouTheme` 是有意为之：`LyricBar` 与 `RefinedNowPlaying`
 都通过 `loadedPlugins.MaterialYouTheme` 做跨插件特性探测，改 slug 会静默破坏这两个插件。
@@ -63,7 +73,7 @@ loader\launch.cmd -DevSource acme/MyPlugin#dev:dist -DevWatch
 
 ---
 
-## 当前状态（P0–P20）
+## 当前状态（P0–P21）
 
 | 阶段 | 状态 |
 |---|---|
@@ -88,6 +98,7 @@ loader\launch.cmd -DevSource acme/MyPlugin#dev:dist -DevWatch
 | P18 插件规模无关的加载器 | ✅ 实测 61 插件启动 **1941ms → 386ms**；一个永不返回的脚本以前让整批**永久挂起**，现在被隔离为 `error`；宿主 240 次请求 **1592ms → 381ms**（`docs/18`） |
 | P19 发行包 | ✅ `tools/release/build_release.ps1` 打出**一键安装包 `Setup.exe`**与**免安装包 `Portable.zip`**（路径解析共用 `loader\paths.ps1`）；`verify_release.ps1` 端到端验收（`docs/19`） |
 | P20 唯一兼容性核查 | ✅ 三个第三方插件走**同一条**发现/门禁/管理路径（实测 `core=false / locked=false / error=null`）；修掉两处不一致：**依赖顺序元数据被 `normaliseManifest()` 丢弃**（LyricBar 曾排在它依赖的 RNP 之前）与**发行时只有一个插件会被自动安装**（`docs/20`） |
+| P21 插件市场 | ✅ 复刻上游 `PluginMarket` 的功能与索引契约（`docs/21`）；市场是宿主功能而非插件，故**内置源离线可用**、**安装前四道校验**（zip/manifest/slug/sha256）、失败可见而不转圈；后端 **85/85**、UI **29/29**、发行包验收 **51/51**；自带四个插件（三个第三方 + 本项目的 Font Manager） |
 
 ---
 
@@ -101,6 +112,9 @@ node test\framework-api.test.mjs     # 框架 API 契约（假 DOM，含 bettern
 node test\dev-source.test.mjs        # dev mode：开发源 / 变更检测 / dev hijack 规则
 node test\preload-engine.test.mjs    # hijack 引擎单测（含真实 web.pack 漂移守卫）
 node test\plugin-reload.mjs          # 重复/并发 reload → 仅一次整页刷新
+node test\plugin-market.test.mjs     # 插件市场后端：内置源/校验/依赖/更新/主题排他/源信任/可逆卸载
+node test\manager-market.test.mjs    # 插件市场 UI：分类/搜索/排序/按钮守卫（假 DOM）
+py tools\market\build_market.py --check  # 内置市场索引与插件包是否仍然一致
 ```
 
 | 套件 | 实测 | 说明 |
@@ -112,14 +126,17 @@ node test\plugin-reload.mjs          # 重复/并发 reload → 仅一次整页�
 | `dev-source` | **59 / 59** | |
 | `plugin-reload` | **PASS** | |
 | `preload-engine` | **64 / 64** | 含漂移守卫：逐 chunk 复核两条 hijack 规则仍命中，且 `derived_from_pack` 与当前 `web.pack`（`83304b1`）一致 |
+| `plugin-market` | **85 / 85** | 内置源离线安装、四道校验（zip/manifest/slug/sha256）失败后插件目录逐字节不变、依赖链与成环、更新移旧、主题排他、自定义源信任门槛、可逆卸载 |
+| `manager-market` | **29 / 29** | 市场页的分类与 `author:` 搜索语法、五种排序（含无下载量统计时退化为 star）、互斥/被依赖时的按钮守卫 |
 
 `test\autostart.cmd` 与 `test\manager.cmd` **需要运行中的客户端 / 后端**，不在上表内。
 
-两个发行包另由 `tools/release/verify_release.ps1` 端到端验收（同样不需要客户端，**28/28 通过**）：
-解压免安装包 → 自带 Node 可运行 → agent `--status` 正常 → 三个插件种进 `data\plugins` →
-打包后的后端能发现三个插件且 `locked=false`、无 core → `LyricBar.requirements` 与
-`RefinedNowPlaying.loadAfter` 确实传到加载器 → 沙箱内运行 `Setup.exe` 后运行树 / 卸载器 /
-三个插件 / 卸载项全部落地。
+两个发行包另由 `tools/release/verify_release.ps1` 端到端验收（同样不需要客户端，**51/51 通过**）：
+解压免安装包 → 自带 Node 可运行 → agent `--status` 正常 → 四个插件与 `market\` 种子进包内目录 →
+打包后的后端能发现四个插件且 `locked=false`、无 core → `LyricBar.requirements` 与
+`RefinedNowPlaying.loadAfter` 确实传到加载器 → 打包后的市场用**内置源**列出四个自带插件、
+认出已安装状态、Font Manager 条目带校验摘要 → 沙箱内运行 `Setup.exe` 后运行树 / 卸载器 /
+四个插件 / 市场索引 / 卸载项全部落地。
 
 ---
 
@@ -128,13 +145,16 @@ node test\plugin-reload.mjs          # 重复/并发 reload → 仅一次整页�
 ```
 loader/      version.dll 代理源码 · 注入页面的框架 · 管理 UI · hijack 规则
              install / uninstall / startup / launch / create-shortcut / paths
-tools/       ntpk.py 容器工具 · ncm_host.mjs 后端 · bncm_agent.mjs 守护与注入 · CDP 工具
+tools/       ntpk.py 容器工具 · ncm_host.mjs 后端 · market_host.mjs 插件市场后端
+             bncm_agent.mjs 守护与注入 · CDP 工具 · market/build_market.py 市场索引构建
              release/ 发行包构建与验收
+market/      内置插件市场源：plugins.json 索引 · plugins/ 插件包 · previews/ 预览图 · catalog.json 审阅输入
 plugins/     src/<Name>/ 插件源码与出处材料（不参与扫描） · <Name>.plugin 随包分发的归档
              _upstream/ 上游原始归档 · _attic/ 溯源素材（都不进发行包）
 docs/        00 基线 · 01 架构 · 02 容器格式 · 03 原生桥 · 04 反篡改 · 05 兼容矩阵
-             06 插件框架 · 07 自动启动 · 08 管理器 · 09 插件出处 · 11 hijack 引擎
-             12/13 Material 3 · 14 插件开发指南 · 17/18 性能 · 19 发行包 · 20 兼容性核查
+              06 插件框架 · 07 自动启动 · 08 管理器 · 09 插件出处 · 11 hijack 引擎
+              12/13 Material 3 · 14 插件开发指南 · 17/18 性能 · 19 发行包 · 20 兼容性核查
+              21 插件市场
 test/        免客户端单测 + 需要客户端的验收脚本 + 基线哈希
 PLUGIN-COMPAT.md  插件作者指南（manifest 契约、生命周期、API 现状、常见坑）
 upstream/    上游参考克隆的获取说明（克隆本身不提交，见 upstream/README.md）
@@ -167,7 +187,16 @@ upstream/    上游参考克隆的获取说明（克隆本身不提交，见 ups
 ## 已知限制
 
 - **`hijacks` 默认关闭**：拦截 `window.webpackJsonp` 会让客户端启动失败（`docs/11` §8）。
-  当前三条插件都不依赖它。
+  当前四个插件都不依赖它。
+- **插件市场的在线源默认全部关闭，只启用「内置源」**：内置源在本地磁盘（即时、离线），
+  上游镜像 `bncm-plugin.microblock.cc` 本机实测 HTTP 522，上游下载量 API
+  `betterncm.microblock.cc` 的 DNS 已不可解析，本仓库的 GitHub 源要等 `market/` 推送后才有效。
+  其余源在「插件市场 → 源设置」里一次点击即可启用；普通打开市场**从不等待网络**
+  （未拉取的源标为「正在后台读取」，拉到自动出现），只有「刷新索引」与安装才会联网等待。
+  索引没有 `downloads` 字段时综合排序退化为按 star（与上游的降级路径相同）。
+- **市场的 `loadAfter` 只作建议**：它按上游语义只是加载顺序提示，安装 `LyricBar` 会自动装它的
+  `requirements`（`RefinedNowPlaying`），`MaterialYouTheme` 只作为建议列出，需要再点一次安装，
+  或调用 `POST /api/market/install {slug, include_recommended:true}`。
 - **CDP 注入不跨页面重载**，`cdp_watch.mjs` 通过轮询 canary 重新注入。
 - **CEF 9x 的 `Page.captureScreenshot` 在本客户端上超时**，改用 `test\capture-window.ps1`。
 - **`--remote-debugging-port` 是调试接口**（仅监听 `127.0.0.1`），不用时请 `startup.cmd -Uninstall`
@@ -199,9 +228,10 @@ upstream/    上游参考克隆的获取说明（克隆本身不提交，见 ups
 的 `v2` 分支（GPL-3.0）的插件 API 契约与加载器语义，因此本仓库及其派生必须继续以 GPL-3.0 分发。
 上游 `master` 分支**没有 LICENSE**，本项目不使用、不分发它。
 
-三个插件是**再分发**，不是原创作品：`LyricBar` 与 `RefinedNowPlaying` 为 **MIT**，
-`MaterialYouTheme` 为 **GPL-3.0**；每个插件目录内的 `NOTICE.md` 与 `LICENSE` 为准，
-汇总见 [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md)。
+四个插件中，前三个是**再分发**、不是原创作品：`LyricBar` 与 `RefinedNowPlaying` 为 **MIT**，
+`MaterialYouTheme` 为 **GPL-3.0**；每个插件目录内的 `NOTICE.md` 与（再分发那三个的）`LICENSE` 为准，
+汇总见 [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md)。`NCM-Font-Manager` 是本项目自研，
+随仓库整体以 GPL-3.0-or-later 分发。
 
 两个发行包内携带 `LICENSE`、`THIRD-PARTY-NOTICES.md`，以及所捆绑 Node.js 运行时的 MIT 授权全文
 （`app/bin/NODE-LICENSE.txt`，逐字节与上游一致）。

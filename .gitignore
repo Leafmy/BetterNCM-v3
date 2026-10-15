@@ -23,7 +23,9 @@
 /out/host.json
 /out/host.stdout.log
 /out/host.stdout.log.err
+/out/launch.log
 /out/bncm-data/
+/out/market-recon/
 /out/hijack-candidates.json
 /out/loader/obj/
 /out/loader/*.exp

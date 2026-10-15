@@ -1,0 +1,63 @@
+{
+  "schema": 2,
+  "name": "BetterNCM v3 插件市场（内置源）",
+  "comment": [
+    "这份 catalog 是 market/plugins.json 的唯一人工维护来源。",
+    "查看字段：slug / plugin / preview / repo / author_links / license / publish_time / update_time / stars / bundled / notes。",
+    "其余字段（name/version/author/description/type/requirements/loadAfter/betterncm_version/ncm-version-req）一律从插件包内的 manifest.json 读取，避免索引与包不一致。",
+    "重建：py tools/market/build_market.py          校验：py tools/market/build_market.py --check"
+  ],
+  "plugins": [
+    {
+      "slug": "LyricBar",
+      "plugin": "LyricBar.plugin",
+      "preview": "previews/LyricBar.svg",
+      "repo": "https://github.com/solstice23/lyric-bar-netease",
+      "author_links": ["https://github.com/solstice23"],
+      "license": "MIT",
+      "publish_time": 1677908555,
+      "update_time": 1682772346,
+      "stars": 21,
+      "bundled": true,
+      "notes": "与仓库 plugins/LyricBar.plugin 同一份字节；manifest 只补了 ncm3-compatible 与 source 块。"
+    },
+    {
+      "slug": "MaterialYouTheme",
+      "plugin": "MaterialYouTheme.plugin",
+      "preview": "previews/MaterialYouTheme.svg",
+      "repo": "https://github.com/long45343/material-you-theme-NCMv3",
+      "author_links": ["https://github.com/long45343"],
+      "license": "GPL-3.0",
+      "publish_time": 1788716608,
+      "update_time": 1791990601,
+      "stars": 6,
+      "bundled": true,
+      "notes": "slug 有意保持 MaterialYouTheme：LyricBar 与 RefinedNowPlaying 靠 loadedPlugins.MaterialYouTheme 做跨插件探测。"
+    },
+    {
+      "slug": "RefinedNowPlaying",
+      "plugin": "RefinedNowPlaying.plugin",
+      "preview": "previews/RefinedNowPlaying.svg",
+      "repo": "https://github.com/SUlTlUS/refined-now-playing-netease-next",
+      "author_links": ["https://github.com/SUlTlUS", "https://github.com/solstice23"],
+      "license": "MIT",
+      "publish_time": 1777066562,
+      "update_time": 1783985469,
+      "stars": 44,
+      "bundled": true,
+      "notes": "上游发布 slug 为 RefinedNowPlayingNext，本仓库固定为 RefinedNowPlaying（依赖链与用户可见名稳定）。"
+    },
+    {
+      "slug": "NCM-Font-Manager",
+      "plugin": "NCM-Font-Manager.plugin",
+      "preview": "previews/NCM-Font-Manager.svg",
+      "repo": "https://github.com/Leafmy/BetterNCM-v3",
+      "license": "GPL-3.0-or-later",
+      "publish_time": 0,
+      "update_time": 0,
+      "stars": 0,
+      "bundled": true,
+      "notes": "本项目自研插件（非上游再分发）；源码 plugins/src/NCM-Font-Manager/index.js 未压缩。publish_time 留 0 = 未知（无独立远端仓库的发布时间）。"
+    }
+  ]
+}

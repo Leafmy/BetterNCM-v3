@@ -19,6 +19,12 @@
 //   GET  /api/app/ncmpath            NetEase install directory
 //   GET  /api/plugins                installed plugins: user (plugins/) + core (plugins/core/)
 //   GET  /api/plugin/<slug>/<path>   a file inside a plugin (core first, then user)
+//   GET  /api/market/sources         plugin-market sources (built-in + opt-in mirrors + custom)
+//   GET  /api/market/plugins         merged market index, annotated with installed/update state
+//   POST /api/market/install         install a plugin and its requirements (verified, atomic)
+//   POST /api/market/settings        select/enable sources, add custom sources, unlock untrusted
+//   POST /api/market/cache/clear     drop the market's index + preview caches
+//   GET  /api/market/preview?slug=   a plugin's preview image (proxied/cached by the host)
 //   GET  /api/state                  plugin manager snapshot (core+user, disable list, build info)
 //   GET  /api/hijacks                aggregated hijack rules for the document-start preload
 //                                    (built-ins + plugin manifests + dev-mode rules)
@@ -53,6 +59,7 @@ import {
 } from 'node:fs';
 import { join, resolve, dirname, sep, posix, basename } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { createMarket } from './market_host.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, '..');
@@ -74,6 +81,10 @@ const MANAGER = join(REPO, 'loader', 'manager.js');
 const DEFAULT_CORE_PLUGINS = null;
 const HIJACKS_FILE = join(REPO, 'loader', 'hijacks.json');
 const SELECTORS_FILE = join(REPO, 'loader', 'selectors.json');
+/* The bundled plugin market source.  `market/` is derived from plugins/ by
+ * tools/market/build_market.py, so the four plugins the repository ships are always listed by the
+ * built-in source -- and the same directory can be published verbatim as a remote source. */
+const MARKET_DIR = join(REPO, 'market');
 
 /* ---------------------------------------------------------------- stats ---- */
 /* Host-side instrumentation.  Cache effectiveness and archive I/O are reported by /api/perf so a
@@ -953,6 +964,8 @@ function parseArgs(argv) {
     // plugin discovery cache: a short TTL covers the loader's boot burst, then stat-based
     // revalidation.  --no-discovery-cache restores the old read-everything-per-request behaviour.
     discoveryTtlMs: 1000, discoveryCache: true,
+    // plugin market: the bundled source is always available; remote sources are opt-in in the UI.
+    market: true, marketDir: MARKET_DIR, marketOffline: false, marketTtlMs: undefined,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -971,6 +984,10 @@ function parseArgs(argv) {
     else if (a === '--dev-fetch-ms') o.devFetchMs = Math.max(1000, Number(next()) || 15000);
     else if (a === '--discovery-ttl-ms') o.discoveryTtlMs = Math.max(0, Number(next()) || 0);
     else if (a === '--no-discovery-cache') o.discoveryCache = false;
+    else if (a === '--no-market') o.market = false;
+    else if (a === '--market-dir') o.marketDir = next();
+    else if (a === '--market-offline') o.marketOffline = true;
+    else if (a === '--market-ttl-ms') o.marketTtlMs = Math.max(0, Number(next()) || 0);
     else if (a === '--json') o.json = true;
     else if (a === '--quiet') o.quiet = true;
     else if (a === '-h' || a === '--help') o.help = true;
@@ -1128,6 +1145,39 @@ export async function startHost(opts = {}) {
         `, generation ${devState.generation}`);
   }
   if (o.devWatch && devState.sources.length) startDevWatch();
+
+  /* ------------------------------------------------------------- market ---- */
+  /* The market is a host feature, not a plugin: it has to work when the plugin it would install
+   * is the one that is broken, and it has to work with no network at all.  The bundled source is a
+   * directory, so "install the four plugins this build ships" never depends on a mirror. */
+  const market = o.market === false ? null : createMarket({
+    data: o.data,
+    pluginsDir: o.plugins,
+    marketDir: o.marketDir,
+    log,
+    installedProvider: () => {
+      const map = new Map();
+      try {
+        const { core, user } = discoverAll(o);
+        for (const p of core.concat(user)) {
+          const slug = p.manifest && p.manifest.slug;
+          if (!slug) continue;
+          map.set(slug, {
+            version: (p.manifest && p.manifest.version) || null,
+            dir: String(p.dir),
+            disabled: p.disabled === true,
+          });
+        }
+      } catch { /* an unreadable plugin set must not take the market down with it */ }
+      return map;
+    },
+    onChange: () => invalidateDiscovery(),
+    offline: o.marketOffline === true,
+    ttlMs: o.marketTtlMs,
+    // Test/embedder hook: replace the seeded source list (the built-in source is normally in it).
+    sources: o.marketSources,
+  });
+  if (market) log(`market: built-in source at ${o.marketDir}` + (o.marketOffline ? ' (offline)' : ''));
 
   const server = createServer(async (req, res) => {
     hostStats.requests++;
@@ -1302,6 +1352,70 @@ export async function startHost(opts = {}) {
           core: core.map(brief),
           plugins: user.map(brief),
         });
+      }
+
+      /* ------------------------------------------------------------ market -- */
+
+      /** Source list + which one is selected.  `builtin` is always enabled and cannot be removed. */
+      if (url.pathname === '/api/market/sources' && req.method === 'GET') {
+        if (!market) return json({ error: 'market disabled' }, 404);
+        const s = market.sources();
+        return json({ sources: s.all, selected: s.selected, custom_unlocked: s.customUnlocked });
+      }
+
+      /** The merged index.  Every failure is per-source and non-fatal: a dead mirror degrades to
+       *  its cached copy, and the built-in source keeps working regardless. */
+      if (url.pathname === '/api/market/plugins' && req.method === 'GET') {
+        if (!market) return json({ error: 'market disabled' }, 404);
+        return json(await market.index({ refresh: url.searchParams.get('refresh') === '1' }));
+      }
+
+      /** Install a plugin and everything it requires.  The reply lists what was written, what was
+       *  skipped, and whether a reload is needed -- the UI never has to guess. */
+      if (url.pathname === '/api/market/install' && req.method === 'POST') {
+        if (!market) return json({ error: 'market disabled' }, 404);
+        const body = JSON.parse((await readBody(req)).toString('utf8') || '{}');
+        try {
+          const result = await market.install(body);
+          log(`market: install ${result.slug} -> ${result.installed.length} written, `
+              + `${result.skipped.length} skipped`);
+          return json(result);
+        } catch (err) {
+          log(`market: install ${body.slug} refused: ${err.message}`);
+          return json({ ok: false, error: err.message }, 400);
+        }
+      }
+
+      /** Source selection, enable/disable, custom sources, and the untrusted-source unlock. */
+      if (url.pathname === '/api/market/settings' && req.method === 'POST') {
+        if (!market) return json({ error: 'market disabled' }, 404);
+        const body = JSON.parse((await readBody(req)).toString('utf8') || '{}');
+        try {
+          const s = market.updateSettings(body);
+          return json({ ok: true, sources: s.all, selected: s.selected, custom_unlocked: s.customUnlocked });
+        } catch (err) {
+          return json({ ok: false, error: err.message }, 400);
+        }
+      }
+
+      if (url.pathname === '/api/market/cache/clear' && req.method === 'POST') {
+        if (!market) return json({ error: 'market disabled' }, 404);
+        market.clearCache();
+        return json({ ok: true });
+      }
+
+      /** Preview images are served through the host (authenticated, like every other API) so the
+       *  page never talks to a plugin mirror directly and CSP stays a single-origin story. */
+      if (url.pathname === '/api/market/preview' && req.method === 'GET') {
+        if (!market) return json({ error: 'market disabled' }, 404);
+        const slug = url.searchParams.get('slug') || '';
+        const aggregate = await market.index({});
+        const entry = aggregate.plugins.find((p) => p.slug === slug);
+        const image = entry ? await market.preview(entry) : null;
+        if (!image) return json({ error: 'no preview for ' + slug }, 404);
+        hostStats.files.served++;
+        hostStats.files.bytes += image.bytes.length;
+        return send(200, image.bytes, image.type, { 'Cache-Control': 'no-cache' });
       }
 
       /** Hijack rules for the preload.  Must be servable before any chunk runs. */
@@ -1581,6 +1695,9 @@ export async function startHost(opts = {}) {
   const descriptor = {
     host: o.host, port, key: o.key, data: o.data, pluginsDir: o.plugins,
     corePluginsDir: o.corePlugins,
+    market: market
+      ? { enabled: true, dir: o.marketDir, offline: o.marketOffline === true }
+      : { enabled: false },
     dev: devEnabled()
       ? { enabled: true, generation: devState.generation, watching: devState.watch.enabled,
           sources: devState.sources.map((s) => s.input), hooks: devState.hooks.length }
@@ -1597,6 +1714,9 @@ export async function startHost(opts = {}) {
       (devEnabled() ? `, dev=${devState.sources.length} source(s)/${devState.hooks.length} hook(s)` : ''));
   return {
     server, ...descriptor, log,
+    // The market object is exposed so tests can drive installs without HTTP (and so an embedder
+    // can pre-warm the index at boot).
+    market: market || null,
     // Exposed so tests (and any embedder) can drive dev mode without HTTP.
     dev: {
       status: devStatus,
@@ -1623,6 +1743,7 @@ async function main() {
     console.log('ncm_host.mjs [--port N] [--data DIR] [--plugins DIR] [--core-plugins DIR] [--key HEX] [--descriptor FILE] [--json]');
     console.log('             [--dev-dir DIR | --dev-source SPEC]... [--dev-watch] [--dev-watch-ms N] [--dev-fetch-ms N]');
     console.log('             [--discovery-ttl-ms N] [--no-discovery-cache]');
+    console.log('             [--no-market] [--market-dir DIR] [--market-offline] [--market-ttl-ms N]');
     console.log('             SPEC: a directory, a .plugin/.zip path, an HTTP(S) archive URL, or');
     console.log('                   owner/repo[#ref][:subdir] / a github.com URL (fetched from codeload)');
     return 0;

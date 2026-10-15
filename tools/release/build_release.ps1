@@ -56,12 +56,20 @@ if (-not (Test-Path -LiteralPath $NodeExe)) { Fail "node.exe not found: $NodeExe
 $loaderFiles = @('framework.js', 'manager.js', 'hijacks.json', 'selectors.json',
                  'paths.ps1', 'install.ps1', 'uninstall.ps1', 'startup.ps1',
                  'create-shortcut.ps1', 'bncm-agent.vbs')
-$toolFiles = @('bncm_agent.mjs', 'ncm_host.mjs', 'cdp_inject.mjs', 'cdp_watch.mjs', 'bncm_preload.js')
-$pluginFiles = @('LyricBar.plugin', 'MaterialYouTheme.plugin', 'RefinedNowPlaying.plugin')
+$toolFiles = @('bncm_agent.mjs', 'ncm_host.mjs', 'market_host.mjs', 'cdp_inject.mjs', 'cdp_watch.mjs', 'bncm_preload.js')
+$pluginFiles = @('LyricBar.plugin', 'MaterialYouTheme.plugin', 'RefinedNowPlaying.plugin',
+                 'NCM-Font-Manager.plugin')
 
 foreach ($f in $loaderFiles) { if (-not (Test-Path -LiteralPath (Join-Path $repo "loader\$f"))) { Fail "missing loader\$f" } }
 foreach ($f in $toolFiles)   { if (-not (Test-Path -LiteralPath (Join-Path $repo "tools\$f")))  { Fail "missing tools\$f" } }
 foreach ($f in $pluginFiles) { if (-not (Test-Path -LiteralPath (Join-Path $repo "plugins\$f"))) { Fail "missing plugins\$f" } }
+# The bundled plugin market travels with both packages: `market\` is the offline source the market
+# reads when there is no network, and it carries the four plugin archives above.  Without it the
+# market still works, but "install the plugins this build ships" stops working offline.
+if (-not (Test-Path -LiteralPath (Join-Path $repo 'market\plugins.json'))) {
+    Fail 'missing market\plugins.json -- run: py tools\market\build_market.py'
+}
+if (-not (Test-Path -LiteralPath (Join-Path $repo 'tools\market_host.mjs'))) { Fail 'missing tools\market_host.mjs' }
 # Both packages redistribute GPL-3.0 code (this project + MaterialYouTheme.plugin) and an MIT-licensed
 # Node runtime, so the license texts travel WITH the binaries instead of only living in the repo.
 foreach ($f in @('LICENSE', 'THIRD-PARTY-NOTICES.md')) { if (-not (Test-Path -LiteralPath (Join-Path $repo $f))) { Fail "missing $f" } }
@@ -166,12 +174,21 @@ New-Item -ItemType Directory -Force -Path (Join-Path $app 'bin'),
                                             (Join-Path $app 'loader'),
                                             (Join-Path $app 'tools'),
                                             (Join-Path $app 'plugins'),
+                                            (Join-Path $app 'market'),
                                             (Join-Path $app 'out\loader') | Out-Null
 
 Copy-Item -LiteralPath $NodeExe -Destination (Join-Path $app 'bin\node.exe') -Force
 foreach ($f in $loaderFiles) { Copy-Item -LiteralPath (Join-Path $repo "loader\$f") -Destination (Join-Path $app "loader\$f") -Force }
 foreach ($f in $toolFiles)   { Copy-Item -LiteralPath (Join-Path $repo "tools\$f")   -Destination (Join-Path $app "tools\$f")   -Force }
 foreach ($f in $pluginFiles) { Copy-Item -LiteralPath (Join-Path $repo "plugins\$f") -Destination (Join-Path $app "plugins\$f") -Force }
+# The market source tree: index + plugin archives + preview images.  catalog.json rides along so a
+# shipped copy can still explain where each listing came from.
+Copy-Tree (Join-Path $repo 'market\plugins')   (Join-Path $app 'market\plugins')
+Copy-Tree (Join-Path $repo 'market\previews')  (Join-Path $app 'market\previews')
+foreach ($f in @('plugins.json', 'market.json', 'catalog.json', 'README.md')) {
+    $src = Join-Path $repo "market\$f"
+    if (Test-Path -LiteralPath $src) { Copy-Item -LiteralPath $src -Destination (Join-Path $app "market\$f") -Force }
+}
 Copy-Item -LiteralPath $proxy -Destination (Join-Path $app 'out\loader\version.dll') -Force
 foreach ($f in @('LICENSE', 'THIRD-PARTY-NOTICES.md')) {
     Copy-Item -LiteralPath (Join-Path $repo $f) -Destination (Join-Path $app $f) -Force
@@ -206,7 +223,16 @@ Info ("app tree: {0:N1} MB, {1} files" -f ($appSize / 1MB),
 Assert-SameFile $NodeExe (Join-Path $app 'bin\node.exe')
 Assert-SameFile $proxy   (Join-Path $app 'out\loader\version.dll')
 foreach ($f in $pluginFiles) { Assert-SameFile (Join-Path $repo "plugins\$f") (Join-Path $app "plugins\$f") }
-Info 'staging is byte-exact for node.exe, version.dll and every shipped plugin'
+# The market's store must arrive byte-exact as well: a listing whose sha256 no longer matches the
+# package sitting next to it is the one market failure that happens silently.
+Assert-SameFile (Join-Path $repo 'market\plugins.json') (Join-Path $app 'market\plugins.json')
+$marketIndex = Get-Content -LiteralPath (Join-Path $repo 'market\plugins.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+foreach ($entry in $marketIndex) {
+    $rel = ($entry.'file-url' -replace '/', '\')
+    Assert-SameFile (Join-Path $repo "market\$rel") (Join-Path $app "market\$rel")
+    Assert-SameFile (Join-Path $repo "market\$($entry.preview -replace '/', '\')") (Join-Path $app "market\$($entry.preview -replace '/', '\')")
+}
+Info "staging is byte-exact for node.exe, version.dll, every shipped plugin and $($marketIndex.Count) market listing(s)"
 
 # --- 2. portable package ----------------------------------------------------------------------
 Step 'building the portable package'

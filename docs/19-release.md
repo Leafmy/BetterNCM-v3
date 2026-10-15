@@ -1,7 +1,7 @@
 # 19 — 发行包：一键安装包 与 免安装包
 
 > 构建脚本：`tools/release/build_release.ps1`
-> 验收脚本：`tools/release/verify_release.ps1`（客户端无需运行，**28/28** 通过）
+> 验收脚本：`tools/release/verify_release.ps1`（客户端无需运行，**51/51** 通过）
 > 目标产物：`%USERPROFILE%\Desktop\release\`
 
 ## 1. 两个产物
@@ -28,10 +28,15 @@ app\
   loader\*.ps1            install / uninstall / startup / create-shortcut / paths
   loader\bncm-agent.vbs   无控制台启动 shim
   tools\bncm_agent.mjs    守护 + 启动器 + 注入
-  tools\ncm_host.mjs      后端：fs / 配置 / 插件发现 / 管理端点
+  tools\ncm_host.mjs      后端：fs / 配置 / 插件发现 / 管理端点 / 插件市场端点
+  tools\market_host.mjs   插件市场后端（索引聚合、校验式安装、预览图代理、源管理）
+  tools\market\build_market.py  市场索引构建（仓库侧；发行包里不需要）
   tools\cdp_*.mjs         CDP 注入与守护
   tools\bncm_preload.js   document-start 预载
-  plugins\*.plugin        随包分发的三个插件（首次启动复制进 data\plugins）
+  plugins\*.plugin        随包分发的四个插件（首次启动复制进 data\plugins）
+  market\plugins.json     内置插件市场索引（离线源）
+  market\plugins\*.plugin 市场里的插件包（与 plugins\ 同一份字节）
+  market\previews\*.svg   市场预览图
   LICENSE                 本项目许可证（GPL-3.0-or-later）
   THIRD-PARTY-NOTICES.md  第三方组件出处与许可证
   bin\NODE-LICENSE.txt    自带 Node 运行时的 MIT 授权全文（逐字节取自上游发行版）
@@ -55,7 +60,7 @@ app\
 1. `robocopy` 复制运行树到安装目录；
 2. `loader\install.ps1` 装 `version.dll`：**先备份原有同名文件**，写 `install-manifest.json`，
    卸载时按 SHA-256 校验「这确实是我们装的那一份」才删除（`loader\uninstall.ps1`）；
-3. `loader\startup.ps1 -Install`：三个插件走同一个 `Install-BncmPlugins`（缺则装、同则跳、
+3. `loader\startup.ps1 -Install`：四个插件走同一个 `Install-BncmPlugins`（缺则装、同则跳、
    不同则**先备份到 `_backup_<时间戳>` 再覆盖**），写 HKCU 登录项（值里带
    `--ncm/--data/--plugins`，不再是编译死的默认值），启动 agent；
 4. `loader\create-shortcut.ps1` 建快捷方式（快捷方式同样带解析后的目录）；
@@ -83,7 +88,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\release\verify_release
 
 构建时的三条硬性自检（都是踩过的坑）：
 
-* **字节一致性**：`node.exe` / `version.dll` / 三个 `.plugin` 在暂存后必须与原文件 SHA-256 相同。
+* **字节一致性**：`node.exe` / `version.dll` / 四个 `.plugin` 在暂存后必须与原文件 SHA-256 相同，
+  市场目录里索引列出的每个包与预览图也要一致。
   （早期版本用 `Get-ChildItem -Include '*.ps1'` 过滤 BOM 归一化，但 `-Include` 与 `-LiteralPath`
   同用时**被静默忽略**，于是所有二进制文件被当成 UTF-8 文本重写，`node.exe` 从 89 MB 膨胀到
   130 MB 且无法运行。）
@@ -95,17 +101,24 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\release\verify_release
   被复制进 `app\`（Node 那份为 `app\bin\NODE-LICENSE.txt`），且后者**跳过 BOM 归一化**——
   许可证要的是逐字节原件，多一个 BOM 就不是原件了。
 
-## 6. 验收（28/28）
+## 6. 验收（51/51）
 
 `verify_release.ps1` 全程只在临时目录里操作（唯一例外是安装器写的
 `HKCU\...\Uninstall\BetterNCM`，脚本结束时删除）：
 
 * 解压免安装包 → 自带 node 能跑（`v24.21.0`）→ 打包后的 agent `--status` 正常；
-* `loader\startup.ps1 -Start -NoStart` 把三个插件种进 `data\plugins`；
-* 用打包后的后端查询 `/api/plugins`：三个插件全部被发现、`locked=false`、`core` 为空、
+* 包内 `market\plugins.json` 存在、列出四个插件，且每个 `file-url` 与 `preview` 都真的在包里；
+* `loader\startup.ps1 -Start -NoStart` 把四个插件种进 `data\plugins`；
+* 用打包后的后端查询 `/api/plugins`：四个插件全部被发现、`locked=false`、`core` 为空、
   `LyricBar.requirements` 与 `RefinedNowPlaying.loadAfter` **确实传到了加载器**；
   `/api/selectors` 返回 `3.1.41-r1`；
-* 以沙箱参数运行 `Setup.exe`：运行树、卸载器、三个插件、卸载项全部落地。
+* 用同一个后端查询 `/api/market/plugins`：**内置源**（`ok=true`、4 条）在打包后的目录里可用，
+  四个条目 `bundled=true` 且被认出「已安装」，Font Manager 条目带 64 位十六进制摘要；
+* 以沙箱参数运行 `Setup.exe`：运行树、卸载器、四个插件、`app\market\plugins.json`、卸载项全部落地。
+
+> 一处 PowerShell 5.1 的坑写在脚本注释里：`@(... | ConvertFrom-Json)` 得到的是**一个**元素
+> （元素是真正的数组），于是"四个条目的检查"会退化成"把四条路径拼成一个去查"。索引必须直接赋值，
+> 只在可能是标量的地方才 `@()`。
 
 ## 7. 已知限制
 
