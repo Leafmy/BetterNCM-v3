@@ -75,17 +75,32 @@ py tools\market\build_market.py --check    # 只校验；market/ 过期则非零
 | 仓库根目录 | `https://raw.githubusercontent.com/<owner>/<repo>/<branch>/` |
 | jsDelivr（有 CDN 缓存） | `https://cdn.jsdelivr.net/gh/<owner>/<repo>@<branch>/market/` |
 
+**已经这样发布过了**：<https://github.com/Leafmy/BetterNCM-PluginMarket> 是本目录的独立副本，
+baseURL 为 `https://raw.githubusercontent.com/Leafmy/BetterNCM-PluginMarket/main/`
+（已实测与主仓库的 `market/` 逐字节一致）。市场的默认源列表里两条都在
+（`tools/market_host.mjs` 的 `DEFAULT_SOURCES`），默认关闭，一键启用。
+
+> 这台机器上 `raw.githubusercontent.com` 与 `cdn.jsdelivr.net` 的**直连被阻断**，客户端后端的
+> Node `fetch` 又不走系统代理，所以在本机这两个源会一直「正在后台读取」。换一个可达的托管
+> （Gitee 镜像、对象存储）或给 Node 配代理即可。
+
 推送到别的仓库时，**不要**把 `plugins/`、`tools/`、发行包一起带过去：源只需要
 `plugins.json`、`plugins/`、`previews/`（`catalog.json` 与 `market.json` 可选）。
 
 ```powershell
-# 例：把市场源单独推成一个仓库（先复制出去，别在仓库内建嵌套 .git）
-Copy-Item -Recurse market $env:TEMP\market-out
-git -C $env:TEMP\market-out init -b main
-git -C $env:TEMP\market-out add plugins.json market.json catalog.json plugins previews README.md
-git -C $env:TEMP\market-out -c user.name=... -c user.email=... commit -m "market source"
-git -C $env:TEMP\market-out remote add origin git@github.com:Leafmy/BetterNCM-PluginMarket.git
-git -C $env:TEMP\market-out push -u origin main
+# 同步到已建好的源仓库（Leafmy/BetterNCM-PluginMarket）：
+# 只带源需要的四样，README 用源仓库自己的那一份
+$out = "$env:TEMP\bncm-market-sync"
+Remove-Item $out -Recurse -Force -ErrorAction SilentlyContinue
+New-Item -ItemType Directory -Force -Path $out | Out-Null
+Copy-Item market\plugins.json,market\market.json,market\catalog.json $out
+Copy-Item market\plugins,market\previews $out -Recurse
+git -C $out init -b main
+git -C $out remote add origin git@github.com:Leafmy/BetterNCM-PluginMarket.git
+# 先把源仓库的 README 取回来，再提交，避免用主仓库这份覆盖它
+git -C $out fetch origin main; git -C $out checkout origin/main -- README.md
+git -C $out add -A; git -C $out -c user.name=... -c user.email=... commit -m "sync market source"
+git -C $out push origin HEAD:main
 ```
 
 推送后，在插件市场的「源设置」里把该地址添加为自定义源并解锁，或者把它改成默认启用源

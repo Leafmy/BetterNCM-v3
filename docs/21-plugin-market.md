@@ -51,7 +51,8 @@ URL 规则与上游一致：`<baseURL>plugins.json`（请求时附带时间戳�
 | id | 名称 | 默认 | 说明 |
 |---|---|---|---|
 | `builtin` | 内置（随包分发） | **启用，不可移除** | 磁盘上的 `market/`，离线、即时 |
-| `bncm-v3-github` | BetterNCM-v3 市场源（GitHub） | 关闭 | 本仓库 `market/` 的在线副本；仓库推送 `market/` 后一键启用 |
+| `bncm-v3-github` | BetterNCM-v3 市场源（主仓库） | 关闭 | 主仓库 `market/` 的在线副本，已推送可用 |
+| `better-ncm-plugin-market` | BetterNCM-PluginMarket（独立源仓库） | 关闭 | <https://github.com/Leafmy/BetterNCM-PluginMarket>，与主仓库 `market/` **逐字节一致**（已实测） |
 | `upstream-unpkg` | BetterNCM 官方源（Unpkg） | 关闭 | 上游镜像，约 67 个面向 2.x 的插件 |
 | `upstream-github` | BetterNCM 官方源（GitHub raw） | 关闭 | 与 Unpkg 同源 |
 | `upstream-microblock` | MicroBlock CDN（上游默认源） | 关闭 | 上游的默认源；本机实测已不可达（HTTP 522） |
@@ -218,4 +219,8 @@ node tools\cdp_inject.mjs --expr "JSON.stringify(window.__BNCM_MANAGER__ && true
   本项目不自建上报（也避免像上游那样把用户 ID 发出去）。
 - **自定义源只有"信任/不信任"两档**：没有上游那种 Konami 彩蛋式的解锁入口。
 - **本机 `bncm-plugin.microblock.cc` 与上游下载量 API 均已不可达**，因此默认只启用内置源；
-  上游镜像与本仓库的 GitHub 源都保留在源列表里，一键即可启用。
+  上游镜像、主仓库的 GitHub 源与独立源仓库都保留在源列表里，一键即可启用。
+- **本机对 `raw.githubusercontent.com` 与 `cdn.jsdelivr.net` 的直连被阻断**（走系统代理才通），
+  而客户端后端的 Node `fetch` 不走系统代理，所以三个 GitHub 类源在这台机器上会一直
+  「正在后台读取」。这是网络环境问题，不是索引问题：同一份内容用代理取回后与本地
+  `market/` 逐字节相同（`plugins.json` `23e2c82a…`、Font Manager 包 `de71a3cc…`）。

@@ -188,12 +188,15 @@ upstream/    上游参考克隆的获取说明（克隆本身不提交，见 ups
 
 - **`hijacks` 默认关闭**：拦截 `window.webpackJsonp` 会让客户端启动失败（`docs/11` §8）。
   当前四个插件都不依赖它。
-- **插件市场的在线源默认全部关闭，只启用「内置源」**：内置源在本地磁盘（即时、离线），
-  上游镜像 `bncm-plugin.microblock.cc` 本机实测 HTTP 522，上游下载量 API
-  `betterncm.microblock.cc` 的 DNS 已不可解析，本仓库的 GitHub 源要等 `market/` 推送后才有效。
-  其余源在「插件市场 → 源设置」里一次点击即可启用；普通打开市场**从不等待网络**
-  （未拉取的源标为「正在后台读取」，拉到自动出现），只有「刷新索引」与安装才会联网等待。
-  索引没有 `downloads` 字段时综合排序退化为按 star（与上游的降级路径相同）。
+- **插件市场的在线源默认全部关闭，只启用「内置源」**：内置源在本地磁盘（即时、离线）。
+  在线源有三个自己的：主仓库的 `market/` 与独立源仓库
+  [Leafmy/BetterNCM-PluginMarket](https://github.com/Leafmy/BetterNCM-PluginMarket)
+  （两者已实测**逐字节一致**，`plugins.json` `23e2c82a…`），以及上游镜像
+  （`bncm-plugin.microblock.cc` 本机实测 HTTP 522，上游下载量 API 的 DNS 已不可解析）。
+  本机对 `raw.githubusercontent.com` / `cdn.jsdelivr.net` 的直连被阻断，客户端后端的 Node `fetch`
+  又不走系统代理，所以 GitHub 类源在这台机器上会停在「正在后台读取」——网络环境问题，不是索引问题。
+  普通打开市场**从不等待网络**，只有「刷新索引」与安装才会联网等待；索引没有 `downloads`
+  字段时综合排序退化为按 star（与上游的降级路径相同）。
 - **市场的 `loadAfter` 只作建议**：它按上游语义只是加载顺序提示，安装 `LyricBar` 会自动装它的
   `requirements`（`RefinedNowPlaying`），`MaterialYouTheme` 只作为建议列出，需要再点一次安装，
   或调用 `POST /api/market/install {slug, include_recommended:true}`。

@@ -68,14 +68,26 @@ export const DEFAULT_SOURCES = [
   },
   {
     id: 'bncm-v3-github',
-    name: 'BetterNCM-v3 市场源（GitHub）',
+    name: 'BetterNCM-v3 市场源（主仓库）',
     kind: 'remote',
     base: 'https://raw.githubusercontent.com/Leafmy/BetterNCM-v3/main/market/',
     trustable: true,
     builtin: false,
     enabled: false,
     homepage: 'https://github.com/Leafmy/BetterNCM-v3',
-    note: '本仓库 market/ 的在线副本；仓库推送了 market/ 之后再启用（内置源已是同一份内容）',
+    note: '主仓库 market/ 的在线副本，与下面的独立源仓库内容完全一致',
+  },
+  {
+    id: 'better-ncm-plugin-market',
+    name: 'BetterNCM-PluginMarket（独立源仓库）',
+    kind: 'remote',
+    base: 'https://raw.githubusercontent.com/Leafmy/BetterNCM-PluginMarket/main/',
+    trustable: true,
+    builtin: false,
+    enabled: false,
+    homepage: 'https://github.com/Leafmy/BetterNCM-PluginMarket',
+    note: '独立发布的插件源仓库（已实测与主仓库 market/ 逐字节一致）；'
+        + '本机 raw 直连被阻断，需要可达网络或镜像',
   },
   {
     id: 'upstream-unpkg',
