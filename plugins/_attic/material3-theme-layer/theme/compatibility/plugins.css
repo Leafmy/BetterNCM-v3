@@ -1,0 +1,51 @@
+/* compatibility/plugins.css -- keep the theme out of other plugins' business.
+ *
+ * Loaded LAST so it wins over anything in components/.  The goal is explicit, auditable scoping
+ * rather than a pile of later !important.
+ *
+ * The three plugin-owned DOM areas that must not be restyled by the M3 theme:
+ *
+ *   1. RefinedNowPlaying -- sets body.refined-now-playing and renders a full-screen immersive
+ *      page with its own design language (it is meant to look like the album, not like Material).
+ *   2. LyricBar -- appends .lyric-bar to <body> and positions it over the client; its own layout
+ *      must stay authoritative.  It also probes loadedPlugins.MaterialYouTheme, so the theme must
+ *      remain LOADED even while leaving that DOM alone.
+ *   3. BetterNCM's own manager -- #bncm-manager / #bncm-mgr-fab, which has its own namespaced
+ *      styles and must not inherit component rules.
+ *
+ * The mechanism used here is (a) explicitly NOT theming inside those containers and (b) reverting
+ * the few inherited tokens that would leak in, e.g. card radius/shadow on their internal nodes.
+ */
+
+/* --- RefinedNowPlaying immersive page: hands off --- */
+html.m3-theme body.refined-now-playing :is(
+  [class*="rnp-"],
+  [class*="refined-now-playing"]
+) {
+  border-radius: initial;
+  box-shadow: initial;
+}
+
+/* --- LyricBar: its bar sits above the client and keeps its own look --- */
+html.m3-theme .lyric-bar,
+html.m3-theme .lyric-bar * {
+  box-shadow: none;
+}
+
+/* --- BetterNCM manager: namespaced, do not touch --- */
+html.m3-theme :is(#bncm-manager, #bncm-mgr-fab, [id^="bncm-m3-css-"]) {
+  border-radius: initial;
+}
+
+/* --- the DOM alias layer (docs/11 section 8.3) must not be visually disturbed --- */
+html.m3-theme #main-player[data-bncm-alias] {
+  box-shadow: none;
+  background: none;
+}
+
+/* --- opacity-based state feedback stays consistent even where components set their own --- */
+html.m3-theme :is(.cmd-button, button)[disabled],
+html.m3-theme :is(.cmd-button, button)[aria-disabled="true"] {
+  opacity: var(--md-sys-state-disabled-opacity);
+  pointer-events: none;
+}

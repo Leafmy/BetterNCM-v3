@@ -1,0 +1,91 @@
+/* tokens/color.css -- Material 3 colour scheme.
+ *
+ * The role values are computed by theme/palette.js (colour maths cannot be done in this engine's
+ * CSS).  Everything here is the *contract*: the role list, sane fallbacks if the palette has not
+ * run yet, and the surface/outline usage rules.
+ *
+ * Scope: html.m3-theme (added by theme/loader.js).  Nothing global, nothing on body, so
+ * RefinedNowPlaying's and LyricBar's own DOM is untouched.
+ */
+
+html.m3-theme {
+  color-scheme: light dark;
+
+  /* Fallbacks only -- palette.js overwrites all of these on <html>.  Having them means a broken
+   * palette degrades to a readable theme instead of an unstyled flash. */
+  --md-sys-color-primary: #6750a4;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #eaddff;
+  --md-sys-color-on-primary-container: #21005d;
+  --md-sys-color-secondary: #625b71;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #e8def8;
+  --md-sys-color-on-secondary-container: #1d192b;
+  --md-sys-color-tertiary: #7d5260;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #ffd8e4;
+  --md-sys-color-on-tertiary-container: #31111d;
+  --md-sys-color-error: #b3261e;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #f9dedc;
+  --md-sys-color-on-error-container: #410e0b;
+  --md-sys-color-surface: #fef7ff;
+  --md-sys-color-surface-dim: #ded8e1;
+  --md-sys-color-surface-bright: #fef7ff;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #f7f2fa;
+  --md-sys-color-surface-container: #f3edf7;
+  --md-sys-color-surface-container-high: #ece6f0;
+  --md-sys-color-surface-container-highest: #e6e0e9;
+  --md-sys-color-on-surface: #1d1b20;
+  --md-sys-color-on-surface-variant: #49454f;
+  --md-sys-color-surface-variant: #e7e0ec;
+  --md-sys-color-outline: #79747e;
+  --md-sys-color-outline-variant: #cac4d0;
+  --md-sys-color-inverse-surface: #322f35;
+  --md-sys-color-inverse-on-surface: #f5eff7;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+
+  /* state layers -- M3 opacity ladder, defined once so no component invents its own alpha */
+  --md-sys-state-hover-opacity: 0.08;
+  --md-sys-state-focus-opacity: 0.12;
+  --md-sys-state-pressed-opacity: 0.12;
+  --md-sys-state-dragged-opacity: 0.16;
+  --md-sys-state-disabled-opacity: 0.38;
+  --md-sys-state-disabled-container-opacity: 0.12;
+
+  /* Semantic aliases used by every component file.
+   *
+   * These point at OUR contrast-protected roles, not at the client's --colorFunction* variables.
+   * That distinction is not cosmetic -- measured live: aliasing "dim text" to the client's
+   * --colorFunction2 produced rgb(68,62,59) for the song-list header, i.e. dark text on a dark
+   * surface.  The client's 17 "function" roles do not carry the meanings their names suggest, and
+   * nothing in its own CSS documents them, so text colour is taken from the scheme this theme
+   * computes and verifies (>= 4.5:1).  The client variables remain available as a FALLBACK for the
+   * surfaces, where their meaning is observable. */
+  --md-sys-fg: var(--md-sys-color-on-surface);
+  --md-sys-fg-dim: var(--md-sys-color-on-surface-variant);
+  --md-sys-line: var(--md-sys-color-outline);
+  --md-sys-line-soft: var(--md-sys-color-outline-variant);
+  --md-sys-bg-page: var(--md-sys-color-surface);
+  --md-sys-bg-card: var(--md-sys-color-surface-container);
+}
+
+/* Surface tiers as real roles.  Components pick a tier; they never pick a grey. */
+html.m3-theme {
+  --md-sys-surface: var(--md-sys-color-surface);
+  --md-sys-surface-lowest: var(--md-sys-color-surface-container-lowest);
+  --md-sys-surface-low: var(--md-sys-color-surface-container-low);
+  --md-sys-surface-container: var(--md-sys-color-surface-container);
+  --md-sys-surface-high: var(--md-sys-color-surface-container-high);
+  --md-sys-surface-highest: var(--md-sys-color-surface-container-highest);
+}
+
+/* M3 does not separate "background" from "surface" semantically any more; keep the page on the
+   lowest tier so raised containers have somewhere to sit. */
+html.m3-theme,
+html.m3-theme body {
+  background-color: var(--md-sys-surface);
+  color: var(--md-sys-fg);
+}

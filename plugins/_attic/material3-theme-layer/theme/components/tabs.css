@@ -1,0 +1,77 @@
+/* components/tabs.css -- phase 4: tabs and segmented controls.
+ *
+ * REWRITTEN AGAINST THE REAL DOM.  Two mistakes were found by measuring:
+ *
+ *   1. The real tab elements use the client's OWN stable classes -- .cmd-tabs, .cmd-tabs-bar,
+ *      .cmd-tabs-tab, .cmd-tabs-tab-active -- not the hashed `TabsWrapper_*` names I had targeted.
+ *   2. My attribute selector was `[class*="Tab"]`, and attribute matching is CASE-SENSITIVE, so it
+ *      never matched `cmd-tabs-tab`.  Verified live: computed border-radius stayed 0px on the
+ *      active tab while the theme "had" a tabs file.
+ *
+ * The prefix forms are kept as a secondary hook for hashed variants, but the cmd-* classes lead.
+ *
+ * M3 tabs: the active indicator is a rounded bar, never a competing background; hover is a state
+ * layer; the indicator animates with transform only.
+ */
+
+html.m3-theme {
+  --md-sys-tab-indicator: var(--md-sys-color-primary);
+}
+
+/* ---- tab items ---- */
+html.m3-theme .cmd-tabs-tab,
+html.m3-theme :is([class*="TabsWrapper"], [class*="TabsCss"]) [class*="tab" i] {
+  color: var(--md-sys-fg-dim);
+  border-radius: var(--md-sys-shape-chip);
+  font-size: var(--md-sys-typescale-title-small-size);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+  transition: background-color var(--md-sys-motion-state),
+              color var(--md-sys-motion-state);
+}
+
+html.m3-theme .cmd-tabs-tab:hover,
+html.m3-theme :is([class*="TabsWrapper"], [class*="TabsCss"]) [class*="tab" i]:hover {
+  background-color: var(--md-sys-surface-high);
+  color: var(--md-sys-fg);
+}
+
+/* the client marks the current tab with its own class -- no aria attribute to rely on */
+html.m3-theme .cmd-tabs-tab-active,
+html.m3-theme :is([class*="TabsWrapper"], [class*="TabsCss"]) :is(
+  [class*="active"], [class*="selected"], [aria-selected="true"]
+) {
+  color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+/* ---- indicator bar ---- */
+html.m3-theme .cmd-tabs-bar,
+html.m3-theme .cmd-tabs-bar-line,
+html.m3-theme :is([class*="TabsWrapper"], [class*="TabsCss"]) :is(
+  [class*="Indicator"], [class*="indicator"], [class*="Underline"]
+) {
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+html.m3-theme .cmd-tabs-bar-line {
+  background-color: var(--md-sys-tab-indicator);
+}
+
+/* focus must stay visible on tabs */
+html.m3-theme .cmd-tabs-tab:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ---- segmented control ---- */
+html.m3-theme :is([class*="SegmentedWrapper"], .cmd-segmented) {
+  border-radius: var(--md-sys-shape-corner-full);
+  border: 1px solid var(--md-sys-line);
+  overflow: hidden;
+}
+html.m3-theme :is([class*="SegmentedWrapper"], .cmd-segmented) :is(
+  [class*="selected"], [aria-selected="true"]
+) {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}

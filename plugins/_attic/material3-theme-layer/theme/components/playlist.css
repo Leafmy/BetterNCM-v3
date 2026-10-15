@@ -1,0 +1,207 @@
+/* components/playlist.css -- phase 5: song lists, tables, cards.
+ *
+ * REWRITTEN AFTER MEASURING THE REAL DOM.  The first version assumed a classic table
+ * (`<tr>`/`<td>`) and therefore matched NOTHING on NCM 3.1.41 -- verified live: `tr` element count
+ * inside the table viewer was 0.  The real structure is:
+ *
+ *   .StyledTableViewer_*                      the table
+ *     .thead                                  header
+ *       .tr > .th.th-num / .th-sortable > span.title
+ *     .tbody.XVirtualizeListWrapper_*        VIRTUALIZED list (react-virtualized)
+ *       .ListWrapper_*
+ *         .ReactVirtualized__Grid (role=grid)
+ *           .ReactVirtualized__Grid__innerScrollContainer
+ *             .tr                            <- a ROW is a div.tr, not <tr>
+ *               .td.td-title
+ *                 .cell-more.StyledTitleCell_*   <- the title cell
+ *               .styledIndexCellCls_* .playing   <- the PLAYING marker lives on the index cell
+ *
+ * `tr` / `td` / `th` / `thead` / `tbody` are plain class names here (not CSS-module hashes), so they
+ * are stable hooks -- unlike the hashed names beside them.
+ *
+ * Consequence of the virtualized list: only visible rows exist in the DOM, so nothing here may
+ * animate rows (it would replay on every scroll) and nothing may assume a row count.
+ *
+ * On the PLAYING row: the playing state is expressed on the index cell, and CEF 91 has no `:has()`,
+ * so a parent-row tint is not selectable.  The honest implementation styles the real hook -- the
+ * index cell's playing marker -- instead of pretending to highlight the row.
+ */
+
+/* ---- table shell ---- */
+html.m3-theme [class*="StyledTableViewer"] {
+  background-color: transparent;
+  color: var(--md-sys-fg);
+}
+
+/* ---- header ---- */
+html.m3-theme [class*="StyledTableViewer"] .thead {
+  border-bottom: 1px solid var(--md-sys-line-soft);
+}
+html.m3-theme [class*="StyledTableViewer"] .thead .th {
+  color: var(--md-sys-fg-dim);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  letter-spacing: var(--md-sys-typescale-label-medium-track);
+}
+html.m3-theme [class*="StyledTableViewer"] .thead .tr {
+  background-color: transparent;
+}
+
+/* ---- rows (div.tr) ---- */
+html.m3-theme [class*="StyledTableViewer"] .tbody .tr {
+  border-radius: var(--md-sys-shape-corner-small);
+  color: var(--md-sys-fg);
+  transition: background-color var(--md-sys-motion-hover);
+}
+
+html.m3-theme [class*="StyledTableViewer"] .tbody .tr:hover {
+  background-color: var(--md-sys-surface-high);
+}
+
+/* selected: the M3 "selected" role, matching the client's own .tr.selected hook */
+html.m3-theme [class*="StyledTableViewer"] .tbody .tr.selected {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+/* ---- cells ---- */
+html.m3-theme [class*="StyledTableViewer"] .td {
+  color: inherit;
+}
+html.m3-theme [class*="StyledTableViewer"] .td-title,
+html.m3-theme [class*="StyledTableViewer"] [class*="StyledTitleCell"] {
+  color: var(--md-sys-fg);
+  transition: color var(--md-sys-motion-hover);
+}
+html.m3-theme [class*="StyledTableViewer"] .tbody .tr:hover .td-title,
+html.m3-theme [class*="StyledTableViewer"] .tbody .tr:hover [class*="StyledTitleCell"] {
+  color: var(--md-sys-color-primary);
+}
+
+/* the row-number / play column */
+html.m3-theme [class*="StyledTableViewer"] [class*="styledIndexCellCls"] {
+  color: var(--md-sys-fg-dim);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--md-sys-typescale-body-small-size);
+}
+/* PLAYING indicator: the real hook, on the index cell */
+html.m3-theme [class*="StyledTableViewer"] [class*="styledIndexCellCls"] .playing {
+  color: var(--md-sys-color-primary);
+}
+html.m3-theme [class*="StyledTableViewer"] .tbody .tr:hover [class*="styledIndexCellCls"] {
+  color: var(--md-sys-color-primary);
+}
+
+/* trailing cells (album / duration / actions) */
+html.m3-theme [class*="StyledTableViewer"] [class*="StyledTableExtra"],
+html.m3-theme [class*="StyledTableViewer"] .td:not(.td-title) {
+  color: var(--md-sys-fg-dim);
+  font-size: var(--md-sys-typescale-body-small-size);
+}
+
+/* artist links inside a row: primary only on hover, never a permanent blue */
+html.m3-theme [class*="StyledTableViewer"] .tbody .tr a {
+  color: inherit;
+  transition: color var(--md-sys-motion-hover);
+}
+html.m3-theme [class*="StyledTableViewer"] .tbody .tr a:hover {
+  color: var(--md-sys-color-primary);
+}
+
+/* the virtualized scroll container: keep it transparent so the page surface shows through */
+html.m3-theme [class*="ReactVirtualized__Grid"],
+html.m3-theme [class*="ListWrapper"],
+html.m3-theme [class*="XVirtualizeListWrapper"] {
+  background-color: transparent;
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-line) transparent;
+}
+
+/* ---- cards (home / grid routes) ----
+ *
+ * PHASE 9 DEDUP: this used to repeat the card radius / surface / hover rules that
+ * components/surfaces.css already owns, so the two files disagreed about which one was the source
+ * of truth for a card (and a later edit to one would silently lose to the other).  Card SURFACE
+ * treatment now lives only in surfaces.css; what stays here is what is specific to list/card
+ * CONTENT -- the cover, the title and the subtitle.
+ */
+html.m3-theme :is([class*="TrackCardWrapper"], [class*="AlbumWrapper"], [class*="VoiceCardWrapper"]) :is(
+  [class*="Cover"], img
+) {
+  border-radius: var(--md-sys-shape-cover);
+}
+html.m3-theme :is([class*="TrackCardWrapper"], [class*="AlbumWrapper"]) :is(
+  [class*="Title"], [class*="Name"]
+) {
+  color: var(--md-sys-fg);
+  font-size: var(--md-sys-typescale-body-medium-size);
+}
+html.m3-theme :is([class*="TrackCardWrapper"], [class*="AlbumWrapper"]) :is(
+  [class*="SubTitle"], [class*="Subtitle"], [class*="Artist"]
+) {
+  color: var(--md-sys-fg-dim);
+  font-size: var(--md-sys-typescale-body-small-size);
+}
+
+/* ---- the client's own list / card / tag components ----
+ *
+ * NCM 3.x exposes these as first-class parts of its design system, with stable names and explicit
+ * state modifiers -- a better hook set than any hashed wrapper:
+ *   .cmd-list / -bordered / -header / -footer / -item / -item-body / -item-extra / -empty
+ *   .cmd-card / -bordered / -cover / -header / -body / -footer / -meta / -group-grid
+ *   .cmd-tag / -solid / -closable / -size-small|medium|large / -circle
+ *   .cmd-metacard-content / -extra / -resource / -table
+ */
+html.m3-theme .cmd-list {
+  color: var(--md-sys-fg);
+}
+html.m3-theme .cmd-list-header,
+html.m3-theme .cmd-list-footer {
+  color: var(--md-sys-fg-dim);
+  font-size: var(--md-sys-typescale-label-medium-size);
+}
+html.m3-theme .cmd-list-bordered,
+html.m3-theme .cmd-list-item {
+  border-color: var(--md-sys-line-soft);
+}
+html.m3-theme .cmd-list-item {
+  border-radius: var(--md-sys-shape-corner-small);
+  transition: background-color var(--md-sys-motion-hover);
+}
+html.m3-theme .cmd-list-item:hover {
+  background-color: var(--md-sys-surface-high);
+}
+html.m3-theme .cmd-list-empty {
+  color: var(--md-sys-fg-dim);
+}
+
+html.m3-theme .cmd-card {
+  border-radius: var(--md-sys-shape-card);
+  background-color: var(--md-sys-surface-container);
+  color: var(--md-sys-fg);
+}
+html.m3-theme .cmd-card-bordered {
+  border-color: var(--md-sys-line-soft);
+}
+html.m3-theme .cmd-card-cover {
+  border-radius: var(--md-sys-shape-cover);
+}
+html.m3-theme .cmd-card-header,
+html.m3-theme .cmd-card-footer {
+  border-color: var(--md-sys-line-soft);
+}
+
+html.m3-theme .cmd-tag {
+  border-radius: var(--md-sys-shape-chip);
+  border-color: var(--md-sys-line-soft);
+  color: var(--md-sys-fg-dim);
+}
+html.m3-theme .cmd-tag-solid {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+html.m3-theme .cmd-metacard-content {
+  color: var(--md-sys-fg-dim);
+}
+

@@ -1,0 +1,31 @@
+/* index.css -- aggregate entry, loaded last.
+ *
+ * Holds only what genuinely belongs to no single component: theme-wide invariants and the hooks
+ * that later phases extend.  If a rule fits in tokens/ or components/, it belongs there.
+ */
+
+html.m3-theme {
+  /* Layout invariants that the rest of the theme relies on.  Kept minimal on purpose: the client's
+     own box model stays authoritative, and better to not set something than to set it wrongly. */
+  scrollbar-color: var(--md-sys-outline, var(--md-sys-line)) transparent;
+}
+
+/* The client's own selection colour should follow the scheme rather than the OS default. */
+html.m3-theme ::selection {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* Focus visibility: the theme must never remove focus affordances. */
+html.m3-theme :focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* Low-power escape hatch: html.m3-theme.m3-motion-off also stops component transitions. */
+html.m3-theme.m3-motion-off *,
+html.m3-theme.m3-motion-off *::before,
+html.m3-theme.m3-motion-off *::after {
+  transition-duration: 0ms;
+  animation-duration: 0ms;
+}

@@ -1,0 +1,1848 @@
+{
+ "source": "C:\\Users\\Leaf_\\AppData\\Local\\Netease\\CloudMusic\\web.pack",
+ "family": "web",
+ "scripts_scanned": 253,
+ "namespace_hits": {
+  "app": 183,
+  "player": 95,
+  "os": 82,
+  "winhelper": 75,
+  "storage": 66,
+  "trayicon": 28,
+  "network": 26,
+  "musiclibrary": 24,
+  "update": 15,
+  "audioeffect": 14,
+  "browser": 10,
+  "download": 10,
+  "desktop": 10,
+  "process": 8,
+  "rtc": 4
+ },
+ "commands": {
+  "app.abtestSwitch": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.abtestSwitchV2": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.appStartUpEnd": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.audit": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "app.cancelAutoRun": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "app.chooseColor": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.clearRecognizeMusicCache": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.compress": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.createRecognizeShutcut": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.css": {
+   "files": [
+    "pub/asset-manifest.json"
+   ],
+   "count": 1
+  },
+  "app.enableProcessMonitor": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.enterBackground": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.enterForeground": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.exit": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 8
+  },
+  "app.featuresSwitch": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.feedbackRecognizeMusicResult": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.getABTestKeys": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.getAppStartCommand": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.getAppStartTime": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.getAppStartType": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.getAutoRunState": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "app.getCooperation": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.getDefaultMusicPlayPath": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.getLocalConfig": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 5
+  },
+  "app.getNativeData": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.getP2PUrl": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.html": {
+   "files": [
+    "pub/asset-manifest.json"
+   ],
+   "count": 1
+  },
+  "app.info": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 9
+  },
+  "app.initConfig": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "app.initUrls": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "app.installApk": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.isAppFulllScreen": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.isInstalled": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.isRegisterDefaultClient": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.js": {
+   "files": [
+    "pub/asset-manifest.json"
+   ],
+   "count": 1
+  },
+  "app.loadSkinPackets": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.log": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 7
+  },
+  "app.login": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.onchooseColorResult": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "app.ontestproxy": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "app.openSaveFileDialog": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.osVesion": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "app.perfReport": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.recognizeMusic": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.registerDefaultClient": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.scanMusicFile": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.selectSystemDir": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.selectSystemFileAndDir": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.selectSystemFileLimitCount": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.sendFeedback": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.sendStatis": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.setAutoRun": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "app.setCefNativeTransparentMinibarBackdropEnabled": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.setCefNativeTransparentUIEnabled": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.setCustomInfo": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.setLocalConfig": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 5
+  },
+  "app.setThumbnail": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.statis": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.statisV2": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 6
+  },
+  "app.stopRecognizeMusic": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.systemUIHint": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.systemVoiceHint": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.testProxy": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "app.tipsAuthMicroPhone": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.unRegisterDefaultClient": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "app.upgrade": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "audioeffect.getEmoFXSignature": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "audioeffect.getParams": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "audioeffect.loadEmoFXModel": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "audioeffect.predictEmoFX": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "audioeffect.setLoudnessON": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "audioeffect.setLoudnessParams": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "audioeffect.setParams": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "browser.getCookies": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "browser.getFullCookies": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "browser.open": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "browser.removeCookie": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "desktop.create": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "desktop.destroy": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "desktop.load": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "desktop.show": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "desktop.support": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "download.cancel": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "download.fetch": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "download.pause": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "download.queryDownloadShecdule": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "download.start": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "musiclibrary.addLibrary": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "musiclibrary.execSql": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "musiclibrary.getLibraryPath": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "musiclibrary.observeLibrary": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "musiclibrary.onexecsql": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "musiclibrary.parseCueInfo": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "musiclibrary.readMusicInfo": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "musiclibrary.removeLibrary": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "musiclibrary.removeLibraryItems": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "musiclibrary.removeObserveLibrary": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "network.aegisEncrypt": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "network.diagnostic": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "network.fetch": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "network.getEnv": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "network.getNetworkQuality": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "network.info": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "network.init": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "network.initAegis": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "network.preFetch": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "network.setSession": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "network.updateAegisPublicKey": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "os.callSystemAppWithParam": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "os.checkNativeSupportFonts": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 7
+  },
+  "os.computerSystemInfo": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "os.exitWindowSystem": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "os.exitWindowSystemLeftTime": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "os.getADDeviceID": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 5
+  },
+  "os.getAllDisplayInfo": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "os.getDeviceId": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 5
+  },
+  "os.getDeviceInfo": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "os.getDiskSpace": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "os.getFileMD5": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "os.getKeyboardState": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "os.getOsVer": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "os.getSystemInfo": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 5
+  },
+  "os.isFileExist": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "os.isOnLine": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "os.isSystemDarkThemeEnabled": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "os.navigateExternal": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 5
+  },
+  "os.onping": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "os.ontracert": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "os.ping": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "os.queryOsVer": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "os.querySystemFonts": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "os.queryUserNotificationState": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "os.setPowerRequests": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "os.shellExplor": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "os.shellOpen": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "os.tracert": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "player.addListElement": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.deleteListElement": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.getId": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "player.mute": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 6
+  },
+  "player.removeAll": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.renderLRCImage": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "player.setAlwaysOnTop": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setCover": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setCoverDefault": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setCurrentPlay": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setCurrentTime": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setDesktopLyricTopMost": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setFavour": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setFont": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setInfo": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "player.setLRCColor": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setLRCDJ": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setLRCEmpty": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setLRCFont": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setLRCSlogan": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setLikeMark": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "player.setLineMode": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setLock": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setLyrics": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setMiniPlayerState": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setMiniTogetherStatus": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setMusicOnly": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setOffset": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "player.setOutlineColor": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setOutlineShadow": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setSMTCEnable": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setTextAlign": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.setTotalTime": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "player.setVolume": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.showHorizontalLyric": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.showTranslateLyric": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.showVolume": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "player.simulateKRC": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "player.updateTooltips": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "process.call": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 8
+  },
+  "rtc.enter": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "rtc.leave": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.addid3": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.checkFilesExist": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.clearCache": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.copyfiles": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "storage.deletefile": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "storage.downloadscanner": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "storage.execsql": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "storage.exectransaction": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.fetch": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.getSystemDir": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.getTempFile": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.imagesInfo": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.init": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.listFile": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.movefiles": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.offlineTrack": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.playCacheInfo": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.queryCacheTracks": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.queryNewCacheTrack": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.queryNewCacheTracks": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.readfromfile": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "storage.savetofile": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "storage.scaleImage": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.scanDirectory": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.setPlayCacheConfig": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.testwriteable": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "storage.uploadFile": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "trayicon.getIcon": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "trayicon.getToolTip": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "trayicon.install": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "trayicon.popBalloon": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "trayicon.setIcon": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "trayicon.setToolTip": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 6
+  },
+  "trayicon.uninstall": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "trayicon.wasInstall": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "update.checkPatchUpdate": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "update.getCachedInstallPackageVersion": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "update.getDownloadVersion": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "update.getVersion": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "update.getVisualVersion": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "update.setUpdateState": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "update.startUpdate": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.SetNativeWindowShow": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "winhelper.bringWindowToTop": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.destroyWindow": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.dragWindow": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.finishLoadMainWindow": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.getClipBoardData": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "winhelper.getNativeWindowRect": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "winhelper.getWKWebWindowLocalStorage": {
+   "files": [
+    "pub/checkdata.html"
+   ],
+   "count": 1
+  },
+  "winhelper.getWindowInfo": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "winhelper.getWindowOpacity": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "winhelper.getWindowPosition": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "winhelper.initMainWindow": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.isWindowFullScreen": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.launchWindow": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "winhelper.popupMenu": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "winhelper.registerHotkey": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.setClipBoardData": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 3
+  },
+  "winhelper.setFilesToClipboard": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "winhelper.setNativeWindowRect": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "winhelper.setNativeWindowShow": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.setWindowFullScreen": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.setWindowIconFromLocalFile": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.setWindowOpacity": {
+   "files": [
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "winhelper.setWindowPosition": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 5
+  },
+  "winhelper.setWindowSizeLimit": {
+   "files": [
+    "pub/hybrid/67.chunk.477f8a2.js",
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "winhelper.setWindowTitle": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 4
+  },
+  "winhelper.showWindow": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js",
+    "pub/hybrid/vendors~app~subApp.chunk.477f8a2.js"
+   ],
+   "count": 11
+  },
+  "winhelper.sizeWindow": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.unregisterHotkey": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "winhelper.updateMenu": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  }
+ },
+ "events": {
+  "app.onBootFinish": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js",
+    "pub/hybrid/subApp.chunk.477f8a2.js"
+   ],
+   "count": 2
+  },
+  "app.onFeedbackRecognizeMusicResult": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "app.onRecognizeMusic": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "player.onRenderLRCImageResult": {
+   "files": [
+    "pub/hybrid/app.chunk.477f8a2.js"
+   ],
+   "count": 1
+  },
+  "winhelper.onGetWKWebWindowLocalStorage": {
+   "files": [
+    "pub/checkdata.html"
+   ],
+   "count": 1
+  }
+ },
+ "exec_numeric_arg_whitelist": [
+  "winhelper.setWindowPosition",
+  "player.setCurrentTime",
+  "player.setVolume",
+  "app.scanMusicFile",
+  "winhelper.setWindowSizeLimit",
+  "player.setLikeMark",
+  "storage.offlineTrack",
+  "storage.execsql",
+  "winhelper.popupMenu",
+  "storage.execsql",
+  "storage.exectransaction",
+  "musiclibrary.addLibrary",
+  "musiclibrary.removeLibrary",
+  "storage.savetofile",
+  "storage.deletefile",
+  "storage.readfromfile",
+  "player.setTotalTime",
+  "player.setOffset",
+  "player.simulateKRC",
+  "player.showVolume",
+  "storage.downloadscanner",
+  "storage.scanDirectory"
+ ],
+ "call_site_census": {
+  "registerCall": 17,
+  "viewCall": 0,
+  "dbg.Command": 2,
+  "exec": 121
+ }
+}

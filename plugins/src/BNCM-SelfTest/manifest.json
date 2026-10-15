@@ -1,0 +1,17 @@
+{
+  "manifest_version": 1,
+  "name": "BNCM Self Test",
+  "slug": "bncm-selftest",
+  "version": "0.2.0",
+  "author": "BetterNCM-v3",
+  "description": "Exercises the compatibility layer end to end: fs API, native channel bridge, DOM injection, host->page events, and 3.1.41 version gating.",
+  "type": "extension",
+  "betterncm_version": ">=1.0.0",
+  "ncm-version-req": "> 2.10.2",
+  "ncm3-compatible": true,
+  "injects": {
+    "Main": [
+      { "file": "index.js" }
+    ]
+  }
+}

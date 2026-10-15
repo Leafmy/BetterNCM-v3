@@ -1,0 +1,46 @@
+/* tokens/elevation.css -- Material 3 surface + elevation.
+ *
+ * M3 expresses depth mainly through SURFACE TIERS plus a faint tint, not through stacked
+ * box-shadows: heavy shadows are what make a "Material skin" look like a 2014 web theme, and they
+ * cost repaint time on a desktop player.  So:
+ *
+ *   * each level is defined once as its surface role + optional single shadow,
+ *   * `--md-sys-elevation-*` shadows are deliberately subtle and short-range,
+ *   * there are only three of them, and components may not invent more.
+ */
+
+html.m3-theme {
+  /* level 0: flush with the page */
+  --md-sys-elevation-level0: none;
+  --md-sys-elevation-level1: 0 1px 2px rgba(0, 0, 0, 0.10), 0 1px 3px 1px rgba(0, 0, 0, 0.06);
+  --md-sys-elevation-level2: 0 1px 2px rgba(0, 0, 0, 0.12), 0 2px 6px 2px rgba(0, 0, 0, 0.08);
+  --md-sys-elevation-level3: 0 4px 8px 3px rgba(0, 0, 0, 0.10), 0 1px 3px rgba(0, 0, 0, 0.12);
+
+  /* surface role per level -- the primary depth cue */
+  --md-sys-elevation-surface-0: var(--md-sys-surface);
+  --md-sys-elevation-surface-1: var(--md-sys-surface-low);
+  --md-sys-elevation-surface-2: var(--md-sys-surface-container);
+  --md-sys-elevation-surface-3: var(--md-sys-surface-high);
+
+  /* surface tint: M3 tints raised surfaces toward the primary colour instead of darkening them.
+     Kept as a mix ratio so dark mode can lower it without a separate rule set. */
+  --md-sys-elevation-tint-opacity: 0.05;
+  --md-sys-elevation-shadow-color: var(--md-sys-color-shadow);
+
+  /* component assignments */
+  --md-sys-elev-card: var(--md-sys-elevation-level0);
+  --md-sys-elev-card-hover: var(--md-sys-elevation-level1);
+  --md-sys-elev-menu: var(--md-sys-elevation-level2);
+  --md-sys-elev-dialog: var(--md-sys-elevation-level3);
+  --md-sys-elev-player: var(--md-sys-elevation-level2);
+}
+
+/* Dark mode needs *less* shadow and more surface separation: shadows barely read on a dark
+   surface, and the M3 answer is a lighter container, not a bigger blur. */
+html.m3-theme.md-dark,
+body.md-dark html.m3-theme {
+  --md-sys-elevation-level1: 0 1px 2px rgba(0, 0, 0, 0.30);
+  --md-sys-elevation-level2: 0 2px 6px rgba(0, 0, 0, 0.36);
+  --md-sys-elevation-level3: 0 4px 10px rgba(0, 0, 0, 0.42);
+  --md-sys-elevation-tint-opacity: 0.08;
+}

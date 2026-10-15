@@ -1,0 +1,130 @@
+/* components/inputs.css -- phase 4: text fields, selects, switches, checkboxes, radios.
+ *
+ * REWRITTEN AGAINST THE CLIENT'S OWN DESIGN SYSTEM.  NCM 3.x exposes cmd-input (1624 refs --
+ * the single largest family), cmd-select (358), cmd-checkbox (304), cmd-radio (252),
+ * cmd-tagInput (188) and cmd-switch (176), each with explicit state modifiers:
+ *
+ *   .cmd-input, -disabled, -focus, -error, -default, -counter, -clearbtn
+ *   .cmd-select, -focus, -disabled, -error, -content-wrapper, -arrow
+ *   .cmd-switch, -checked, -active, -knob, -disabled, -focus, -loading
+ *   .cmd-checkbox, -checked, -disabled, -focus, -indeterminate, -cardType
+ *   .cmd-radio, -addon-buttonRadio-checked, -cardRadioGroup_checked
+ *   .cmd-tagInput, -focus, -hover, -disabled, -error
+ *
+ * Shapes come from the shared tokens: text fields use the extra-small corner, selects are menus
+ * (small), switches are full, checkboxes extra-small.  No literal values.
+ */
+
+/* ---- text fields ---- */
+html.m3-theme .cmd-input,
+html.m3-theme :is([class*="InputWrapper"], [class*="TextAreaWrapper"], [class*="TagInputWrapper"]) {
+  border-radius: var(--md-sys-shape-input);
+  color: var(--md-sys-fg);
+  transition: background-color var(--md-sys-motion-state), border-color var(--md-sys-motion-state);
+}
+html.m3-theme .cmd-input:hover {
+  background-color: var(--md-sys-surface-low);
+}
+html.m3-theme .cmd-input-focus,
+html.m3-theme :is([class*="InputWrapper"], [class*="TextAreaWrapper"]):focus-within {
+  border-color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-surface-low);
+}
+html.m3-theme .cmd-input-disabled,
+html.m3-theme .cmd-input[disabled] {
+  opacity: var(--md-sys-state-disabled-opacity);
+}
+html.m3-theme .cmd-input-error {
+  border-color: var(--md-sys-color-error);
+}
+html.m3-theme .cmd-input-counter {
+  color: var(--md-sys-fg-dim);
+  font-size: var(--md-sys-typescale-body-small-size);
+}
+html.m3-theme .cmd-input-counter-exceed {
+  color: var(--md-sys-color-error);
+}
+
+/* ---- select ---- */
+html.m3-theme .cmd-select {
+  border-radius: var(--md-sys-shape-menu);
+  color: var(--md-sys-fg);
+  transition: background-color var(--md-sys-motion-state);
+}
+html.m3-theme .cmd-select:hover,
+html.m3-theme .cmd-select-focus {
+  background-color: var(--md-sys-surface-high);
+}
+html.m3-theme .cmd-select-disabled {
+  opacity: var(--md-sys-state-disabled-opacity);
+}
+html.m3-theme .cmd-select-arrow {
+  color: var(--md-sys-fg-dim);
+}
+
+/* ---- tag input ---- */
+html.m3-theme .cmd-tagInput {
+  border-radius: var(--md-sys-shape-input);
+  color: var(--md-sys-fg);
+}
+html.m3-theme :is(.cmd-tagInput-focus, .cmd-tagInput-hover) {
+  border-color: var(--md-sys-color-primary);
+}
+
+/* ---- switch ---- */
+html.m3-theme .cmd-switch {
+  transition: background-color var(--md-sys-motion-state);
+}
+html.m3-theme .cmd-switch-knob {
+  transition: transform var(--md-sys-motion-state), background-color var(--md-sys-motion-state);
+}
+html.m3-theme .cmd-switch-checked .cmd-switch-knob,
+html.m3-theme .cmd-switch-active .cmd-switch-knob {
+  background-color: var(--md-sys-color-on-primary);
+}
+html.m3-theme :is(.cmd-switch-checked, .cmd-switch-active) {
+  background-color: var(--md-sys-color-primary);
+}
+html.m3-theme .cmd-switch-disabled {
+  opacity: var(--md-sys-state-disabled-opacity);
+}
+
+/* ---- checkbox ---- */
+html.m3-theme .cmd-checkbox {
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  transition: background-color var(--md-sys-motion-state), border-color var(--md-sys-motion-state);
+}
+html.m3-theme :is(.cmd-checkbox-checked, .cmd-checkbox-indeterminate) {
+  background-color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+}
+html.m3-theme .cmd-checkbox-disabled {
+  opacity: var(--md-sys-state-disabled-opacity);
+}
+html.m3-theme .cmd-checkbox-content {
+  color: var(--md-sys-fg);
+}
+
+/* ---- radio ---- */
+html.m3-theme .cmd-radio {
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: background-color var(--md-sys-motion-state);
+}
+html.m3-theme :is(
+  .cmd-radio-addon-buttonRadio-checked,
+  .cmd-radio-cardRadioGroup_checked
+) {
+  color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+/* ---- native controls the client renders directly ---- */
+html.m3-theme input[type="checkbox"],
+html.m3-theme input[type="radio"] {
+  accent-color: var(--md-sys-color-primary);
+}
+
+/* ---- labels ---- */
+html.m3-theme :is(label, .cmd-typography-label, [class*="LabelWrapper"]) {
+  color: var(--md-sys-fg-dim);
+}

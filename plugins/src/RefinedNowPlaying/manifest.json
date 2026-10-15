@@ -1,0 +1,76 @@
+{
+    "manifest_version": 1,
+    "name": "RefinedNowPlaying",
+    "slug": "RefinedNowPlaying",
+    "author": "MiHN, solstice23, long45343 lineage (see source)",
+    "author_links": [
+        "https://github.com/SUlTlUS",
+        "https://github.com/solstice23"
+    ],
+    "description": "重新设计的正在播放页面和歌词（3.x 续作 RefinedNowPlayingNext 3.0.2）",
+    "preview": "preview.webp",
+    "version": "3.0.2",
+    "type": "extension",
+    "ncm3-compatible": true,
+    "ncm-version-req": "> 3.1.11",
+    "requirements": [],
+    "loadAfter": [
+        "MaterialYouTheme"
+    ],
+    "incompatible": [
+        "Apple-Musiclike-lyrics"
+    ],
+    "betterncm_version": ">=1.0.0",
+    "source": {
+        "repo": "https://github.com/SUlTlUS/refined-now-playing-netease-next",
+        "license": "MIT",
+        "base": "published .plugin RefinedNowPlayingNext 3.0.2",
+        "supersedes": "solstice23/refined-now-playing-netease 2.19.5",
+        "why": "The 2.19.5 bundle targets the NetEase Cloud Music 2.x DOM, which no longer exists in 3.1.41: #main-player, .m-player, .g-single, .n-single, .cdimg, .btnp, .brt, .cvr.j-curr, .playfrom and #page_pc_userfm_songplay all occur ZERO times in web.pack 477f8a2 (verified). This successor is the same lineage, declares ncm3-compatible: true, requires ncm > 3.1.11, and carries a 3.1.11+ specific hijack.",
+        "slug_note": "published as slug RefinedNowPlayingNext; pinned to RefinedNowPlaying here so LyricBar's requirements/loadAfter and the user-facing name stay stable. The bundle itself probes only loadedPlugins.{LibFrontendPlay,MaterialYouTheme,RoundCornerNCM}, never its own slug, so this rename is safe."
+    },
+    "injects": {
+        "Main": [
+            {
+                "file": "main.js"
+            }
+        ]
+    },
+    "hijacks": {
+        ">= 3.1.11": {
+            "module:redux-dispatch-hook": {
+                "type": "replace",
+                "rule": "builtin:redux-dispatch-hook"
+            }
+        },
+        ">= 3.1.0": {
+            "module:lyrics-pipeline": {
+                "type": "replace",
+                "rule": "builtin:lyrics-hook"
+            }
+        }
+    },
+    "hijack_note": [
+        "Two loader rules are declared.",
+        "builtin:redux-dispatch-hook is the successor's OWN 3.1.11+ mechanism (fragment `\"sagaEffects.put\"),`,",
+        "verified to occur exactly once in web.pack 477f8a2, in vendors~app~subApp.chunk). Upstream",
+        "expressed it as a response-body rewrite of orpheus://orpheus/pub/hybrid/vendors; the loader",
+        "applies it at module-factory level instead (docs/11).",
+        "builtin:lyrics-hook additionally makes the client's lyric pipeline call window.onProcessLyrics,",
+        "which this bundle still defines (it keeps the lyrics-updated / window.currentLyrics contract that",
+        "LyricBar consumes).",
+        "The successor's own >= 2.10.4 entry targeting orpheus://orpheus/pub/core is dropped on purpose:",
+        "that resource does not exist in 3.1.41, so it can only ever be a reported miss."
+    ],
+    "legacy_hijacks": {
+        "note": "upstream entries kept for provenance; see manifest.upstream.json",
+        ">= 3.1.11": {
+            "orpheus://orpheus/pub/hybrid/vendors": {
+                "type": "replace",
+                "id": "redux-dispatch-hook",
+                "from": "\"sagaEffects.put\"),",
+                "to": "\"sagaEffects.put\"),window?.rnpDispatchHook?.(n),"
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+  "manifest_version": 1,
+  "name": "Broken Plugin",
+  "slug": "broken-plugin",
+  "version": "0.0.1",
+  "author": "BetterNCM-v3",
+  "description": "Deliberately throws at load time. Verifies that one failing plugin cannot stop the others from loading.",
+  "type": "extension",
+  "ncm3-compatible": true,
+  "injects": { "Main": [ { "file": "index.js" } ] }
+}

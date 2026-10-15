@@ -1,0 +1,113 @@
+/* components/buttons.css -- phase 4: buttons and icon buttons.
+ *
+ * Hooks: the client's own stable `.cmd-button` family (site-wide, so each rule is scoped by
+ * context), plus the hashed `ButtonWrapper_*` / `StyledRoundPlayButton_*` (prefix-matched).
+ *
+ * M3 button anatomy: full radius by default, text label in label-large, a state layer for
+ * hover/focus/pressed, and a disabled opacity from the shared token block -- no per-component
+ * alpha values.
+ */
+
+html.m3-theme .cmd-button {
+  border-radius: var(--md-sys-shape-button);
+  color: var(--md-sys-fg);
+  font-size: var(--md-sys-typescale-label-large-size);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  letter-spacing: var(--md-sys-typescale-label-large-track);
+  transition: background-color var(--md-sys-motion-state),
+              color var(--md-sys-motion-state),
+              transform var(--md-sys-motion-press);
+}
+
+html.m3-theme .cmd-button:hover {
+  background-color: var(--md-sys-surface-high);
+}
+
+html.m3-theme .cmd-button:active {
+  transform: scale(0.96);
+}
+
+/* the client marks prominent buttons with its own surface classes */
+html.m3-theme .cmd-button-surfacePri {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+html.m3-theme .cmd-button-surfacePri:hover {
+  background-color: var(--md-sys-color-primary);
+  filter: none;
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+html.m3-theme .cmd-button:disabled,
+html.m3-theme .cmd-button[disabled] {
+  opacity: var(--md-sys-state-disabled-opacity);
+  pointer-events: none;
+}
+
+/* ---- hashed wrappers ---- */
+html.m3-theme [class*="ButtonWrapper"] > button,
+html.m3-theme [class*="ButtonWrapper"] > a {
+  border-radius: var(--md-sys-shape-button);
+  transition: background-color var(--md-sys-motion-state), transform var(--md-sys-motion-press);
+}
+
+/* ---- round play button: the app's most-used control ---- */
+html.m3-theme [class*="StyledRoundPlayButton"] {
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  transition: background-color var(--md-sys-motion-state), transform var(--md-sys-motion-press);
+}
+html.m3-theme [class*="StyledRoundPlayButton"]:hover {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+html.m3-theme [class*="StyledRoundPlayButton"]:active {
+  transform: scale(0.94);
+}
+
+/* ---- focus visibility everywhere: never remove it ---- */
+html.m3-theme .cmd-button:focus-visible,
+html.m3-theme [class*="ButtonWrapper"] :focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* ---- the client's own button modifiers ----
+ *
+ * NCM 3.x ships cmd-button with an explicit modifier vocabulary (39 classes), which is far more
+ * reliable than guessing wrapper names.  Measured live: 1622 .cmd-button nodes on one route, so
+ * getting this family right matters more than any other.
+ *   -disabled / -disabled-30/40/50 / -block / -content / -content-left/right
+ *   -outline-pri / -outline-sec / -outline-dark / -group / -group-line / -modal-size / -loginModal-size
+ */
+html.m3-theme .cmd-button-disabled {
+  opacity: var(--md-sys-state-disabled-opacity);
+  pointer-events: none;
+}
+html.m3-theme .cmd-button-content {
+  color: inherit;
+}
+html.m3-theme .cmd-button-block {
+  border-radius: var(--md-sys-shape-button);
+}
+html.m3-theme .cmd-button-outline-pri {
+  border: 1px solid var(--md-sys-line);
+  color: var(--md-sys-color-primary);
+  background-color: transparent;
+}
+html.m3-theme .cmd-button-outline-pri:hover {
+  background-color: var(--md-sys-color-secondary-container);
+}
+html.m3-theme .cmd-button-group {
+  gap: var(--md-sys-space-1);
+}
+html.m3-theme .cmd-button-group-line {
+  border-radius: var(--md-sys-shape-corner-full);
+  overflow: hidden;
+}
+
+/* icon-only buttons need a circular state layer */
+html.m3-theme :is(.cmd-button, .cmd-icon):has(> .cmd-icon) {
+  border-radius: var(--md-sys-shape-corner-full);
+}

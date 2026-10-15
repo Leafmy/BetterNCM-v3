@@ -1,0 +1,73 @@
+/* tokens/motion.css -- Material 3 motion.
+ *
+ * Rules this file exists to enforce:
+ *   * only transform / opacity are animated (compositor-only, no layout, no paint storms),
+ *   * durations are short and few -- a music player must feel instant,
+ *   * nothing animates continuously, and nothing uses blur/filter animation (the spec forbids it),
+ *   * an explicit opt-out for low-power machines and for prefers-reduced-motion.
+ */
+
+html.m3-theme {
+  /* easing -- M3 standard / emphasized sets, expressed as cubic-bezier */
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  --md-sys-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --md-sys-motion-easing-linear: linear;
+
+  /* duration tokens (t-shirt sizes, not freehand ms values) */
+  --md-sys-motion-duration-short1: 50ms;
+  --md-sys-motion-duration-short2: 100ms;
+  --md-sys-motion-duration-short3: 150ms;
+  --md-sys-motion-duration-short4: 200ms;
+  --md-sys-motion-duration-medium1: 250ms;
+  --md-sys-motion-duration-medium2: 300ms;
+  --md-sys-motion-duration-medium3: 350ms;
+  --md-sys-motion-duration-medium4: 400ms;
+  --md-sys-motion-duration-long1: 450ms;
+  --md-sys-motion-duration-long2: 500ms;
+
+  /* component assignments -- these are the only ones components should reference */
+  --md-sys-motion-hover: var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  --md-sys-motion-press: var(--md-sys-motion-duration-short1) var(--md-sys-motion-easing-standard);
+  --md-sys-motion-state: var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
+  --md-sys-motion-menu: var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
+  --md-sys-motion-dialog-enter: var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
+  --md-sys-motion-dialog-exit: var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
+  --md-sys-motion-page: var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+  --md-sys-motion-expand: var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized);
+  --md-sys-motion-cover: var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized);
+
+  /* only these properties are ever animated */
+  --md-sys-motion-animatable: transform, opacity;
+}
+
+/* Accessibility: honour the OS setting.  This must come after the tokens so it wins. */
+@media (prefers-reduced-motion: reduce) {
+  html.m3-theme {
+    --md-sys-motion-hover: 1ms linear;
+    --md-sys-motion-press: 1ms linear;
+    --md-sys-motion-state: 1ms linear;
+    --md-sys-motion-menu: 1ms linear;
+    --md-sys-motion-dialog-enter: 1ms linear;
+    --md-sys-motion-dialog-exit: 1ms linear;
+    --md-sys-motion-page: 1ms linear;
+    --md-sys-motion-expand: 1ms linear;
+    --md-sys-motion-cover: 1ms linear;
+  }
+}
+
+/* Escape hatch for low-power machines: html.m3-theme.m3-motion-off disables all of it. */
+html.m3-theme.m3-motion-off {
+  --md-sys-motion-hover: 0ms linear;
+  --md-sys-motion-press: 0ms linear;
+  --md-sys-motion-state: 0ms linear;
+  --md-sys-motion-menu: 0ms linear;
+  --md-sys-motion-dialog-enter: 0ms linear;
+  --md-sys-motion-dialog-exit: 0ms linear;
+  --md-sys-motion-page: 0ms linear;
+  --md-sys-motion-expand: 0ms linear;
+  --md-sys-motion-cover: 0ms linear;
+}

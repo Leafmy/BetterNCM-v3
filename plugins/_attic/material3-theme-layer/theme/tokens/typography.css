@@ -1,0 +1,194 @@
+/* tokens/typography.css -- Material 3 type scale, with a Chinese-aware font strategy.
+ *
+ * THE ICON-FONT PROBLEM, AND WHY THIS FILE DOES NOT USE `*`
+ * --------------------------------------------------------
+ * The obvious implementation --
+ *     * { font-family: "My Font" !important }
+ * -- breaks every icon in the client: the UI draws icons with an icon font, and lyrictools,
+ * MaterialYouTheme's own icon button and RefinedNowPlaying all ship glyph fonts.  Overriding the
+ * family on those elements replaces glyphs with tofu.
+ *
+ * Two rules keep text and icons separate:
+ *
+ *   1. The family is set ON THE ROOT ONLY and reaches text by INHERITANCE.  Any element that
+ *      declares its own font-family (which is exactly what an icon font does) keeps winning, so
+ *      icons are safe by construction rather than by being listed.
+ *   2. Elements that draw glyphs via ::before/::after but rely on inheritance get an explicit
+ *      restore below, using the client's own icon stack.
+ *
+ * No !important, no universal selector.
+ */
+
+html.m3-theme {
+  /* Chinese-first stacks.  The latin face is listed first only when the user opts in; by default
+     the system CJK stack leads so Chinese never falls back to a latin face with poor coverage. */
+  --md-sys-typescale-font-plain:
+    var(--md-sys-font-family,
+      "Microsoft YaHei", "微软雅黑", "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+      "Source Han Sans SC", "Noto Sans CJK SC", system-ui, sans-serif);
+  --md-sys-typescale-font-brand: var(--md-sys-typescale-font-plain);
+  --md-sys-typescale-font-mono:
+    "Cascadia Mono", "Consolas", "SF Mono", "Menlo", monospace;
+
+  /* The client's own icon stack, captured so the restore rules below cannot drift. */
+  --md-sys-font-icon:
+    var(--m3-icon-font, "cloudmusic-iconfont", "iconfont", "Material Icons", sans-serif);
+
+  /* ---- type scale (size / line-height / weight / tracking) ---- */
+  --md-sys-typescale-display-large-size: 57px;
+  --md-sys-typescale-display-large-line: 64px;
+  --md-sys-typescale-display-large-weight: 400;
+  --md-sys-typescale-display-large-track: -0.25px;
+  --md-sys-typescale-display-medium-size: 45px;
+  --md-sys-typescale-display-medium-line: 52px;
+  --md-sys-typescale-display-medium-weight: 400;
+  --md-sys-typescale-display-small-size: 36px;
+  --md-sys-typescale-display-small-line: 44px;
+  --md-sys-typescale-display-small-weight: 400;
+
+  --md-sys-typescale-headline-large-size: 32px;
+  --md-sys-typescale-headline-large-line: 40px;
+  --md-sys-typescale-headline-large-weight: 400;
+  --md-sys-typescale-headline-medium-size: 28px;
+  --md-sys-typescale-headline-medium-line: 36px;
+  --md-sys-typescale-headline-medium-weight: 400;
+  --md-sys-typescale-headline-small-size: 24px;
+  --md-sys-typescale-headline-small-line: 32px;
+  --md-sys-typescale-headline-small-weight: 400;
+
+  --md-sys-typescale-title-large-size: 22px;
+  --md-sys-typescale-title-large-line: 28px;
+  --md-sys-typescale-title-large-weight: 400;
+  --md-sys-typescale-title-medium-size: 16px;
+  --md-sys-typescale-title-medium-line: 24px;
+  --md-sys-typescale-title-medium-weight: 500;
+  --md-sys-typescale-title-medium-track: 0.15px;
+  --md-sys-typescale-title-small-size: 14px;
+  --md-sys-typescale-title-small-line: 20px;
+  --md-sys-typescale-title-small-weight: 500;
+  --md-sys-typescale-title-small-track: 0.1px;
+
+  --md-sys-typescale-body-large-size: 16px;
+  --md-sys-typescale-body-large-line: 24px;
+  --md-sys-typescale-body-large-weight: 400;
+  --md-sys-typescale-body-large-track: 0.5px;
+  --md-sys-typescale-body-medium-size: 14px;
+  --md-sys-typescale-body-medium-line: 20px;
+  --md-sys-typescale-body-medium-weight: 400;
+  --md-sys-typescale-body-medium-track: 0.25px;
+  --md-sys-typescale-body-small-size: 12px;
+  --md-sys-typescale-body-small-line: 16px;
+  --md-sys-typescale-body-small-weight: 400;
+  --md-sys-typescale-body-small-track: 0.4px;
+
+  --md-sys-typescale-label-large-size: 14px;
+  --md-sys-typescale-label-large-line: 20px;
+  --md-sys-typescale-label-large-weight: 500;
+  --md-sys-typescale-label-large-track: 0.1px;
+  --md-sys-typescale-label-medium-size: 12px;
+  --md-sys-typescale-label-medium-line: 16px;
+  --md-sys-typescale-label-medium-weight: 500;
+  --md-sys-typescale-label-medium-track: 0.5px;
+  --md-sys-typescale-label-small-size: 11px;
+  --md-sys-typescale-label-small-line: 16px;
+  --md-sys-typescale-label-small-weight: 500;
+  --md-sys-typescale-label-small-track: 0.5px;
+
+  /* user-facing knobs (a font-controlling plugin writes these) */
+  --md-sys-typescale-scale: 1;
+  --md-sys-typescale-weight-adjust: 0;
+  --md-sys-typescale-line-height-adjust: 1;
+  --md-sys-typescale-tracking-adjust: 0;
+}
+
+/* (1) family by inheritance -- icons that declare their own family are untouched */
+html.m3-theme {
+  font-family: var(--md-sys-typescale-font-plain);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* (2) explicit icon-font protection: restore the icon stack where glyphs are drawn but the
+   element relies on inheritance.  Kept as a short, auditable list -- NOT a wildcard. */
+html.m3-theme :is(svg, i, em) {
+  font-family: var(--md-sys-font-icon);
+}
+html.m3-theme [class*="icon" i],
+html.m3-theme [class*="Icon" i],
+html.m3-theme [class*="iconfont"],
+html.m3-theme [class*="IconFont"],
+html.m3-theme [class*="material-icons"] {
+  font-family: var(--md-sys-font-icon);
+}
+
+/* Real text elements get the type scale; again inheritance plus a narrow list, no wildcard. */
+html.m3-theme :is(h1) {
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+}
+html.m3-theme :is(h2) {
+  font-size: var(--md-sys-typescale-headline-small-size);
+  line-height: var(--md-sys-typescale-headline-small-line);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+}
+html.m3-theme :is(h3) {
+  font-size: var(--md-sys-typescale-title-large-size);
+  line-height: var(--md-sys-typescale-title-large-line);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+}
+html.m3-theme :is(button, input, select, textarea) {
+  font-family: inherit;
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+}
+
+/* Numeric UI (durations, counters) should not jitter as digits change. */
+html.m3-theme :is(.bncm-mgr-build, time, [class*="duration" i], [class*="Duration" i]) {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- the client's own typography component ----
+ *
+ * NCM 3.x has cmd-typography (169 refs) with explicit variants, which means the type scale can be
+ * applied where the client already decided "this is text" -- instead of guessing containers:
+ *   .cmd-typography-h1..h4  .cmd-typography-disabled  .cmd-typography-danger  .cmd-typography-icon
+ *   .cmd-typography-ellipsis-*
+ *
+ * NOTE: .cmd-typography-icon is deliberately mapped to the ICON stack, not the text stack -- that
+ * is the client telling us this node draws a glyph.
+ */
+html.m3-theme .cmd-typography {
+  font-family: var(--md-sys-typescale-font-plain);
+  color: var(--md-sys-fg);
+}
+html.m3-theme .cmd-typography-h1 {
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+}
+html.m3-theme .cmd-typography-h2 {
+  font-size: var(--md-sys-typescale-headline-small-size);
+  line-height: var(--md-sys-typescale-headline-small-line);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+}
+html.m3-theme :is(.cmd-typography-h3, .cmd-typography-h4) {
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+}
+html.m3-theme .cmd-typography-disabled {
+  color: var(--md-sys-fg-dim);
+  opacity: var(--md-sys-state-disabled-opacity);
+}
+html.m3-theme .cmd-typography-danger {
+  color: var(--md-sys-color-error);
+}
+/* the client's own marker for "this is an icon" -- keep the glyph font */
+html.m3-theme .cmd-typography-icon {
+  font-family: var(--md-sys-font-icon);
+  color: inherit;
+}

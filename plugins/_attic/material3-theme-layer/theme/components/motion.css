@@ -1,0 +1,86 @@
+/* components/motion.css -- phase 6: motion.
+ *
+ * Rules this file obeys, from the brief and from docs/12 section 4:
+ *   * only transform / opacity / scale -- never width/height/top/left, never filter or blur,
+ *   * short durations (the tokens are 50-500ms and the component assignments are 100-300ms),
+ *   * no continuous animation, no looping, nothing that animates on every scroll frame,
+ *   * every animation is disabled by prefers-reduced-motion AND by html.m3-motion-off,
+ *   * animations are attached so they fire on MOUNT, not on every re-render, so the cost is one
+ *     composited pass per real transition instead of per React update.
+ *
+ * Deliberately NOT animated: list rows (a 500-row list must not animate), scroll containers,
+ * the sidebar scroll body, anything with backdrop-filter.
+ */
+
+/* ---- page / route transition ----
+   .KeepAliveWrapper is the page host; its child element is swapped when the route changes, so an
+   animation on the child plays exactly once per navigation. */
+html.m3-theme [class*="KeepAliveWrapper"] > * {
+  animation: m3-page-in var(--md-sys-motion-page) both;
+}
+
+@keyframes m3-page-in {
+  from { opacity: 0; transform: translate3d(0, 4px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* ---- cover art on song change ----
+   The client swaps the <img>; a fresh node gets a short cross-fade so the change does not snap. */
+html.m3-theme [class*="DefaultBarWrapper"] img,
+html.m3-theme [class*="VinylCoverContainer"] img {
+  animation: m3-cover-in var(--md-sys-motion-cover) both;
+  will-change: auto;                     /* do not pin a compositor layer for a 500ms fade */
+}
+
+@keyframes m3-cover-in {
+  from { opacity: 0; transform: scale(0.985); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ---- player bar expand / minibar switch ----
+ * PHASE 9 NOTE: this selector also appears in components/player.css.  That is intentional and not a
+ * conflict -- player.css owns the bar's SURFACE (colour, border, elevation) and this file owns its
+ * ENTRY motion.  They set disjoint properties, and keeping them apart is what lets motion be
+ * disabled wholesale (reduced-motion / m3-motion-off) without touching the bar's appearance. */
+   Both layouts exist on the same machine (docs/12 section 2.4), so the bar may appear or disappear;
+   animate it in rather than popping. */
+html.m3-theme [class*="DefaultBarWrapper"] {
+  animation: m3-bar-in var(--md-sys-motion-menu) both;
+}
+
+@keyframes m3-bar-in {
+  from { opacity: 0; transform: translate3d(0, 8px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* ---- sidebar state change ----
+ * PHASE 9 NOTE: shares a selector with components/sidebar.css for the same reason as above --
+ * sidebar.css owns the selected row's colour and shape, this file owns the settling animation. */
+   The selected row gets a brief settling pulse rather than a colour flash. */
+html.m3-theme [class*="LeftScrollContainer"] [class*="ItemContainer"].selected {
+  animation: m3-select-settle var(--md-sys-motion-state) both;
+}
+
+@keyframes m3-select-settle {
+  from { transform: scale(0.98); }
+  to   { transform: scale(1); }
+}
+
+/* ---- opt-outs ---- */
+@media (prefers-reduced-motion: reduce) {
+  html.m3-theme [class*="KeepAliveWrapper"] > *,
+  html.m3-theme [class*="DefaultBarWrapper"] img,
+  html.m3-theme [class*="VinylCoverContainer"] img,
+  html.m3-theme [class*="DefaultBarWrapper"],
+  html.m3-theme [class*="ItemContainer"].selected {
+    animation: none;
+  }
+}
+
+html.m3-theme.m3-motion-off [class*="KeepAliveWrapper"] > *,
+html.m3-theme.m3-motion-off [class*="DefaultBarWrapper"] img,
+html.m3-theme.m3-motion-off [class*="VinylCoverContainer"] img,
+html.m3-theme.m3-motion-off [class*="DefaultBarWrapper"],
+html.m3-theme.m3-motion-off [class*="ItemContainer"].selected {
+  animation: none;
+}

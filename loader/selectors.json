@@ -1,0 +1,32 @@
+{
+  "version": "3.1.41-r1",
+  "note": "Versioned DOM selector registry consumed by GET /api/selectors (tools/ncm_host.mjs) and merged by loader/framework.js in the order SELECTOR_FALLBACK > builds.default > builds[<client version>]. The client's front-end bundle (web.pack) carries CSS-module hashes that change between packs, so a selector fix is a change to this file, not to code.",
+  "provenance": "Reconstructed 2026-10 from the SELECTOR_FALLBACK table inside loader/framework.js, which was itself recorded against web.pack 477f8a2. Entries marked with an empty string are KNOWN DEAD in 3.1.41: keeping the key means a miss is reported to <data>/selector-discovery.json instead of being silently swallowed. No value here is a new claim.",
+  "builds": {
+    "default": {},
+    "3.1.41": {
+      "mainPageContainer": ".RightContainer_r8p6pvv, [class^=RightContainer_], .right-container",
+      "appScroll": "[class^=AppScrollContainer_]",
+      "sidebar": "[class^=LeftScrollContainer_]",
+      "miniBar": "[class^=MiniModeIconBar_]",
+      "playerBar": "#main-player, .m-player, .m-player-fm",
+      "playButton": "#main-player .btnp, .m-player .btnp, .m-player-fm .btnp",
+      "nowPlaying": ".g-single, [class^=DefaultPlayerContainer_]",
+      "cover": ".n-single .cdimg img, [class^=VinylCoverContainer_] img",
+      "lyricRoot": "[class^=LyricWrapper_], [class*=ScrollableLyricDisplayContainer], [class*=LyricDefaultPageContainer]",
+      "lyricLine": "[class*=LyricDisplayInnerContainer] [class*=line], [class*=lyric]",
+      "settingsButton": ".cmd-icon-setting, a[href=\"#/m/setting/\"], .m-top .cmd-icon"
+    }
+  },
+  "knownDead": {
+    "3.1.41": [
+      ".cmd-icon-setting",
+      "section.g-mn",
+      "[class^=CommentWrapper_]",
+      "u-cover",
+      "#main-player",
+      ".m-player .btnp",
+      ".g-mn"
+    ]
+  }
+}

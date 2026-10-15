@@ -1,0 +1,49 @@
+# --- BetterNCM-v3 checkout hygiene ------------------------------------------------------------
+#
+# Runtime output, evidence captured from a live client, and machine-local state.  None of it is
+# source, and two of these entries are a redistribution problem rather than just noise:
+#
+#   * out/orpheus/     the client's front-end extracted from web.pack -- NetEase copyrighted
+#                      material, ~100 MB.  Rebuild it locally with tools/ntpk.py.
+#   * out/repacked.ntpk  a repacked orpheus container, 36 MB.  Never ship this.
+#   * out/host.json    carries the live backend's 32-character API key.
+#   * out/agent.log    live agent log (paths, ports, plugin telemetry).
+#   * out/host.stdout.log  the backend's own stdout: it prints `port=… key=…` when it starts, so
+#                          the runtime API key lands in this file too.
+#
+# The small evidence files kept in out/ (perf-*.json, acceptance-*.json, verify-*.png) are
+# reproducible measurements, not client assets, so they stay tracked.
+
+/out/orpheus/
+/out/libcef-try/
+/out/release/
+/out/repacked.ntpk
+/out/agent.log
+/out/agent.lock
+/out/host.json
+/out/host.stdout.log
+/out/host.stdout.log.err
+/out/bncm-data/
+/out/hijack-candidates.json
+/out/loader/obj/
+/out/loader/*.exp
+/out/loader/*.lib
+/out/loader/install-manifest.json
+
+# out/loader/version.dll IS tracked on purpose: it is a build product of loader/version_proxy,
+# but tools/release/build_release.ps1 requires it to assemble both packages, and building it
+# needs the MSVC toolchain (loader/build.cmd).
+
+# --- upstream reference clones -----------------------------------------------------------------
+#
+# Each directory under upstream/ is an independent clone with its own .git and its own upstream
+# remote.  They are reference material, not part of this project; upstream/README.md records the
+# exact URLs and commits to fetch.
+/upstream/*
+!/upstream/README.md
+
+# --- tooling / OS noise ------------------------------------------------------------------------
+**/.DS_Store
+Thumbs.db
+*.tmp
+*.bak

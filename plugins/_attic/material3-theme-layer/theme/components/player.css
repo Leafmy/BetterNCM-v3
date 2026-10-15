@@ -1,0 +1,104 @@
+/* components/player.css -- phase 5: the playback bar.
+ *
+ * The player is the visual centre of a music app, so it is the one place where the theme is
+ * allowed a slightly stronger presence: a raised surface tier, a real elevation level, and the
+ * primary role on the play button.
+ *
+ * Measured NCM 3.x structure (docs/12):
+ *   .DefaultBarWrapper_*            the full-width playback bar (1920x80 at the bottom)
+ *   .DefaultPlayerContainer_*       present in BOTH layouts: 40x100 strip + 40x20 chips in minibar
+ *   .VinylCoverContainer_*          the cover / vinyl area
+ *   .AudioWrapper_*                 the audio controls cluster
+ *   .VinylPageBarWrapper_*          the immersive page's own bar
+ *
+ * Known constraint: the window has two layouts (full bar vs `minibar-shown`), so nothing here may
+ * assume the full-width bar exists -- see docs/12 section 2.4.
+ */
+
+/* ---- the bar surface ---- */
+html.m3-theme [class*="DefaultBarWrapper"] {
+  background-color: var(--md-sys-surface-container);
+  border-top: 1px solid var(--md-sys-line-soft);
+  box-shadow: var(--md-sys-elev-player);
+  border-radius: 0;                     /* a bar spans the window; radius belongs to inner cards */
+}
+
+/* In the minibar layout the client shows small chips instead; give them the chip shape so the
+   compact presentation still reads as Material rather than as an unstyled strip. */
+html.m3-theme [class*="DefaultPlayerContainer"] {
+  border-radius: var(--md-sys-shape-chip);
+  background-color: var(--md-sys-surface-container);
+  color: var(--md-sys-fg);
+}
+
+/* ---- transport controls ---- */
+html.m3-theme [class*="AudioWrapper"] :is([class*="Button"], button, .cmd-button) {
+  border-radius: var(--md-sys-shape-corner-full);
+  color: var(--md-sys-fg-dim);
+  transition: background-color var(--md-sys-motion-state),
+              color var(--md-sys-motion-state),
+              transform var(--md-sys-motion-press);
+}
+html.m3-theme [class*="AudioWrapper"] :is([class*="Button"], button, .cmd-button):hover {
+  background-color: var(--md-sys-surface-high);
+  color: var(--md-sys-fg);
+}
+html.m3-theme [class*="AudioWrapper"] :is([class*="Button"], button, .cmd-button):active {
+  transform: scale(0.94);
+}
+html.m3-theme [class*="AudioWrapper"] :is([class*="Button"], button, .cmd-button):disabled {
+  opacity: var(--md-sys-state-disabled-opacity);
+}
+
+/* the primary transport action (play/pause) carries the filled treatment */
+html.m3-theme [class*="AudioWrapper"] :is([class*="primary"], [class*="Primary"], [class*="Play"]) {
+  color: var(--md-sys-color-on-primary-container);
+}
+html.m3-theme [class*="AudioWrapper"] :is([class*="Play"]):hover {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+/* ---- song information ---- */
+html.m3-theme [class*="DefaultBarWrapper"] :is([class*="TitleContainer"], [class*="TrackTitle"], [class*="Title_"]) {
+  color: var(--md-sys-fg);
+  font-size: var(--md-sys-typescale-title-small-size);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+}
+html.m3-theme [class*="DefaultBarWrapper"] :is([class*="Artist"], [class*="SubTitle"], [class*="subtitle"]) {
+  color: var(--md-sys-fg-dim);
+  font-size: var(--md-sys-typescale-body-small-size);
+}
+/* artist links follow the primary role on hover only -- not a permanent high-saturation blue */
+html.m3-theme [class*="DefaultBarWrapper"] a {
+  color: inherit;
+  transition: color var(--md-sys-motion-hover);
+}
+html.m3-theme [class*="DefaultBarWrapper"] a:hover {
+  color: var(--md-sys-color-primary);
+}
+
+/* ---- cover art ---- */
+html.m3-theme [class*="VinylCoverContainer"],
+html.m3-theme [class*="DefaultBarWrapper"] img[class*="cover" i] {
+  border-radius: var(--md-sys-shape-cover);
+}
+
+/* ---- immersive page bar ---- */
+html.m3-theme [class*="VinylPageBarWrapper"] {
+  background-color: transparent;
+  border-radius: var(--md-sys-shape-corner-large);
+}
+
+/* ---- progress readouts should not jitter while playing ---- */
+html.m3-theme [class*="DefaultBarWrapper"] :is([class*="Time"], [class*="time"], [class*="Duration"]) {
+  font-variant-numeric: tabular-nums;
+  color: var(--md-sys-fg-dim);
+  font-size: var(--md-sys-typescale-label-small-size);
+}
+
+/* ---- interactive feedback on the whole bar is deliberately shallow ---- */
+html.m3-theme [class*="DefaultBarWrapper"] :focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}

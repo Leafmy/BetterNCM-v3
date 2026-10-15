@@ -1,0 +1,97 @@
+/* components/dialogs.css -- phase 4: modals, side sheets, scrim.
+ *
+ * REWRITTEN AGAINST THE CLIENT'S OWN DESIGN SYSTEM (see menus.css for why): NCM 3.x exposes
+ * cmd-modal (226 refs) and cmd-sidesheet (144 refs) with explicit state/animation modifiers, which
+ * is far more reliable than the hashed `ModalWrapper_*` names this file first guessed.
+ *
+ * Exact hooks:
+ *   .cmd-modal / .cmd-modal-content / .cmd-modal-body / .cmd-modal-body-wrapper
+ *     .cmd-modal-close / .cmd-modal-confirm / .cmd-modal-centered
+ *     .cmd-modal-content-animate-show / .cmd-modal-content-animate-hide
+ *   .cmd-sidesheet / .cmd-sidesheet-content / .cmd-sidesheet-body / .cmd-sidesheet-mask
+ *     .cmd-sidesheet-animation-*
+ *
+ * Depth comes from the surface tier plus one elevation level, and the scrim is a FLAT role colour:
+ * a full-screen blur is the most expensive thing a desktop theme can do, so it is explicitly
+ * switched off here rather than merely omitted.
+ */
+
+/* ---- modal ---- */
+html.m3-theme :is(.cmd-modal, .cmd-modal-default, .cmd-modal-centered) {
+  color: var(--md-sys-fg);
+}
+
+html.m3-theme .cmd-modal-content {
+  border-radius: var(--md-sys-shape-dialog);
+  background-color: var(--md-sys-surface-high);
+  box-shadow: var(--md-sys-elev-dialog);
+  overflow: hidden;
+}
+
+html.m3-theme .cmd-modal-body,
+html.m3-theme .cmd-modal-body-wrapper {
+  color: var(--md-sys-fg);
+}
+
+html.m3-theme .cmd-modal-close,
+html.m3-theme .cmd-modal-close-icon {
+  color: var(--md-sys-fg-dim);
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: background-color var(--md-sys-motion-state), color var(--md-sys-motion-state);
+}
+html.m3-theme .cmd-modal-close:hover {
+  background-color: var(--md-sys-surface-highest);
+  color: var(--md-sys-fg);
+}
+
+/* ---- side sheet ---- */
+html.m3-theme .cmd-sidesheet-content {
+  border-radius: var(--md-sys-shape-sheet);
+  background-color: var(--md-sys-surface-high);
+  color: var(--md-sys-fg);
+  box-shadow: var(--md-sys-elev-dialog);
+}
+html.m3-theme .cmd-sidesheet-body {
+  color: var(--md-sys-fg);
+}
+
+/* ---- scrim: flat, no blur ---- */
+html.m3-theme :is(
+  .cmd-modal-mask,
+  .cmd-sidesheet-mask,
+  [class*="modal-mask"],
+  [class*="ModalMask"],
+  [class*="OverlayWrapper"],
+  [class*="MaskWrapper"]
+) {
+  background-color: var(--md-sys-color-scrim);
+  opacity: 0.4;
+  backdrop-filter: none;
+  filter: none;
+}
+
+/* ---- entry motion, only if the client has not already animated it ---- */
+html.m3-theme .cmd-modal-content:not([class*="animate"]) {
+  animation: m3-dialog-in var(--md-sys-motion-dialog-enter) both;
+}
+
+@keyframes m3-dialog-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ---- hashed fallbacks ---- */
+html.m3-theme :is([class*="ModalContent"], [role="dialog"]) {
+  border-radius: var(--md-sys-shape-dialog);
+  background-color: var(--md-sys-surface-high);
+  box-shadow: var(--md-sys-elev-dialog);
+}
+html.m3-theme [class*="SideSheetWrapper"] {
+  border-radius: var(--md-sys-shape-sheet);
+  background-color: var(--md-sys-surface-high);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.m3-theme .cmd-modal-content { animation: none; }
+}
+html.m3-theme.m3-motion-off .cmd-modal-content { animation: none; }

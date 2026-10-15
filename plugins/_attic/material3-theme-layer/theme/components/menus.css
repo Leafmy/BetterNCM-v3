@@ -1,0 +1,144 @@
+/* components/menus.css -- phase 4: menus, popovers, tooltips, toasts.
+ *
+ * REWRITTEN AGAINST THE CLIENT'S OWN DESIGN SYSTEM.
+ *
+ * NCM 3.x ships a `cmd-*` component library -- 823 distinct class names -- and it is far better
+ * ground truth than the CSS-module hashes this file first targeted: the names are stable across
+ * builds, they are the client's actual vocabulary, and they cover every component in the brief.
+ * Verified in the client's own CSS: cmd-dropdown (142 refs), cmd-popover (171), cmd-tooltip (167),
+ * cmd-toast (51), cmd-popconfirm (70), cmd-portal (13).
+ *
+ * The exact hooks used below, with the state modifiers the client itself defines:
+ *   .cmd-dropdown / .cmd-dropdown-menu / .cmd-dropdown-wrapper
+ *     .cmd-dropdown-item (+ -active, -disabled, -content, -text, -icon, -divider, -title)
+ *   .cmd-popover-wrapper (+ -show) / .cmd-popover-content / .cmd-popover-trigger / .cmd-popover-icon-arrow
+ *   .cmd-tooltip-wrapper (+ -show) / .cmd-tooltip-trigger / .cmd-tooltip-icon-arrow
+ *   .cmd-toast-wrapper / .cmd-toast / .cmd-toast-content / .cmd-toast-error
+ *   .cmd-popconfirm (+ -inner, -header, -body, -footer)
+ *
+ * One surface tier and one corner token for every floating layer, so a dropdown, a popover and a
+ * tooltip read as one family instead of three greys.
+ */
+
+/* ---- dropdown ---- */
+html.m3-theme :is(.cmd-dropdown, .cmd-dropdown-menu, .cmd-dropdown-wrapper) {
+  border-radius: var(--md-sys-shape-menu);
+  background-color: var(--md-sys-surface-high);
+  color: var(--md-sys-fg);
+  border: 1px solid var(--md-sys-line-soft);
+  box-shadow: var(--md-sys-elev-menu);
+  overflow: hidden;                 /* keep item hover plates inside the radius */
+}
+
+html.m3-theme .cmd-dropdown-item {
+  border-radius: var(--md-sys-shape-corner-small);
+  color: var(--md-sys-fg);
+  transition: background-color var(--md-sys-motion-hover), color var(--md-sys-motion-hover);
+}
+html.m3-theme .cmd-dropdown-item:hover {
+  background-color: var(--md-sys-surface-highest);
+}
+html.m3-theme .cmd-dropdown-item-active {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+html.m3-theme .cmd-dropdown-item-disabled {
+  opacity: var(--md-sys-state-disabled-opacity);
+  pointer-events: none;
+}
+html.m3-theme .cmd-dropdown-title {
+  color: var(--md-sys-fg-dim);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+}
+html.m3-theme .cmd-dropdown-divider {
+  background-color: var(--md-sys-line-soft);
+}
+
+/* ---- popover ---- */
+html.m3-theme :is(.cmd-popover-wrapper, .cmd-popover-content, .cmd-popconfirm-popover) {
+  border-radius: var(--md-sys-shape-menu);
+  background-color: var(--md-sys-surface-high);
+  color: var(--md-sys-fg);
+  border: 1px solid var(--md-sys-line-soft);
+  box-shadow: var(--md-sys-elev-menu);
+}
+html.m3-theme .cmd-popover-icon-arrow {
+  color: var(--md-sys-surface-high);
+  fill: var(--md-sys-surface-high);
+}
+
+/* ---- popconfirm ---- */
+html.m3-theme :is(.cmd-popconfirm, .cmd-popconfirm-inner) {
+  border-radius: var(--md-sys-shape-menu);
+  color: var(--md-sys-fg);
+}
+html.m3-theme .cmd-popconfirm-header-title {
+  font-size: var(--md-sys-typescale-title-small-size);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+}
+html.m3-theme .cmd-popconfirm-header-icon {
+  color: var(--md-sys-color-primary);
+}
+
+/* ---- tooltip ---- */
+html.m3-theme :is(.cmd-tooltip-wrapper, .cmd-tooltip-content) {
+  border-radius: var(--md-sys-shape-tooltip);
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  border: none;
+  box-shadow: var(--md-sys-elevation-level1);
+  font-size: var(--md-sys-typescale-body-small-size);
+}
+html.m3-theme .cmd-tooltip-icon-arrow {
+  color: var(--md-sys-color-inverse-surface);
+  fill: var(--md-sys-color-inverse-surface);
+}
+
+/* ---- toast ---- */
+html.m3-theme :is(.cmd-toast-wrapper, .cmd-toast) {
+  border-radius: var(--md-sys-shape-corner-small);
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+  box-shadow: var(--md-sys-elevation-level2);
+}
+html.m3-theme .cmd-toast-content {
+  color: var(--md-sys-color-inverse-on-surface);
+}
+html.m3-theme .cmd-toast-error .cmd-toast-icon-error {
+  color: var(--md-sys-color-error);
+}
+
+/* ---- entry motion: transform + opacity only, short, one-shot ---- */
+html.m3-theme :is(.cmd-dropdown, .cmd-popover-wrapper, .cmd-popconfirm) {
+  animation: m3-menu-in var(--md-sys-motion-menu) both;
+  transform-origin: top left;
+}
+
+@keyframes m3-menu-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* the client has its own show/hide animation classes; do not fight them */
+html.m3-theme :is(.cmd-popover-wrapper-show, .cmd-tooltip-wrapper-show) {
+  animation: none;
+}
+
+/* ---- hashed fallbacks (kept for components not yet migrated to cmd-*) ---- */
+html.m3-theme :is(
+  [class*="PopoverWrapper"],
+  [class*="MenuWrapper"],
+  [class*="DropdownWrapper"],
+  [class*="SideMenuWrapper"],
+  [class*="ContextMenu"]
+) {
+  border-radius: var(--md-sys-shape-menu);
+  background-color: var(--md-sys-surface-high);
+  box-shadow: var(--md-sys-elev-menu);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.m3-theme :is(.cmd-dropdown, .cmd-popover-wrapper, .cmd-popconfirm) { animation: none; }
+}
+html.m3-theme.m3-motion-off :is(.cmd-dropdown, .cmd-popover-wrapper, .cmd-popconfirm) { animation: none; }

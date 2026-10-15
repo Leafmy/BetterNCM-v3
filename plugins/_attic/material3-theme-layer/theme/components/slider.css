@@ -1,0 +1,101 @@
+/* components/slider.css -- phase 4: sliders and progress indicators.
+ *
+ * REWRITTEN AGAINST THE CLIENT'S OWN DESIGN SYSTEM.  Exact hooks (from the client's CSS):
+ *
+ *   .cmd-slider-rail          the track
+ *   .cmd-slider-handle (+ -clicked, -tooltip)
+ *   .cmd-slider-dot (+ -active), .cmd-slider-dots, .cmd-slider-mark(s)
+ *   .cmd-slider-boundary (+ -show, -min, -max)
+ *   .cmd-slider-disabled
+ *   .cmd-progress-track / .cmd-progress-track-inner / .cmd-progress-horizontal
+ *   .cmd-progress-circle-ring (+ -inner), .cmd-progress-line-text
+ *
+ * Progress and volume are the two sliders users touch constantly, so they get the most explicit
+ * treatment: full-radius track, a handle that grows on hover/press, and transform-only feedback
+ * (no layout work during a drag).
+ */
+
+html.m3-theme {
+  --md-sys-slider-color: var(--md-sys-color-primary);
+  --md-sys-slider-inactive: var(--md-sys-color-outline-variant);
+}
+
+/* ---- rail ---- */
+html.m3-theme :is(.cmd-slider-rail, [class*="SliderWrapper"] [class*="rail"], [class*="StyledSliderContainer"] [class*="rail"]) {
+  border-radius: var(--md-sys-shape-slider-track);
+  background-color: var(--md-sys-slider-inactive);
+}
+
+/* ---- filled portion ---- */
+html.m3-theme :is(
+  .cmd-progress-track-inner,
+  [class*="SliderWrapper"] :is([class*="Fill"], [class*="fill"], [class*="Progress"], [class*="progress"])
+) {
+  border-radius: var(--md-sys-shape-slider-track);
+  background-color: var(--md-sys-slider-color);
+}
+
+/* ---- handle ---- */
+html.m3-theme .cmd-slider-handle {
+  border-radius: var(--md-sys-shape-slider-handle);
+  background-color: var(--md-sys-color-primary);
+  transition: transform var(--md-sys-motion-hover), background-color var(--md-sys-motion-hover);
+}
+html.m3-theme .cmd-slider-handle:hover,
+html.m3-theme .cmd-slider-handle-clicked {
+  transform: scale(1.15);
+}
+html.m3-theme .cmd-slider-handle-tooltip {
+  border-radius: var(--md-sys-shape-tooltip);
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+}
+
+/* ---- dots / marks ---- */
+html.m3-theme .cmd-slider-dot {
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-slider-inactive);
+}
+html.m3-theme .cmd-slider-dot-active {
+  background-color: var(--md-sys-color-primary);
+}
+
+html.m3-theme .cmd-slider-disabled {
+  opacity: var(--md-sys-state-disabled-opacity);
+}
+
+/* ---- progress bar ---- */
+html.m3-theme :is(.cmd-progress, .cmd-progress-horizontal) {
+  color: var(--md-sys-fg-dim);
+}
+html.m3-theme .cmd-progress-track {
+  border-radius: var(--md-sys-shape-slider-track);
+  background-color: var(--md-sys-slider-inactive);
+}
+html.m3-theme :is(.cmd-progress-circle-ring, .cmd-progress-circle-ring-inner) {
+  color: var(--md-sys-color-primary);
+}
+html.m3-theme .cmd-progress-line-text {
+  color: var(--md-sys-fg-dim);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--md-sys-typescale-label-small-size);
+}
+
+/* ---- native range inputs ---- */
+html.m3-theme input[type="range"] {
+  border-radius: var(--md-sys-shape-slider-track);
+  accent-color: var(--md-sys-color-primary);
+}
+
+/* ---- hashed fallbacks ---- */
+html.m3-theme :is([class*="SliderWrapper"], [class*="StyledSliderContainer"]) :is(
+  [class*="Track"], [class*="track"], [class*="Bar"], [class*="bar"]
+) {
+  border-radius: var(--md-sys-shape-slider-track);
+}
+html.m3-theme :is([class*="SliderWrapper"], [class*="StyledSliderContainer"]) :is(
+  [class*="Handle"], [class*="handle"], [class*="Thumb"], [class*="thumb"], [class*="Knob"]
+) {
+  border-radius: var(--md-sys-shape-slider-handle);
+  background-color: var(--md-sys-color-primary);
+}

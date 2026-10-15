@@ -1,0 +1,115 @@
+/* components/sidebar.css -- phase 3: the left navigation drawer.
+ *
+ * Real NCM 3.x structure, measured on 3.1.41 (see docs/12):
+ *
+ *   #page_pc_main_tab                      sidebar column, 204px wide
+ *     .ContentContainer                    202px, holds header + scroll
+ *       .BackContainer                     header, 204x72
+ *       .LeftScrollContainer               scroll area, 202x960
+ *         .draggable                       scrolling content wrapper
+ *           .ItemContainer_*               a nav row, 164x36   (".selected" = current page)
+ *           .mine-area                     a section label
+ *           .TitleContainer_*              a group title
+ *           .PlayListItemContent_*         a playlist row in the sidebar
+ *           .StyledMoreButton_*            "更多"
+ *
+ * Only stable ids and PREFIXES of hashed class names are used.  Properties here are limited to
+ * colour, radius, outline and compositor-only state feedback: no size, padding, position or
+ * display, so the client's own layout stays authoritative.
+ */
+
+/* ---- the drawer surface itself: one tier above the page ---- */
+html.m3-theme #page_pc_main_tab,
+html.m3-theme #page_pc_main_tab .ContentContainer {
+  background-color: var(--md-sys-surface-low);
+}
+
+/* a single hairline divider instead of a shadow */
+html.m3-theme #page_pc_main_tab {
+  border-right: 1px solid var(--md-sys-line-soft);
+}
+
+/* ---- header (logo / back area) ---- */
+html.m3-theme .BackContainer {
+  background-color: transparent;
+}
+
+/* ---- scrolling region ---- */
+html.m3-theme .LeftScrollContainer {
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-line) transparent;
+}
+
+/* ---- navigation rows: M3 navigation-drawer item ---- */
+html.m3-theme [class*="LeftScrollContainer"] [class*="ItemContainer"] {
+  border-radius: var(--md-sys-shape-sidebar-item);
+  color: var(--md-sys-fg);
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  background-position: left center;
+  transition: background-size var(--md-sys-motion-state),
+              background-color var(--md-sys-motion-state),
+              color var(--md-sys-motion-state);
+}
+
+/* hover: an M3 state layer, expressed as a gradient whose alpha comes from the role itself.
+   Using currentColor keeps it correct in both light and dark without a second variable. */
+html.m3-theme [class*="LeftScrollContainer"] [class*="ItemContainer"]:hover {
+  background-size: 100% 100%;
+  opacity: 1;
+}
+
+/* selected: filled pill with the secondary-container role -- clearly visible, not loud.
+ *
+ * Specificity note (the strategy the brief asks for): the client's own rule for the selected row is
+ * anchored on the id `#page_pc_main_tab`, so a class-only selector loses to it.  Measured: with
+ * `html.m3-theme [class*="LeftScrollContainer"] [class*="ItemContainer"].selected` the computed
+ * background stayed the client's own light accent instead of the scheme's secondary-container.
+ * Matching the id level -- and adding one class -- wins on equal id count without reaching for
+ * !important. */
+html.m3-theme #page_pc_main_tab [class*="ItemContainer"].selected,
+html.m3-theme [class*="LeftScrollContainer"] [class*="ItemContainer"].selected {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+}
+
+/* pressed feedback is compositor-only */
+html.m3-theme [class*="LeftScrollContainer"] [class*="ItemContainer"]:active {
+  transform: scale(0.985);
+}
+
+/* ---- section labels and group titles ---- */
+html.m3-theme .mine-area,
+html.m3-theme [class*="LeftScrollContainer"] [class*="TitleContainer"] {
+  color: var(--md-sys-fg-dim);
+  font-size: var(--md-sys-typescale-label-small-size);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  letter-spacing: var(--md-sys-typescale-label-small-track);
+}
+
+/* ---- "更多" ---- */
+html.m3-theme [class*="StyledMoreButton"] {
+  border-radius: var(--md-sys-shape-chip);
+  color: var(--md-sys-fg-dim);
+  transition: background-color var(--md-sys-motion-state), color var(--md-sys-motion-state);
+}
+html.m3-theme [class*="StyledMoreButton"]:hover {
+  background-color: var(--md-sys-surface-high);
+  color: var(--md-sys-fg);
+}
+
+/* ---- playlist rows inside the drawer ---- */
+html.m3-theme [class*="PlayListItemContent"] {
+  border-radius: var(--md-sys-shape-corner-small);
+  color: var(--md-sys-fg);
+  transition: background-color var(--md-sys-motion-state);
+}
+html.m3-theme [class*="PlayListItemContent"]:hover {
+  background-color: var(--md-sys-surface-high);
+}
+/* the client draws its own hover plate as `.background`; keep it from fighting the theme */
+html.m3-theme [class*="PlayListItemContent"] .background {
+  border-radius: var(--md-sys-shape-corner-small);
+}

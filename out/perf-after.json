@@ -1,0 +1,44 @@
+{
+  "label": "after",
+  "stats": {
+    "nodes": 6328,
+    "styles": 42,
+    "duplicateStyles": 3,
+    "fontCssBytes": 12229,
+    "lyricRoots": 1
+  },
+  "delta": {
+    "TaskDuration": 0.301587,
+    "ScriptDuration": 0,
+    "RecalcStyleDuration": 0,
+    "LayoutDuration": 0,
+    "RecalcStyleCount": 0,
+    "LayoutCount": 0
+  },
+  "heapBytes": 50482924,
+  "dom": {
+    "documents": 3,
+    "nodes": 10955,
+    "jsEventListeners": 1646
+  },
+  "hot": [
+    {
+      "fn": "(idle)",
+      "url": "",
+      "line": 0,
+      "samples": 3920
+    },
+    {
+      "fn": "(program)",
+      "url": "",
+      "line": 0,
+      "samples": 2
+    },
+    {
+      "fn": "(root)",
+      "url": "",
+      "line": 0,
+      "samples": 0
+    }
+  ]
+}

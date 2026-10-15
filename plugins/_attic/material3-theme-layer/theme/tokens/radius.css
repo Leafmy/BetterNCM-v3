@@ -1,0 +1,44 @@
+/* tokens/radius.css -- Material 3 shape scale.
+ *
+ * One shape language for the whole app.  Components must reference these; a literal
+ * `border-radius: 7px` anywhere in theme/components/ is a bug.
+ */
+
+html.m3-theme {
+  --md-sys-shape-corner-none: 0;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-full: 999px;
+
+  /* component assignments, so a card and a dialog cannot disagree */
+  --md-sys-shape-card: var(--md-sys-shape-corner-large);
+  --md-sys-shape-card-compact: var(--md-sys-shape-corner-medium);
+  --md-sys-shape-cover: var(--md-sys-shape-corner-medium);
+  --md-sys-shape-cover-large: var(--md-sys-shape-corner-large);
+  --md-sys-shape-button: var(--md-sys-shape-corner-full);
+  --md-sys-shape-button-square: var(--md-sys-shape-corner-medium);
+  --md-sys-shape-input: var(--md-sys-shape-corner-extra-small);
+  --md-sys-shape-menu: var(--md-sys-shape-corner-small);
+  --md-sys-shape-dialog: var(--md-sys-shape-corner-extra-large);
+  --md-sys-shape-sheet: var(--md-sys-shape-corner-large);
+  --md-sys-shape-chip: var(--md-sys-shape-corner-small);
+  --md-sys-shape-tooltip: var(--md-sys-shape-corner-extra-small);
+  --md-sys-shape-slider-track: var(--md-sys-shape-corner-full);
+  --md-sys-shape-slider-handle: var(--md-sys-shape-corner-full);
+  --md-sys-shape-player-bar: var(--md-sys-shape-corner-large);
+  --md-sys-shape-sidebar-item: var(--md-sys-shape-corner-full);
+
+  /* spacing scale (4px base) -- referenced by components so rhythm stays consistent */
+  --md-sys-space-1: 4px;
+  --md-sys-space-2: 8px;
+  --md-sys-space-3: 12px;
+  --md-sys-space-4: 16px;
+  --md-sys-space-5: 20px;
+  --md-sys-space-6: 24px;
+  --md-sys-space-8: 32px;
+  --md-sys-space-10: 40px;
+  --md-sys-space-12: 48px;
+}

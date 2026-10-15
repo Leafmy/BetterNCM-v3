@@ -1,0 +1,117 @@
+/* components/surfaces.css -- phase 3: base surfaces and layout.
+ *
+ * First real component slice.  Deliberately conservative: the target class names are CSS-module
+ * hashes (e.g. CardWrapper_d196mr), so everything matches on the stable PREFIX, and only
+ * properties that cannot break layout are touched here -- surface colour, radius, border, and
+ * transform/opacity-based interaction feedback.  No size, no position, no display changes.
+ *
+ * Every rule is scoped to html.m3-theme, so RefinedNowPlaying's immersive page, LyricBar's bar and
+ * BetterNCM's own manager are unaffected (see compatibility/plugins.css).
+ */
+
+/* ---- page ----
+ * PHASE 9 NOTE: the page background is set in tokens/color.css (it is the surface tier the rest of
+ * the theme is defined against) and deliberately NOT repeated here. */
+
+/* ---- raised containers: card tier ---- */
+html.m3-theme :is(
+  [class*="CardWrapper_"],
+  [class*="StyledCard_"],
+  [class*="TrackCardWrapper_"],
+  [class*="AlbumWrapper_"],
+  [class*="ArtistWrapper_"],
+  [class*="VoiceCardWrapper_"],
+  [class*="VideoCardContainer_"]
+) {
+  border-radius: var(--md-sys-shape-card);
+  background-color: var(--md-sys-surface-container);
+  box-shadow: var(--md-sys-elev-card);
+  transition: background-color var(--md-sys-motion-state),
+              box-shadow var(--md-sys-motion-hover),
+              transform var(--md-sys-motion-hover);
+}
+
+html.m3-theme :is(
+  [class*="CardWrapper_"],
+  [class*="StyledCard_"],
+  [class*="TrackCardWrapper_"]
+):hover {
+  background-color: var(--md-sys-surface-high);
+  box-shadow: var(--md-sys-elev-card-hover);
+}
+
+/* pressing a card sinks it very slightly -- compositor-only feedback */
+html.m3-theme :is(
+  [class*="CardWrapper_"],
+  [class*="TrackCardWrapper_"]
+):active {
+  transform: scale(0.985);
+}
+
+/* ---- covers ---- */
+html.m3-theme :is(
+  [class*="StyledCover_"],
+  [class*="VinylCoverContainer_"],
+  img[class*="cover" i]
+) {
+  border-radius: var(--md-sys-shape-cover);
+}
+
+/* ---- floating layers ---- */
+html.m3-theme :is(
+  [class*="ModalWrapper_"],
+  [class*="ModalContent_"],
+  [class*="SideSheetWrapper_"]
+) {
+  border-radius: var(--md-sys-shape-dialog);
+  background-color: var(--md-sys-surface-high);
+  box-shadow: var(--md-sys-elev-dialog);
+}
+
+html.m3-theme :is(
+  [class*="PopoverWrapper_"],
+  [class*="TooltipWrapper_"],
+  [class*="TipContainer_"]
+) {
+  border-radius: var(--md-sys-shape-menu);
+  background-color: var(--md-sys-surface-high);
+  box-shadow: var(--md-sys-elev-menu);
+}
+
+/* ---- generic dividers follow the outline role instead of an arbitrary grey ---- */
+html.m3-theme :is([class*="Divider_"], [class*="divider_"], hr) {
+  border-color: var(--md-sys-line-soft);
+  background-color: var(--md-sys-line-soft);
+}
+
+/* ---- inputs adopt the M3 shape and surface roles ---- */
+html.m3-theme :is(
+  [class*="InputWrapper_"],
+  [class*="TextAreaWrapper_"],
+  [class*="SelectWrapper_"],
+  [class*="TagInputWrapper_"]
+) {
+  border-radius: var(--md-sys-shape-input);
+  transition: background-color var(--md-sys-motion-state),
+              border-color var(--md-sys-motion-state);
+}
+
+html.m3-theme :is(
+  input,
+  textarea,
+  select
+) {
+  border-radius: var(--md-sys-shape-input);
+  background-color: var(--md-sys-surface-low);
+  color: var(--md-sys-fg);
+  border-color: var(--md-sys-line-soft);
+}
+
+html.m3-theme :is(input, textarea, select):focus {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 1px;
+}
+
+html.m3-theme :is(input, textarea, select)::placeholder {
+  color: var(--md-sys-fg-dim);
+}

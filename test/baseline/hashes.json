@@ -1,0 +1,734 @@
+{
+ "captured_at": "2026-10-01T17:04:10",
+ "captured_by": "tools/ncm_probe.py",
+ "client_version": "3.1.41.8921",
+ "install_dir": "E:\\CloudMusic",
+ "userdata_dir": "C:\\Users\\Leaf_\\AppData\\Local\\Netease\\CloudMusic",
+ "excluded_relative_dirs": [
+  "Cache",
+  "Log",
+  "logs",
+  "update",
+  "Temp",
+  "dumps",
+  "webapp91x64",
+  "webdata",
+  "ad",
+  "__pycache__"
+ ],
+ "excluded_relative_files": [
+  "debug.log",
+  "cloudmusic.elog",
+  "localdata",
+  "info",
+  "isc_chat.dat"
+ ],
+ "install": {
+  "AegisSDK.dll": {
+   "sha256": "e82e21587964b80d1f75276459879714a6844b0ed7727a78c246daf7c7dc2af1",
+   "size": 2434048
+  },
+  "avcodec-58.dll": {
+   "sha256": "6b9dde6b42f0f51a9009a02c0571922881f8627bfe96be94b77af0927ee5c303",
+   "size": 8044544
+  },
+  "avfilter-7.dll": {
+   "sha256": "4c985eb2fda3f818bf814ff344c2afceb714601e49e06bbe84ed0560035c8c44",
+   "size": 1034240
+  },
+  "avformat-58.dll": {
+   "sha256": "655db97c09ee121bc25ec6e3cf469d7b2e10f9bfdc7e725c4ec546277763e0c8",
+   "size": 1892352
+  },
+  "avutil-56.dll": {
+   "sha256": "1fdad3dd763ea004ddaf2f99bec3b238a640a17238f03e9b20edd3e1e7793c1e",
+   "size": 1665536
+  },
+  "bi_log_wrapper.dll": {
+   "sha256": "6a66e5bd6217020d84a7ab5ab52e5080644e6602a2495c2c47d4a4ce641615c2",
+   "size": 1250816
+  },
+  "bscommon.dll": {
+   "sha256": "49e0ea7091b3704a87329a199583287f5261bf46ea1891c8ee120c4cae7cfecd",
+   "size": 214696
+  },
+  "chrome_100_percent.pak": {
+   "sha256": "5dc1822aac8a1431350875088b16a1d4ef9f8b0947fdcc8669505a21ef5109ae",
+   "size": 786448
+  },
+  "chrome_200_percent.pak": {
+   "sha256": "85d943c3aebb9dbdc9cf1d9839986cdee301cc012f23d9653ccb70cf07d644a4",
+   "size": 1358045
+  },
+  "chrome_elf.dll": {
+   "sha256": "f54a310993ef78dfe58d1e2160a930a05eec933b48ef7397ae41bd1fb29dabb1",
+   "size": 1139200
+  },
+  "cloudmusic.dll": {
+   "sha256": "7f667f876caf94bc3dac3b0070d3e495117005fafdcf18b6aaa51eb004edac8c",
+   "size": 37747192
+  },
+  "cloudmusic.exe": {
+   "sha256": "16689d9731121f0f15116205d73a472748de932b6a848e36b55b60501cbf0ede",
+   "size": 2634744
+  },
+  "cloudmusic_reporter.exe": {
+   "sha256": "28f8723c567f81276905dd019b3d130ef0c271798a23f1554e01fb1a18658c09",
+   "size": 2799096
+  },
+  "cloudmusic_util.exe": {
+   "sha256": "53d609dd46aad76635ef70602eb03b7394d87233c9c29b70e42fc89d2861173f",
+   "size": 5137912
+  },
+  "cronet.72.0.3626.122.dll": {
+   "sha256": "49cfc7467be4b75f2202dc560b1739154fef12155e63244d3714ce6babe499e5",
+   "size": 12796072
+  },
+  "cssdk.exe": {
+   "sha256": "790e895edc047bf1e525084e7bd6ca3d496117af0d393b8cfd2f96ec11763000",
+   "size": 1384072
+  },
+  "cssdk64.dll": {
+   "sha256": "42c2d41c9c9de3589dea85b99dedd4837b26a34bfe171ac3af0ce4d4bccae1d8",
+   "size": 2924680
+  },
+  "d3dcompiler_47.dll": {
+   "sha256": "4432bbd1a390874f3f0a503d45cc48d346abc3a8c0213c289f4b615bf0ee84f3",
+   "size": 4346120
+  },
+  "dbghelp.dll": {
+   "sha256": "6a724839f15c63ac771d794117a89b4057f298d2b8d07977681f325be7085b74",
+   "size": 1255528
+  },
+  "FLAC++.dll": {
+   "sha256": "a9201fb86cecbe59bf212d7880be12edbf741850f972b79ea0946688880a6be7",
+   "size": 685224
+  },
+  "FLAC.dll": {
+   "sha256": "6cfc8a67f78f389856816fd1f3fa71279b079c1d9b02ce8439db9cc7ad1266a7",
+   "size": 928936
+  },
+  "h_available.dll": {
+   "sha256": "56446c94db79c2196e542cfd9e48b2dc71b52f0b5664ce7f272159bd83dc56c0",
+   "size": 5603848
+  },
+  "icudtl.dat": {
+   "sha256": "6e0b6b0d9e14c905f2278dbf25b7bb58cc0622b7680e3b6ff617a1d42348736b",
+   "size": 10413488
+  },
+  "libcef.dll": {
+   "sha256": "a2a441490a9600f7e06b8c4dc609354ff7214add445a55c8fa699760d264e210",
+   "size": 155353600
+  },
+  "libcrypto-1_1-x64.dll": {
+   "sha256": "b38e9c76564bff9369a11841ff218d6b7a3f8b1e479142dd5acea0ceefe47413",
+   "size": 4855976
+  },
+  "libcurl.dll": {
+   "sha256": "5f93a66d966e2a9339bc3196ccd46fb9faca8527a37927625cc3e66d6befbb24",
+   "size": 8832000
+  },
+  "libeay32.dll": {
+   "sha256": "ba8f54deeb0443d5d0f8cc0775333e0bef94f411e18aaae60e36330b05524b7a",
+   "size": 1678064
+  },
+  "libEGL.dll": {
+   "sha256": "374174cd6a7f9b95de5e10d18629d5afc815ed318e53dd0bf9d3d11f63faf6d7",
+   "size": 403968
+  },
+  "libGLESv2.dll": {
+   "sha256": "3bc37bef8e69830cfc7d03323b3259dd81cd3337f17c0cbcf2cd770ade67db98",
+   "size": 6833664
+  },
+  "minidump_stackwalk.exe": {
+   "sha256": "066d37493638989a0c7d192ce517da10b1711f58808b5deff85d09423bba867b",
+   "size": 806632
+  },
+  "msvcp120.dll": {
+   "sha256": "a15194fca0e9a43245fb50bf2ccb60df86bbda4a6eade56bc892463d34032ec8",
+   "size": 653480
+  },
+  "msvcr120.dll": {
+   "sha256": "361231cc1b31f10688153dc633efcb7731ee1d502739351d03c368a96f453806",
+   "size": 956584
+  },
+  "neaudioaiif.dll": {
+   "sha256": "d0bb2ad18d0a8a0a58dd2fca77560d11bac98e4a2346182056c09a5c5d06f08c",
+   "size": 5932032
+  },
+  "neaudioeffects.dll": {
+   "sha256": "c59105e1072d7d7dbd2d2844ac9c170de7e7b41eb463dc56a11c9b37bafac6be",
+   "size": 2884608
+  },
+  "nertc_sdk.dll": {
+   "sha256": "8251760ce434cd49e767e7f0dd4509a91a5c8f2af66a6fe81231a239f73a18c5",
+   "size": 13013672
+  },
+  "network_strategy_sdk.dll": {
+   "sha256": "4d928676f1499271943240505e651fadf624bd737574f75b25e89390de7c5c20",
+   "size": 1525760
+  },
+  "nim.dll": {
+   "sha256": "a56412ec8ea3cb10003b0baaac1c613ba57d637ef17af22bb03fa15e186c6151",
+   "size": 17117192
+  },
+  "nim_chatroom.dll": {
+   "sha256": "6a8e23d2314dd10f02388b99ae5656ff40ac608db667d8f3fdbcc28ee15db6c5",
+   "size": 6449160
+  },
+  "nim_core.dll": {
+   "sha256": "56f94efff3b92f94073c2536a2eb00d856cd42682dfef2a3a352070cbddc8599",
+   "size": 5969576
+  },
+  "nim_wrapper.dll": {
+   "sha256": "18ef80ef7d07ed88617c8043956376f3c882aeb885ebe724bb8b0482cfbe1760",
+   "size": 594952
+  },
+  "protoopp.dll": {
+   "sha256": "6b45370e01dc3d76ca47f79223ba33f852be6ab617d1b6abc5fe6e4c70435871",
+   "size": 4933288
+  },
+  "resources.pak": {
+   "sha256": "7d3f4c2a3a6fd3e6ff67a920170b566b76a6d182f3e59081a0e5bc3dbe52fe4d",
+   "size": 6977355
+  },
+  "snapshot_blob.bin": {
+   "sha256": "03bd0ceeaa559530faad393c9c4effefb5bf6818d48f049c92012995ac745e75",
+   "size": 48460
+  },
+  "swresample-3.dll": {
+   "sha256": "2e3a886d9638ee5af22b810703de7a068ac7521bc09d36f5b45a48ca329bad42",
+   "size": 816640
+  },
+  "swscale-5.dll": {
+   "sha256": "4e64dd0b79398da4e84ca8fd3456156d6108a63343274557b6de3268f09f8926",
+   "size": 1373184
+  },
+  "UnInstall.exe": {
+   "sha256": "90565d3d939b019893f0826770e693807ca7f85170cf68781a46e272b054c6fe",
+   "size": 670008
+  },
+  "v8_context_snapshot.bin": {
+   "sha256": "9a5d70547b529996067a080de523e967998d332d2a4acbcbd5a6a80926e5477f",
+   "size": 165661
+  },
+  "winrt_utils.dll": {
+   "sha256": "a23c67d403e2fc031c0f040ea980bf665f064017b37cc92eafb28878d4292501",
+   "size": 172032
+  },
+  "wow_net_pylon.dll": {
+   "sha256": "cd7fe8ace66c7683a1d67af987e97f6ffd39275ea81b1d8bc971f38ced4fea73",
+   "size": 3232256
+  },
+  "xyvodsdk.dll": {
+   "sha256": "6971e2574909e0fd93fd1a64a56cc227a8a1fcff59772642f4e8a3f160b8fd77",
+   "size": 7143936
+  },
+  "locales/af.pak": {
+   "sha256": "7a710a01a8648ab96a68077f076fa3a35000949156715a1984f46460dcba8e8c",
+   "size": 366242
+  },
+  "locales/am.pak": {
+   "sha256": "4dbde72ecf65ac84b6c01251d37c425c4cedc00e3cd9cd40c0bd5a6081359b64",
+   "size": 464155
+  },
+  "locales/ar.pak": {
+   "sha256": "36f41a346ed07708ce12d54e5a4c4612f49a375155d1655a23c52256838617cf",
+   "size": 491301
+  },
+  "locales/bg.pak": {
+   "sha256": "ea323024091753a5576a343e46d19bfbf9939122bdde53d91d7dfdbbea5a9c68",
+   "size": 530918
+  },
+  "locales/bn.pak": {
+   "sha256": "522e7a2e1f7d8e49b5632759cb5dae269578edc522689bdbcb23b74750f53e77",
+   "size": 688116
+  },
+  "locales/ca.pak": {
+   "sha256": "c79b92ba066cf5414fc37795e6a76e966c23143bd3c48c0cf5f61aedd5cdafef",
+   "size": 326875
+  },
+  "locales/cs.pak": {
+   "sha256": "3f2e5a65ebf8938ff4e9676b12573b23c72501761f1bff4d5ae466b68c85130c",
+   "size": 333598
+  },
+  "locales/da.pak": {
+   "sha256": "cefdaea7b486364291fad01ff402ab8098e2e13bc73b2bbeac25c8a9daba8df8",
+   "size": 301139
+  },
+  "locales/de.pak": {
+   "sha256": "88581d49e6c83ef74fe4aeed438c0380f321d9eaf3b8ef210d39f8378836a1c1",
+   "size": 325102
+  },
+  "locales/el.pak": {
+   "sha256": "efe6a9d8dcf76f5286bec0496209f59da3de6ab6e355a183b69a7e4bd5d36cc2",
+   "size": 579750
+  },
+  "locales/en-GB.pak": {
+   "sha256": "411a729d9288a62780c32d6bf5f4cf0fd8d221ff341ce79c2eca25dfa03c9821",
+   "size": 267081
+  },
+  "locales/en-US.pak": {
+   "sha256": "21fa942a5f4f26996396f0d84807b6f8c01afd5809e2da33487bbecd0a6d13ef",
+   "size": 270354
+  },
+  "locales/es-419.pak": {
+   "sha256": "ef0a523bcfa4d3a1b7472947a1f2a0a68e24c628386f7f0056ca4404d82481f1",
+   "size": 320359
+  },
+  "locales/es.pak": {
+   "sha256": "85862323a3128490a2c1be66a36480f7eb73a2294d62ef4ff38ae868c034db4f",
+   "size": 323061
+  },
+  "locales/et.pak": {
+   "sha256": "241f3e5286b25864081f50edb93c4693bf001f04d7c7b98f5c4921f768cd7e94",
+   "size": 289677
+  },
+  "locales/fa.pak": {
+   "sha256": "05a98b8dc3b6d5e3a224e17c144d873c3b84c6e704fd2b8dd659e2099789f9a3",
+   "size": 468288
+  },
+  "locales/fi.pak": {
+   "sha256": "fa171dcc44baf46cd4331d0a833172185ff6a166a31ab4f9890eb0832e15cbf2",
+   "size": 298130
+  },
+  "locales/fil.pak": {
+   "sha256": "fab8b112187fcf9ba5102ff0aac2f5eec63a646c8bf808fc5a2e4e08b9c62a83",
+   "size": 333460
+  },
+  "locales/fr.pak": {
+   "sha256": "1ffb04ba6986f4a25f5191da50939cfe48d1581388148b7f64d3c10a124439d8",
+   "size": 351123
+  },
+  "locales/gu.pak": {
+   "sha256": "79fa0f068f09ed239a8e0c3f1da0b35fa1f86622f9fa47721e13656696184e88",
+   "size": 660273
+  },
+  "locales/he.pak": {
+   "sha256": "7652d063f1630e33228809834f71e6e2ffec75c472ec66b6ed767bd98886f928",
+   "size": 406759
+  },
+  "locales/hi.pak": {
+   "sha256": "2418a772d39e45fbea52182965a901364ddcd5459a920c8dcb56c2844954e536",
+   "size": 684588
+  },
+  "locales/hr.pak": {
+   "sha256": "b967887c6313fca79a82168645c1febe43c949f01e0eff3bb8413a04b590e16e",
+   "size": 320821
+  },
+  "locales/hu.pak": {
+   "sha256": "12949111bf85a2236f071a294a508d99c90587a97b9ba7f61dc8d70e36f5761b",
+   "size": 344321
+  },
+  "locales/id.pak": {
+   "sha256": "60e0f7533dd163da804ac5445f2a80fbda26bc58ce26d8d2de7e2bfd4e5d039c",
+   "size": 286613
+  },
+  "locales/it.pak": {
+   "sha256": "5fef05d02e5c971e8d3f6b5584720ebeed7c7e6e5214320f09ca6f7d84ffa993",
+   "size": 316116
+  },
+  "locales/ja.pak": {
+   "sha256": "8b8407ca872711857c1efe032f0c71df17fbe8d82107a09953e812a20497e582",
+   "size": 389447
+  },
+  "locales/kn.pak": {
+   "sha256": "5eaca86a3792d40db18e7d1ce39683471bed1e8b169d716101808930728e1ea0",
+   "size": 766454
+  },
+  "locales/ko.pak": {
+   "sha256": "549b190c3722d4774cc7a8a2730f858dba66f063840469799adb449184056f9b",
+   "size": 327055
+  },
+  "locales/lt.pak": {
+   "sha256": "336b6bfe35680a19b02d583f332df5d0f5dc6fa5729c2910fb1aa6659e6aaab6",
+   "size": 344788
+  },
+  "locales/lv.pak": {
+   "sha256": "a9cff7d778289b25bca696ff4873e45f098be21f8f4fa3105ae7e2b9b1ef95da",
+   "size": 343222
+  },
+  "locales/ml.pak": {
+   "sha256": "990b6559fb32e86df8045cdf8687fe7176fb810c18b2032fbb1a093d9b2c901a",
+   "size": 803351
+  },
+  "locales/mr.pak": {
+   "sha256": "27baebb27c345e367f27b2ea8eb5895c2dadadea282a0fa94a1b2057859736a5",
+   "size": 646502
+  },
+  "locales/ms.pak": {
+   "sha256": "26457724f3431e3383ac833cbd990834dda8e5e76b961ff931d171aca4221626",
+   "size": 299590
+  },
+  "locales/nb.pak": {
+   "sha256": "8ef002c7ef1d7207b5b41038f16fef198d2343c0539f14090960d6f1295d8c7a",
+   "size": 295358
+  },
+  "locales/nl.pak": {
+   "sha256": "ad97f1708909ba1c2d6119de7536448805f00275273a8b33e743dbf2e7ab2456",
+   "size": 303424
+  },
+  "locales/pl.pak": {
+   "sha256": "a5fdcd13f711d4665d1960f512f1bd229dbbacb24c86bbb3773a905e2dd24b33",
+   "size": 333313
+  },
+  "locales/pt-BR.pak": {
+   "sha256": "3051442a3e905dfdfb8f17f49d12a3722c511faf9aba0fc86d577dac90e3b654",
+   "size": 316456
+  },
+  "locales/pt-PT.pak": {
+   "sha256": "3cda10980a23de97163a2c06b31829cca1ec3da63b0bb0a246126f402c19b16a",
+   "size": 320833
+  },
+  "locales/ro.pak": {
+   "sha256": "5fe258168978f52d2b3c6f063c7a7c381a70ac06e128ababe6656375025fc088",
+   "size": 328146
+  },
+  "locales/ru.pak": {
+   "sha256": "fb9da2895730be8d82924d01d5e0dc28c454d8b91a1aab556d255462c374bf16",
+   "size": 525443
+  },
+  "locales/sk.pak": {
+   "sha256": "ae4a8e4e3706626f7ba53cb395e2472389bdc1319fbbaaca608ee1ae3c918e0a",
+   "size": 338931
+  },
+  "locales/sl.pak": {
+   "sha256": "80ab358cfdafe9533005571d832377a08e5df4801a6f61be7aeb2afe626691b9",
+   "size": 323227
+  },
+  "locales/sr.pak": {
+   "sha256": "6615bd59f0759e6af09309b8344c0e7f0c2dc2bec55beaa0afd1bbe09af7596d",
+   "size": 499720
+  },
+  "locales/sv.pak": {
+   "sha256": "eca3cbaceb77840c7d861b559ee3ceadafa9f7777856112c9bd30b5a8d517b9b",
+   "size": 295442
+  },
+  "locales/sw.pak": {
+   "sha256": "178590c5a7fcf0d41d93724de8aa04f4bad7b9cec119a54a4115f96f9219ef3c",
+   "size": 303522
+  },
+  "locales/ta.pak": {
+   "sha256": "7f047181c386fceb204184cf02d1ad1859e5293db04122c5c6585ce7bda8da0f",
+   "size": 779608
+  },
+  "locales/te.pak": {
+   "sha256": "3e19980886a66ca92ea762b86ab44fac8e71fb16fbf4dd13864840923c9bfd19",
+   "size": 727540
+  },
+  "locales/th.pak": {
+   "sha256": "a06797086a3ae1bd42bd93fdfb239a787d521cbabdda56a0c15aa255def81e5c",
+   "size": 613559
+  },
+  "locales/tr.pak": {
+   "sha256": "f25ff7a18aebd6ecaf56c2b125aaa22a1699fe2ee9cc6f190f6525d824992f11",
+   "size": 314100
+  },
+  "locales/uk.pak": {
+   "sha256": "23752a372251b782f35f6fca4a17dc260159eca4620ddb610f5ff7720d496a18",
+   "size": 524184
+  },
+  "locales/ur.pak": {
+   "sha256": "191de548ce87d2ccbd0bdf0141b69265a5f20ad3c348d3285fd18503cceb07af",
+   "size": 594353
+  },
+  "locales/vi.pak": {
+   "sha256": "66468ec740624dc5ca9988e2aea145bbe915333db3327653f130ec4a426baf17",
+   "size": 369663
+  },
+  "locales/zh-CN.pak": {
+   "sha256": "70070d44c9e5ec62c57b574837423f849ed363c0167e8019afd49a93c74c7e3a",
+   "size": 272248
+  },
+  "locales/zh-TW.pak": {
+   "sha256": "70ea00381aa8ae93ce9f64ae29ad3de0263ee5991861120c8df7603bac540b84",
+   "size": 270323
+  },
+  "package/common.skin": {
+   "sha256": "b5687b60416ccdbf139ac142a95fea0f6b19676abe57ee5f8b31b942bda447de",
+   "size": 1213673
+  },
+  "package/dark.skin": {
+   "sha256": "599e003412250018571a4286f79a7d722a201e202b4bf67629a1a801add1a5dd",
+   "size": 1218938
+  },
+  "package/native.ntpk": {
+   "sha256": "5730531082ac10e9aa6988bb88f3b1ba432bb648162620bca641e0e7004585ef",
+   "size": 779
+  },
+  "package/orpheus.ntpk": {
+   "sha256": "58bee4e575f2b276fea33253115cf898628f1e7de5a6735fbb99e3093252aa1b",
+   "size": 37939010
+  },
+  "redist_packages/api-ms-win-core-console-l1-1-0.dll": {
+   "sha256": "0052515763a1a31d2527a2eb2523fb7b88d8e55c4e4da5ef352b565476bf21e0",
+   "size": 19864
+  },
+  "redist_packages/api-ms-win-core-datetime-l1-1-0.dll": {
+   "sha256": "cc6c2fdf1c34fa82036165b111f91220bcf7e43aab79dfb284f982f0590bebb1",
+   "size": 19352
+  },
+  "redist_packages/api-ms-win-core-debug-l1-1-0.dll": {
+   "sha256": "f9aaaabf78feb39a1d8e971f5ce047d1c4a896a80409b800f1f7112cdce420ed",
+   "size": 19352
+  },
+  "redist_packages/api-ms-win-core-errorhandling-l1-1-0.dll": {
+   "sha256": "a0aa340274d4bb46b6d9547d647ab7dc16c229577bbab836e6a4f3307f310332",
+   "size": 19376
+  },
+  "redist_packages/api-ms-win-core-file-l1-1-0.dll": {
+   "sha256": "05b478718540a6f410a3ad859f7d5e56c223d6786eacc7e9bc80264f587fd0c7",
+   "size": 22928
+  },
+  "redist_packages/api-ms-win-core-file-l1-2-0.dll": {
+   "sha256": "6878d8168d5cc159efe58f14e5ba10310d99b53ab8495521e54c966994dac50b",
+   "size": 19344
+  },
+  "redist_packages/api-ms-win-core-file-l2-1-0.dll": {
+   "sha256": "b74aefd6fa638be3f415165c8109121a2093597421101abc312ee7ffa1130278",
+   "size": 19336
+  },
+  "redist_packages/api-ms-win-core-handle-l1-1-0.dll": {
+   "sha256": "550b4f5ba95108b01a24f05496576a4e73642334a10dde61b09846e0efb9f260",
+   "size": 19352
+  },
+  "redist_packages/api-ms-win-core-heap-l1-1-0.dll": {
+   "sha256": "eca63fc5c873ce8b36c507e2b9a88caaea9617c84669886b15f6bc38bd0024c6",
+   "size": 19856
+  },
+  "redist_packages/api-ms-win-core-interlocked-l1-1-0.dll": {
+   "sha256": "2f2f9660f4ffa814f465676d5b9cb9bb70d0b7c5fc5eb14c34cfe94a50883b21",
+   "size": 19368
+  },
+  "redist_packages/api-ms-win-core-libraryloader-l1-1-0.dll": {
+   "sha256": "2f9c3b077da02c587964a59e9c4e2f383ff8357229eab4b4f04814df94d78ff0",
+   "size": 19888
+  },
+  "redist_packages/api-ms-win-core-localization-l1-2-0.dll": {
+   "sha256": "6ed17fb3ca5156b39fbc1ef7d1eefa95e739857607de4cd8d41cecfcd1350705",
+   "size": 21936
+  },
+  "redist_packages/api-ms-win-core-memory-l1-1-0.dll": {
+   "sha256": "76a3aa52d49dd0d8e0451f4045f4d8ba05d2332d0db2a39408b85cd2e43b84a3",
+   "size": 19856
+  },
+  "redist_packages/api-ms-win-core-namedpipe-l1-1-0.dll": {
+   "sha256": "b1b2595494072a52f1fc44586debf52312eab1a245a7a16185d7b1af37b159a6",
+   "size": 19360
+  },
+  "redist_packages/api-ms-win-core-processenvironment-l1-1-0.dll": {
+   "sha256": "bf11319eb6be15633e47ab8f247d1acc9a9ecdf37181fc0ddfe9388ab82ac90a",
+   "size": 20424
+  },
+  "redist_packages/api-ms-win-core-processthreads-l1-1-0.dll": {
+   "sha256": "7646eba0c683fc3e1b00f0b3b2b5912621b2016a6ceb7d53181cd1c3fa64785a",
+   "size": 21432
+  },
+  "redist_packages/api-ms-win-core-processthreads-l1-1-1.dll": {
+   "sha256": "4de821884cbef4182b29d8c33cfe13e43e130ad58ee1281679e8d40a2edcb8ea",
+   "size": 19896
+  },
+  "redist_packages/api-ms-win-core-profile-l1-1-0.dll": {
+   "sha256": "4ca44ede30b46f1f23905cecfa27f0edb26ee960dba10f9bf8002d79ed77c3e5",
+   "size": 18840
+  },
+  "redist_packages/api-ms-win-core-rtlsupport-l1-1-0.dll": {
+   "sha256": "09b7f0a7f68a12602e7f4dbd5a7f1cdfb3e93fd54326884e48f36e2e200acce9",
+   "size": 19880
+  },
+  "redist_packages/api-ms-win-core-string-l1-1-0.dll": {
+   "sha256": "3eda46e395fad6ec222ab44188d6a46a468b0fd4aff28252938f4e6a9a3e3893",
+   "size": 19352
+  },
+  "redist_packages/api-ms-win-core-synch-l1-1-0.dll": {
+   "sha256": "83c1df33df30df48ab161a5a1d6c3cb4bdaebff330ee6e81e871afe3990d7a65",
+   "size": 21392
+  },
+  "redist_packages/api-ms-win-core-synch-l1-2-0.dll": {
+   "sha256": "e000c6685719c2b07355c1eddbfdae7c6794aa6c0ac883d34af33dfc8bf40779",
+   "size": 19856
+  },
+  "redist_packages/api-ms-win-core-sysinfo-l1-1-0.dll": {
+   "sha256": "f5bf492fe568eb57d2e7111b1c3927f1ee897b5a1109bc68ebe011a2dfdef2fe",
+   "size": 20376
+  },
+  "redist_packages/api-ms-win-core-timezone-l1-1-0.dll": {
+   "sha256": "630466fd77ac7009c947a8370a0d0c20652169824c54ddcb8c05e8df45e23197",
+   "size": 19360
+  },
+  "redist_packages/api-ms-win-core-util-l1-1-0.dll": {
+   "sha256": "187d47ebcc1e96abe635f23c92d2c63fc8cd741fcb03fe2dd5fc3054cb3d6d92",
+   "size": 19336
+  },
+  "redist_packages/api-ms-win-crt-conio-l1-1-0.dll": {
+   "sha256": "91f4db05c69c58ecb2493e30acc5297043c41b1ce6db50cee4e2922cd4bcd7f2",
+   "size": 20368
+  },
+  "redist_packages/api-ms-win-crt-convert-l1-1-0.dll": {
+   "sha256": "e64fbac3491b4693e79a3f7b0db1d788f93608d3fc82133edf25a868c80d2153",
+   "size": 23448
+  },
+  "redist_packages/api-ms-win-crt-environment-l1-1-0.dll": {
+   "sha256": "dd054e4de84144c2130fa8d28d563252a7c4089a58872e49d63bc43c9a1a3cb8",
+   "size": 19872
+  },
+  "redist_packages/api-ms-win-crt-filesystem-l1-1-0.dll": {
+   "sha256": "966a7f15bfb2e0ff7888d583638ebd675d8f46b264194cf332f78140b7c129e1",
+   "size": 21408
+  },
+  "redist_packages/api-ms-win-crt-heap-l1-1-0.dll": {
+   "sha256": "742bb9bf4c232f84ad8008af4af8eda7a1ec3eb76f05d9d7ebb95f6a5cabd2d8",
+   "size": 20360
+  },
+  "redist_packages/api-ms-win-crt-locale-l1-1-0.dll": {
+   "sha256": "25905676b543c4f05e9dae135f929c03a57686a6941ce59be2b3450521feb943",
+   "size": 19856
+  },
+  "redist_packages/api-ms-win-crt-math-l1-1-0.dll": {
+   "sha256": "08e34f12de24e89379a0533f21a23ce6fecbea05d4062796d4ffd4adc3012316",
+   "size": 28552
+  },
+  "redist_packages/api-ms-win-crt-multibyte-l1-1-0.dll": {
+   "sha256": "ff7d27ac5b814308a6ed2b70283a2baeff7ad4865d5488377a757ba72a5fc719",
+   "size": 27552
+  },
+  "redist_packages/api-ms-win-crt-private-l1-1-0.dll": {
+   "sha256": "8ae3cdfd38f36e3cb5f3924cdf4cc575491fb3c1cca927f8b320071081ba31b0",
+   "size": 71576
+  },
+  "redist_packages/api-ms-win-crt-process-l1-1-0.dll": {
+   "sha256": "c68a61c260454c0aeb051ddb2bed52cbca44b96d50046017cbc351b41f225dc0",
+   "size": 20376
+  },
+  "redist_packages/api-ms-win-crt-runtime-l1-1-0.dll": {
+   "sha256": "4c787ff8d40bb803e75fe6218fec36a672cfa6cfc7f6e80e68a7eb0b77a10e5a",
+   "size": 23960
+  },
+  "redist_packages/api-ms-win-crt-stdio-l1-1-0.dll": {
+   "sha256": "c7919be431ce2fa1906ff9eeb19e4cb19a30a4680107ef8737ce894654b21a5a",
+   "size": 25480
+  },
+  "redist_packages/api-ms-win-crt-string-l1-1-0.dll": {
+   "sha256": "92f72f495a6897f7d7cf2c2064b2b65f6b4fbd4f30911a534a5cd0de73395ebe",
+   "size": 25496
+  },
+  "redist_packages/api-ms-win-crt-time-l1-1-0.dll": {
+   "sha256": "46cb7b3a9f8aac5adcdbe23494e458f3195adf4b8ed1c71f2d934ddde651e57e",
+   "size": 21896
+  },
+  "redist_packages/api-ms-win-crt-utility-l1-1-0.dll": {
+   "sha256": "111f6dd2e7247071a33d75bf98d521a8d09c4071f90483a82e6ed9af69bb52c4",
+   "size": 19864
+  },
+  "redist_packages/apisetschema.dll": {
+   "sha256": "9eaf5d542cd57bd873ca392787de4f01561141fed1d91522c6c50976ae4aba6a",
+   "size": 129408
+  },
+  "redist_packages/concrt140.dll": {
+   "sha256": "0ce53545b7d6e1fe5451df4822d3d59b6806c00d0c69c0813e7a4efc2cf92a86",
+   "size": 327504
+  },
+  "redist_packages/msvcp140.dll": {
+   "sha256": "cb3c74d6fcc091f4eb7c67ee5eb5f76c1c973dea8b1c6b851fcca62c2a9d8aa8",
+   "size": 579920
+  },
+  "redist_packages/msvcp140_1.dll": {
+   "sha256": "8e49a6d937ee6ac20d949629b54e28caf01aef312bc7184063280346b35899e3",
+   "size": 35664
+  },
+  "redist_packages/msvcp140_2.dll": {
+   "sha256": "25305353c51ac72f4646bd549493becdbd6c997605f70c937e72cad3f962182d",
+   "size": 197456
+  },
+  "redist_packages/ucrtbase.dll": {
+   "sha256": "de8d08d01291df93821314176381f3d1ae863e6c5584a7f8ea42f0b94b15ef65",
+   "size": 1044888
+  },
+  "redist_packages/vccorlib140.dll": {
+   "sha256": "d7731a1df856d0a19344fd0b80dadd4e4be6b6136236fba6543bb66c1f015e81",
+   "size": 345936
+  },
+  "redist_packages/vcruntime140.dll": {
+   "sha256": "76fdb83fde238226b5bebaf3392ee562e2cb7ca8d3ef75983bf5f9d6c7119644",
+   "size": 109392
+  },
+  "redist_packages/vcruntime140_1.dll": {
+   "sha256": "e0b66601cc28ecb171c3d4b7ac690c667f47da6b6183bff80604c84c00d265ab",
+   "size": 49488
+  },
+  "resource/3D环绕.ncae": {
+   "sha256": "adcea3bb522b039f7194cf0aa2f1cc3bbee28c3acbc53b1e96e0a4f5734fcc41",
+   "size": 113
+  },
+  "resource/ca": {
+   "sha256": "47ddc4a32c2aacab68d28d3b6ac4c27c2773a303be1294539d3efb137421c63e",
+   "size": 265932
+  },
+  "resource/format.ico": {
+   "sha256": "f2bd88e5542eb00286824dab514d7966aa452e72e0b334e419f7d04a2ee60733",
+   "size": 26858
+  },
+  "resource/gpuforbidlist": {
+   "sha256": "4e3745f9f3d55e1ca91b1dcfd6862abef50e8136a3aed8bd1351d61fd7fbefdc",
+   "size": 515
+  },
+  "resource/listenTogetherDialing.wav": {
+   "sha256": "909b2909bcbf78593abcc892b5e574bc4ebb67a80d1b5766711e31633512c7ed",
+   "size": 651160
+  },
+  "resource/listenTogetherLeave.wav": {
+   "sha256": "98bfbb57357648882651d912cfd08be80fb0fe084b63d21f1b1dd37b7d54a5e5",
+   "size": 150562
+  },
+  "resource/listenTogetherMemberEnter.wav": {
+   "sha256": "7cd3197bc7963ecd43e9d2c398e82f4d161dd8c65b1fc4df360ed5d2d057506b",
+   "size": 125482
+  },
+  "resource/ncm_notice": {
+   "sha256": "21f1b54e8e221cddd622857cd25e600f8f6580f63642936295bf76bc2ee285ee",
+   "size": 301
+  },
+  "resource/showListenTogetherEmoticon.wav": {
+   "sha256": "7cfec60552901d6b9cbbfd695e889bdc5a417e096b33c92b73a44c43d959cf7b",
+   "size": 192358
+  },
+  "resource/translation.bin": {
+   "sha256": "0e5d8f209950e5af8d354f847eb14f5daefafab36d49b8f55673f9d68daaaf11",
+   "size": 176883
+  },
+  "resource/vivid_model.bin": {
+   "sha256": "55d56a17dbfa22da21f2fa945ebe13824d246fe8b2669a63e0440316282ae068",
+   "size": 79930
+  },
+  "swiftshader/libEGL.dll": {
+   "sha256": "b21445082451ed5bb57d2d8408c2b2f111a0d8fe4feeb121f9d13726a5d0401f",
+   "size": 421376
+  },
+  "swiftshader/libGLESv2.dll": {
+   "sha256": "fcc8fa7857f9acf42635d863499ade12fa286b4d030ebf6e93236b2d723bd6fc",
+   "size": 2735104
+  }
+ },
+ "userdata_stable": {
+  "web.pack": {
+   "sha256": "bf2cf3dd80ebfe995d5e8a29831347ccbcd85040cbb6c56076b0f40cdf6d7016",
+   "size": 38310561
+  },
+  "Library/webdb.dat": {
+   "sha256": "eee0def033f15f9824f157b5b2ffa24c7ec2bb15a51e56c8055952da034b1cc4",
+   "size": 22761472
+  },
+  "Library/library.dat": {
+   "sha256": "a57c31ec527128a16cf0cd3723ae7ac7a8a040ed9dc292a5e4e1697177cabc0d",
+   "size": 6144
+  },
+  "Library/library_bak.dat": {
+   "sha256": "a57c31ec527128a16cf0cd3723ae7ac7a8a040ed9dc292a5e4e1697177cabc0d",
+   "size": 6144
+  },
+  "safemode/config": {
+   "sha256": "7b8f61fa0fbf4cf5f5f53fede291bcd147b331b4aa60762cad7af1f22032e46c",
+   "size": 209
+  }
+ }
+}

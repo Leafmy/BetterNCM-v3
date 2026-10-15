@@ -1,0 +1,11 @@
+{
+  "manifest_version": 1,
+  "name": "Incompatible Plugin",
+  "slug": "incompatible-plugin",
+  "version": "0.0.1",
+  "author": "BetterNCM-v3",
+  "description": "Declares ncm3-compatible:false. Verifies that the 3.x gate actually skips it.",
+  "type": "extension",
+  "ncm3-compatible": false,
+  "injects": { "Main": [ { "file": "index.js" } ] }
+}

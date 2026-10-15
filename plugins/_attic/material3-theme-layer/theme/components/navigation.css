@@ -1,0 +1,91 @@
+/* components/navigation.css -- phase 3: the top bar and the main content frame.
+ *
+ * Measured NCM 3.x structure (docs/12):
+ *
+ *   .ad-tutorial-step-0-stop / .right-container-mask    main column, 1716x1032 @204,0
+ *     #page_pc_main_nav                                  top bar, 1716x72
+ *       .draggable                                       drag region
+ *         .DomWarpper                                    search box, 258x36
+ *         .Bar                                           right icon cluster, 136x36
+ *     .scrollCss                                         scroll area, 1716x960 @204,72
+ *       .KeepAliveWrapper                                page content, 1636x942 @244,90
+ *     #homepage-gray                                     background layer (transparent)
+ *
+ * The client's own non-hashed classes (cmd-button / cmd-icon / cmd-badge) are stable and are the
+ * preferred hooks; hashed names are matched by prefix only.
+ */
+
+/* ---- main column background: one tier above the page, so the drawer reads as a sibling ---- */
+html.m3-theme #homepage-gray {
+  background-color: transparent;
+}
+html.m3-theme .scrollCss,
+html.m3-theme [class*="right-container-mask"] {
+  background-color: var(--md-sys-surface);
+}
+
+/* ---- top bar ---- */
+html.m3-theme #page_pc_main_nav {
+  background-color: var(--md-sys-surface);
+  border-bottom: 1px solid var(--md-sys-line-soft);
+}
+
+/* ---- search box: M3 search bar (full radius) ---- */
+html.m3-theme .DomWarpper {
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-surface-container);
+  color: var(--md-sys-fg);
+  transition: background-color var(--md-sys-motion-state), box-shadow var(--md-sys-motion-state);
+}
+html.m3-theme .DomWarpper:hover {
+  background-color: var(--md-sys-surface-high);
+}
+html.m3-theme .DomWarpper:focus-within {
+  background-color: var(--md-sys-surface-high);
+  box-shadow: var(--md-sys-elevation-level1);
+}
+html.m3-theme .DomWarpper input {
+  background: transparent;
+  border: none;
+  color: var(--md-sys-fg);
+}
+html.m3-theme .DomWarpper input::placeholder {
+  color: var(--md-sys-fg-dim);
+}
+
+/* ---- icon cluster: M3 icon buttons with a state layer ---- */
+html.m3-theme .Bar {
+  gap: var(--md-sys-space-1);
+}
+html.m3-theme .Bar > * {
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: background-color var(--md-sys-motion-state), color var(--md-sys-motion-state);
+}
+html.m3-theme .Bar > *:hover {
+  background-color: var(--md-sys-surface-high);
+}
+
+/* The client's own button classes are shared across the whole app, so scope these to the top bar
+   rather than restyling every .cmd-button on the page. */
+html.m3-theme #page_pc_main_nav .cmd-button {
+  border-radius: var(--md-sys-shape-corner-full);
+  color: var(--md-sys-fg);
+  transition: background-color var(--md-sys-motion-state), color var(--md-sys-motion-state);
+}
+html.m3-theme #page_pc_main_nav .cmd-button:hover {
+  background-color: var(--md-sys-surface-high);
+}
+html.m3-theme #page_pc_main_nav .cmd-button:active {
+  transform: scale(0.96);
+}
+
+/* ---- content frame ---- */
+html.m3-theme .KeepAliveWrapper {
+  background-color: transparent;
+}
+
+/* ---- scrollbars follow the scheme instead of the OS default ---- */
+html.m3-theme .scrollCss {
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-sys-line) transparent;
+}
